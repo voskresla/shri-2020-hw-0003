@@ -1,0 +1,1040 @@
+/* fonts */
+
+@font-face {
+  font-family: YS Text;
+  font-weight: 400;
+  font-style: normal;
+
+  src: url(//yastatic.net/islands/_/PyVcRbwHetz0gOVWLonWH7Od8zM.woff2) format('woff2'),
+    url(//yastatic.net/islands/_/bIx8jOfCEfR-mECoDUEZywDBuHA.woff) format('woff');
+}
+@font-face {
+  font-family: YS Text;
+  font-weight: 500;
+  font-style: normal;
+
+  src: url(//yastatic.net/islands/_/7_GKBdKFbUPzKlghJRv55xgz0FQ.woff2) format('woff2'),
+    url(//yastatic.net/islands/_/SmqPmIMEXrW4lOY8QrhTUVDbrro.woff) format('woff');
+}
+@font-face {
+  font-family: YS Text;
+  font-weight: 700;
+  font-style: normal;
+
+  src: url(//yastatic.net/islands/_/6Roy0LCd05cK4nNCipgzheYcNVU.woff2) format('woff2'),
+    url(//yastatic.net/islands/_/KtHQR1erf3spayoIM4M4ngg0e2E.woff) format('woff');
+}
+
+/* resets */
+
+body {
+  margin: 0;
+
+  letter-spacing: 0.06px;
+
+  font-family: YS Text, Helvetica Neue, Arial, sans-serif;
+
+  font-feature-settings: 'liga', 'kern';
+}
+input {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+svg {
+  fill: currentColor;
+}
+
+/* theme */
+
+:root {
+  /* base */
+  --yandex-base: 48;
+  --green-base: 142;
+  --red-base: 0;
+  --orange-base: 36;
+  --gray-base: 210;
+  --blue-gray-base: 200;
+  /* semantic */
+  /* принимаем базовый за 500. Все что меньше -> светлее. Все что больше ->
+  темнее */
+  /* в HSL gray и blue-gray какбудто не отличаются, поэтому везде вощьмем gray
+  */
+  /* Поделим на action / control / ghost / error / success
+  Потому что завтра дизайнер захочет другой цвет control или новый тип кнопки, а
+ у нас будет просто добавить семантический набор цветов + модификатор view_  */
+  --color-action-500: hsl(var(--yandex-base), 100%, 50%);
+  --color-action-600: hsl(var(--yandex-base), 100%, calc(100% - 53%));
+  --color-action-700: hsl(var(--yandex-base), 100%, calc(100% - 65%));
+  --color-success-500: hsl(var(--green-base), 100%, 35%);
+  --color-error-500: hsl(var(--red-base), 100%, 60%);
+  --color-warning-500: hsl(var(--orange-base), 100%, 50%);
+  --color-control-500: hsl(var(--gray-base), 2%, 51%);
+  --color-control-450: hsl(var(--gray-base), 0%, 70%);
+  --color-control-470: hsl(var(--gray-base), 0%, 85%);
+  --color-control-400: hsl(var(--gray-base), 0%, 86%);
+  --color-control-300: hsl(var(--gray-base), 0%, 90%);
+  --color-control-200: hsl(var(--gray-base), 0%, 95%);
+  --color-ghost-500: hsl(var(--gray-base), 0%, 95%);
+  --color-ghost-600: hsl(var(--gray-base), 0%, 85%);
+  --color-ghost-700: hsl(var(--gray-base), 0%, 80%);
+  --color-ghost-730: hsl(var(--gray-base), 0%, 70%);
+  --color-ghost-750: hsl(var(--gray-base), 2%, 51%);
+  --color-ghost-800: hsl(var(--gray-base), 0%, 50%);
+  --color-ghost-850: hsl(var(--gray-base), 0%, 35%);
+  --color-ghost-900: hsl(var(--gray-base), 1%, 27%);
+  --color-blue-ghost-500: hsl(var(--blue-gray-base), 11%, 95%);
+}
+
+.theme * {
+  box-sizing: border-box;
+}
+.theme_color_project-default {
+  --color-bg-action: var(--color-action-500);
+  --color-bg-action-hovered: var(--color-action-600);
+  --color-bg-action-border-focused: var(--color-action-700);
+  --color-bg-control: var(--color-control-300);
+  --color-bg-control-border: var(--color-control-470);
+  --color-bg-control-border-focused: var(--color-control-450);
+  --color-bg-control-hovered: var(--color-control-400);
+  --color-bg-control-disabled: var(--color-control-200);
+  --color-bg-disabled: var(--color-ghost-500);
+  --color-bg-border: var(--color-ghost-600);
+  --color-bg-valid: var(--color-success-500);
+  --color-bg-invalid: var(--color-error-500);
+  --color-bg-main: #fff;
+  --color-bg-ghost: var(--color-ghost-500);
+  --color-bg-blue-ghost: var(--color-blue-ghost-500);
+  --color-typo-semi-ghost: var(--color-ghost-730);
+  --color-typo-ghost: var(--color-ghost-750);
+  --color-typo-dark: var(--color-ghost-900);
+  --color-typo-semi-dark: var(--color-ghost-850);
+  --color-typo-disabled: var(--color-ghost-800);
+  --color-typo-success: var(--color-success-500);
+  --color-typo-error: var(--color-error-500);
+  --color-typo-warning: var(--color-warning-500);
+}
+.theme_size_default {
+  --typo-line-height-16: 16px;
+  --typo-line-height-15: 15px;
+  --typo-line-height-18: 18px;
+  --typo-line-height-20: 20px;
+  --typo-line-height-22: 22px;
+  --typo-line-height-28: 28px;
+  --typo-line-height-36: 36px;
+  --typo-line-height-38: 38px;
+  --typo-size-10: 10px;
+  --typo-size-13: 13px;
+  --typo-size-15: 15px;
+  --typo-size-16: 16px;
+  --typo-size-18: 18px;
+  --typo-size-24: 24px;
+}
+.theme_space_default {
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-7: 7px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-13: 13px;
+  --space-14: 14px;
+  --space-16: 16px;
+  --space-18: 18px;
+  --space-20: 20px;
+  --space-22: 22px;
+  --space-24: 24px;
+  --space-32: 32px;
+}
+
+.theme_icon-size_default {
+  --icon-size-28: 28px;
+  --icon-size-36: 36px;
+}
+
+/* TODO: найти где я это использовал, когда еще не хотел менять размеры через модификаторы. */
+@media screen and (max-width: 1024px) {
+  .theme_space_default {
+    --space-18: 18px;
+  }
+}
+.theme_gap_small {
+  --gap: var(--space-13);
+}
+@media screen and (min-width: 1024px) {
+  .theme_gap_small {
+    --gap: var(--space-18);
+  }
+}
+
+/* decorator */
+.decorator {
+  display: flex;
+}
+@media screen and (max-width: 1024px) {
+  .decorator.hide_mobile {
+    display: none;
+  }
+}
+
+/* layout */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+}
+.layout_v-ratio_1-full-1 .layout__container:nth-child(2) {
+  flex-grow: 1;
+}
+
+.layout__container {
+  width: 100%;
+}
+@media screen and (max-width: 1024px) {
+  .layout__container {
+    padding-right: var(--space-16);
+    padding-left: var(--space-16);
+  }
+}
+
+.layout__container_hero {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: center;
+}
+.layout__container_align_center {
+  margin: 0 auto;
+}
+.layout__container_size_s {
+  max-width: 824px;
+}
+@media screen and (max-width: 1024px) {
+  .layout__container_size_m-full {
+    max-width: none;
+    padding-right: 0;
+    padding-left: 0;
+
+    background-color: var(--blue-grey-50);
+  }
+}
+.layout__container_indent-b_20 {
+  margin-bottom: var(--space-20);
+}
+.layout__container_indent-b_12 {
+  margin-bottom: var(--space-12);
+}
+@media screen and (max-width: 1024px) {
+  .layout__container_m-indent-b_16 {
+    margin-bottom: var(--space-16);
+  }
+}
+
+/* grid */
+.grid {
+  display: grid;
+
+  width: 100%;
+}
+
+@media screen and (min-width: 1024px) {
+  .grid_m-columns_12 {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+@media screen and (max-width: 1024px) {
+  .grid_s-columns_4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.grid_col-gap_full {
+  column-gap: var(--gap);
+}
+
+@media screen and (min-width: 1024px) {
+  .grid__fraction_m-col_4 {
+    -ms-grid-column-span: 4;
+    grid-column: span 4;
+  }
+  .grid__fraction_m-col_4.grid__fraction_m-offset_4 {
+    grid-column: 5 / span 4;
+  }
+  .grid__fraction_m-col_7 {
+    -ms-grid-column-span: 7;
+    grid-column: span 7;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .grid__fraction_s-col_4 {
+    -ms-grid-column-span: 4;
+    grid-column: span 4;
+  }
+}
+
+/* page  */
+.page {
+  height: 100vh;
+}
+
+/* header */
+.header {
+  flex-shrink: 0;
+
+  padding-top: var(--space-10);
+  padding-bottom: var(--space-10);
+}
+
+.header__content {
+  display: flex;
+
+  max-width: 824px;
+  margin: 0 auto;
+}
+.header__content_distribute_betwen {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__title {
+  display: flex;
+  align-items: center;
+}
+
+.header__controls {
+  display: flex;
+  align-self: center;
+}
+@media screen and (max-width: 1024px) {
+  .header__controls {
+    align-self: flex-start;
+  }
+}
+
+/* button */
+.button {
+  position: relative;
+
+  display: flex;
+
+  margin-right: var(--space-8);
+  padding: 0;
+
+  cursor: pointer;
+  white-space: nowrap;
+
+  border: 0;
+  border-radius: 4px;
+}
+.button_distribute_center {
+  display: flex;
+  justify-content: center;
+}
+.button_size_s {
+  min-width: var(--icon-size-28);
+
+  font-size: var(--typo-size-13);
+  line-height: var(--typo-line-height-28);
+}
+.button_size_m {
+  min-width: var(--icon-size-36);
+
+  font-size: var(--typo-size-13);
+  /* line-height: var(--typo-line-height-36); */
+}
+.button_size_m {
+  min-width: var(--icon-size-36);
+
+  font-size: var(--typo-size-13);
+  /* line-height: var(--typo-line-height-36); */
+}
+
+.button:last-child {
+  margin-right: 0;
+}
+.button:focus {
+  /* outline: 0; */
+}
+
+.button_view_action {
+  background-color: var(--color-bg-action);
+}
+.button_view_action:hover {
+  background-color: var(--color-bg-action-hovered);
+}
+.button_view_action:focus:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  content: '';
+
+  border: 2px solid var(--color-bg-action-border-focused);
+  border-radius: 4px;
+}
+.button_view_action:focus:disabled:after {
+  border: 2px solid var(--color-bg-control-border-focused);
+}
+.button_view_action:disabled {
+  color: var(--color-typo-disabled);
+  background-color: var(--color-bg-disabled);
+}
+
+.button_view_control {
+  background-color: var(--color-bg-control);
+}
+.button_view_control:hover {
+  background-color: var(--color-bg-control-hovered);
+}
+.button_view_control:focus:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  content: '';
+
+  border: 2px solid var(--color-bg-control-border-focused);
+  border-radius: 4px;
+}
+.button_view_control:focus:disabled:after {
+  border: 2px solid var(--color-bg-border-focused);
+}
+.button_view_control:disabled {
+  color: var(--color-typo-disabled);
+  background-color: var(--color-bg-disabled);
+}
+
+.button__text {
+  position: relative;
+
+  display: inline-block;
+
+  width: 100%;
+
+  vertical-align: top;
+}
+
+/* TODO: подумать как избавиться от каскада */
+.button_size_s .button__text {
+  margin: 0 var(--space-13);
+}
+.button_size_m .button__text {
+  margin: 0 var(--space-20);
+}
+
+/* icon */
+.icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+}
+@media screen and (max-width: 1024px) {
+  .icon {
+    position: relative;
+  }
+}
+
+.icon_size_s {
+  width: var(--icon-size-28);
+  height: var(--icon-size-28);
+
+  line-height: var(--typo-line-height-28);
+}
+.icon_size_m {
+  width: var(--icon-size-36);
+
+  line-height: var(--typo-line-height-36);
+}
+
+/* TODO:  возможно стоить переделать на блок icon-content */
+
+.icon + .button__text {
+  margin-left: 24px;
+}
+
+/* text */
+.text {
+  color: #000;
+}
+.text_right {
+  text-align: right;
+}
+.text_center {
+  text-align: center;
+}
+
+/* .text_view_default {
+  color: var(--color-typo-default);
+} */
+
+.text_view_ghost {
+  color: var(--color-typo-ghost);
+}
+.text_view_semi-ghost {
+  color: var(--color-typo-semi-ghost);
+}
+.text_view_semi-dark {
+  color: var(--color-typo-semi-dark);
+}
+.text_view_dark {
+  color: var(--color-typo-dark);
+}
+.text_view_success {
+  color: var(--color-typo-success);
+}
+.text_view_error {
+  color: var(--color-typo-error);
+}
+.text_view_warning {
+  color: var(--color-typo-warning);
+}
+
+@media screen and (min-width: 1024px) {
+  .text_view_truncate {
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.text.text_type_link {
+  display: inline-block;
+}
+
+.text_size_s {
+  font-size: var(--typo-size-13);
+  line-height: var(--typo-line-height-18);
+}
+.text_size_s.text_type_link {
+  font-size: var(--typo-size-13);
+  line-height: var(--typo-size-16);
+}
+
+.text_size_m {
+  font-size: var(--typo-size-15);
+  line-height: var(--typo-line-height-20);
+}
+.text_size_m.text_type_h2 {
+  margin-bottom: var(--space-8);
+}
+.text_size_xl {
+  font-size: var(--typo-size-24);
+  line-height: var(--typo-line-height-28);
+}
+@media screen and (max-width: 1024px) {
+  .text_size_24_38.text_type_h1,
+  .text_size_xl.text_type_h1 {
+    font-size: var(--typo-size-18);
+    line-height: var(--typo-line-height-22);
+  }
+}
+.text_size_18_20 {
+  font-size: var(--typo-size-18);
+}
+.text_size_15_20,
+.text_size_18_20 {
+  line-height: var(--typo-line-height-20);
+}
+.text_size_15_20 {
+  font-size: var(--typo-line-height-15);
+}
+.text_size_13_16 {
+  font-size: var(--typo-size-13);
+  line-height: var(--typo-line-height-16);
+}
+.text_size_13_15 {
+  font-size: var(--typo-size-13);
+  line-height: var(--typo-line-height-15);
+}
+.text_size_24_38 {
+  font-size: var(--typo-size-24);
+  line-height: var(--typo-line-height-38);
+}
+.text_size_13_28 {
+  font-size: var(--typo-size-13);
+  line-height: var(--typo-line-height-28);
+}
+@media screen and (max-width: 1024px) {
+  .text_size_13_28 {
+    font-size: var(--typo-size-13);
+    line-height: var(--typo-line-height-36);
+  }
+}
+
+/* form */
+.form {
+  display: flex;
+  flex-direction: column;
+
+  padding-top: var(--space-8);
+}
+@media screen and (max-width: 1024px) {
+  .form {
+    padding-top: var(--space-14);
+  }
+}
+
+.form__title {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: var(--space-22);
+}
+@media screen and (max-width: 1024px) {
+  .form__title {
+    padding-top: var(--space-14);
+  }
+}
+
+.form__header {
+  font-weight: 700;
+}
+
+.form__item {
+  display: flex;
+  flex-direction: column;
+}
+.form__item_indent-b_xl {
+  margin-bottom: var(--space-18);
+}
+.form__item:last-child {
+  margin-bottom: 0;
+}
+
+.form__controls {
+  display: flex;
+
+  margin-top: var(--space-24);
+}
+@media screen and (max-width: 1024px) {
+  .form__controls {
+    flex-direction: column;
+
+    margin-top: var(--space-20);
+  }
+  /* TODO: попробовать избавиться от этого каскада. гулпо ради отступа его использовать */
+  .form__controls .button {
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+}
+
+/* input */
+.input {
+  border: 2px solid var(--color-bg-border);
+  border-radius: 4px;
+}
+
+.input_size_m {
+  height: var(--typo-line-height-36);
+  padding-right: var(--space-13);
+  padding-left: var(--space-13);
+}
+
+.input_width_full {
+  flex: 1 1 auto;
+}
+.input_width_52 {
+  width: 52px;
+  max-width: 100px;
+}
+
+.input_shape_append-right:not(:last-child) {
+  border-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input__group {
+  display: flex;
+  align-items: center;
+}
+
+.input__group_required .input__label:after {
+  content: '*';
+
+  color: red;
+}
+
+/* по дефолту считаем что input__group distribute horizontal. для изменения
+вводим модификатор */
+.input__group_vertical {
+  align-items: stretch;
+  flex-direction: column;
+}
+.input__group_vertical .input__label {
+  margin-right: 0;
+  margin-bottom: var(--space-6);
+}
+
+.input__label {
+  margin-right: var(--space-8);
+}
+
+.input__controls {
+  display: flex;
+}
+
+.input__controls-append {
+  display: flex;
+  align-items: center;
+
+  margin-left: -2px;
+}
+
+/* TODO: изменить такое решение на решение от button_view
+вводим такой сложный селектор для будущей раскраски */
+.input ~ .input__controls-append .icon {
+  color: var(--color-ghost-700);
+}
+
+/* компенсируем отрицательный марджин у control-append */
+.input__controls-append .text {
+  margin-left: calc(var(--space-8) + 2px);
+}
+
+.input__controls-append .button {
+  /* z-index: -1; */
+  height: 100%;
+
+  background-color: #fff;
+}
+
+/* не портим высоту border'ом и вводим его через :after 
+TODO: возможно стоить завести отдельный модификатор для кнопки from_xxx
+*/
+.input__controls-append .button:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  content: '';
+
+  border: 2px solid var(--color-bg-border);
+  border-left: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 0;
+}
+
+.input:focus {
+  border-top: 2px solid var(--color-control-450);
+  border-right: 2px solid var(--color-control-450);
+  border-bottom: 2px solid var(--color-control-450);
+  border-left: 2px solid var(--color-control-450);
+  outline: 0;
+}
+
+.input:focus ~ .input__controls-append .button:after {
+  border-top: 2px solid var(--color-control-450);
+  border-right: 2px solid var(--color-control-450);
+  border-bottom: 2px solid var(--color-control-450);
+  /* background-color: red; */
+}
+
+.input ~ .input__controls-append .button:focus {
+  outline: 0;
+}
+.input ~ .input__controls-append .button:focus .icon {
+  color: var(--color-control-450);
+}
+
+/* card  */
+.card {
+  display: flex;
+
+  padding: var(--space-12) var(--space-24);
+
+  border-radius: 6px;
+  box-shadow: 0 1px 1px rgba(67, 68, 69, 0.3), 0 0 1px rgba(67, 68, 69, 0.3);
+}
+
+.card_summary:hover {
+  cursor: pointer;
+
+  box-shadow: 0px 2px 8px rgba(67, 68, 69, 0.3), 0px 0px 1px rgba(67, 68, 69, 0.3);
+}
+
+@media screen and (max-width: 1024px) {
+  .card {
+    padding: var(--space-16) var(--space-12);
+  }
+}
+
+.card__token {
+  padding-right: var(--space-10);
+}
+
+.card__content {
+  display: flex;
+  flex-grow: 1;
+
+  min-width: 0;
+}
+@media screen and (max-width: 1024px) {
+  .card__content {
+    flex-direction: column;
+  }
+}
+
+.card__history {
+  flex-grow: 1;
+
+  min-width: 0;
+}
+
+.card__status {
+  display: flex;
+}
+@media screen and (max-width: 1024px) {
+  .card__status {
+    flex-direction: column;
+  }
+}
+
+.card__number {
+  margin-right: var(--space-4);
+}
+@media screen and (max-width: 1024px) {
+  .card__number {
+    margin-bottom: var(--space-8);
+  }
+}
+
+.card__meta {
+  flex-shrink: 0;
+}
+@media screen and (max-width: 1024px) {
+  /* TODO: можно ли избавиться в пользу модификатора блока meta ->
+  meta_m-hr_top? */
+  .card__meta_m-hr_top {
+    padding-top: var(--space-8);
+
+    border-top: 1px solid var(--color-bg-border);
+  }
+}
+
+/* meta */
+.meta {
+  display: flex;
+}
+.meta_distribute_vertical {
+  flex-direction: column;
+}
+.meta_hr_top {
+  padding-top: var(--space-8);
+
+  border-top: 1px solid var(--color-bg-border);
+}
+
+.meta__item {
+  margin-right: var(--space-10);
+}
+.meta_distribute_vertical .meta__item {
+  margin-right: 0;
+  margin-bottom: var(--space-8);
+}
+.meta_distribute_vertical .meta__item:last-child {
+  margin-bottom: 0;
+}
+@media screen and (max-width: 1024px) {
+  .meta_m-distribute_vertical {
+    flex-direction: column;
+  }
+  .meta_m-distribute_vertical .meta__item {
+    margin-right: 0;
+    margin-bottom: var(--space-8);
+  }
+
+  .meta_m-distribute_horizontal {
+    flex-direction: row;
+  }
+  .meta_m-distribute_horizontal .meta__item {
+    margin-right: var(--space-10);
+    margin-bottom: 0;
+  }
+}
+/* icon-content */
+/* блок иконка + [текст] */
+.icon-content {
+  display: flex;
+}
+
+.icon-content__icon {
+  justify-content: center;
+}
+.icon-content__icon_size_m {
+  width: 16px;
+  height: 16px;
+}
+.icon-content__icon_indent-r_4 {
+  margin-right: 4px;
+}
+
+/* поскольку решение для кнопок с иконками сделано через absolute на десктопе,
+приходится вот так */
+.icon-content__icon .icon {
+  position: relative;
+}
+
+/* list */
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.list__item:not(:first-child) {
+  margin-top: var(--space-8);
+}
+
+/* .list__item:last-child {
+  margin-top: 0;
+} */
+
+.list__controls {
+  display: flex;
+
+  padding-top: var(--space-8);
+}
+@media screen and (max-width: 1024px) {
+  .list__controls {
+    flex-direction: column;
+  }
+  /* TODO: аналогично .form__controls .button -> попробовать
+  избавиться/переиграть отступ  */
+  .list__controls .button {
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+}
+
+/* log */
+.log {
+  border-radius: 6px;
+  background-color: var(--color-bg-ghost);
+}
+
+@media screen and (max-width: 1024px) {
+  .log {
+    border-radius: 0px;
+  }
+}
+
+.log__pre_scroll {
+  overflow-x: scroll;
+}
+.log__pre_scroll::-webkit-scrollbar {
+  width: 70px;
+  height: 4px;
+
+  -webkit-appearance: none;
+}
+.log__pre_scroll::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, 0.5);
+}
+
+/* pre */
+.pre {
+  margin: 0;
+  padding: var(--space-8) var(--space-12);
+
+  font-size: var(--typo-size-10);
+  line-height: var(--typo-line-height-20);
+}
+
+/* naming-problem */
+/* There are only two hard things in Computer Science: cache invalidation and
+naming things. -- Phil Karlton */
+/* TODO: есть сумашедшая идея попробовать воткнуть тут icon-content, чем не
+вертикальный icon-content ? ) */
+.naming-problem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.naming-problem__logo {
+  margin: 0 auto;
+  margin-bottom: var(--space-32);
+}
+
+.naming-problem__message {
+  margin-bottom: var(--space-24);
+}
+
+.naming-problem__controls {
+  margin: 0 auto;
+}
+
+/* footer */
+.footer {
+  flex-shrink: 0;
+
+  background-color: var(--color-bg-blue-ghost);
+}
+
+.footer__content {
+  display: flex;
+  justify-content: space-between;
+
+  max-width: 824px;
+  margin: 0 auto;
+  padding: var(--space-7) 0;
+}
+@media screen and (max-width: 1024px) {
+  .footer__content {
+    flex-direction: column;
+
+    padding: var(--space-12) var(--space-16);
+  }
+  .footer__content > * {
+    margin-bottom: var(--space-8);
+  }
+}
+
+.footer__links {
+  display: flex;
+  align-items: center;
+}
+
+/* Или переопределить <a> в resets. А по-хорошему вобще завести блок link, там же
+точно будут view_ и type_. А сам <a> использоваться может и не на тексте. Блок
+лучше. (хотя мне ближе Фет) */
+.footer__links a {
+  margin-right: var(--space-12);
+}
+
+.footer__copyright {
+  display: flex;
+  align-items: center;
+}
+
+/* СУПЕР КОСТЫЛИ */
+
+/* Проблема в детальной карточке, из-за организации card__history через list.
+Лишний margin. В целом все равно надо переделать всю логику горизонтально-вертикально на
+grid + grid-auto-flow + grid-gap, поэтому оставим пока так */
+@media screen and (max-width: 1024px) {
+  .card__history .meta_hr_top {
+    margin-top: 0;
+  }
+}
