@@ -2,7 +2,7 @@ const { spawn, exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 // const yndx_db_api = require('../api/yndx_ci');
-const myLogger = require('../logs/logger');
+// const myLogger = require('../logs/logger');
 
 // Собираем данные по коммиту. Вне зависмости от того какая ветка стоить в
 // настрйкищем коммит через reflog и отдаем информацию по первому найденному

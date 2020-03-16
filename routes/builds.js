@@ -5,7 +5,7 @@ const yndx_db_api = require('../api/yndx_ci');
 const { getCommitInfo } = require('../child_process');
 const router = express.Router();
 const createError = require('http-errors');
-const myLogger = require('../logs/logger');
+// const myLogger = require('../logs/logger');
 
 // GET /api/builds
 router.get('/', (req, res, next) => {
