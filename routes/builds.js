@@ -8,36 +8,67 @@ const createError = require('http-errors');
 
 // GET /api/builds
 router.get('/', (req, res, next) => {
+  const { offset, limit } = req.query;
+
+  const params = {
+    offset: !!offset ? offset : undefined,
+    limit: !!limit ? limit : undefined,
+  };
+
   yndx_db_api
-    .get('/build/list')
+    .get('/build/list', { params })
     .then(r => {
       res.send(r.data.data);
     })
-    .catch(err => next(createError(500, 'что-то пошло не так')));
+    .catch(next);
 });
 
 // POST /api/builds/:commitHash
 // добавление сборки в очередь
-router.post('/:commitHash', (req, res) => {
+router.post('/:commitHash', (req, res, next) => {
+  console.log('in builds commithash');
   const commitHash = req.params.commitHash;
   // TODO: вынести в отдельный метод для yndx_api
   yndx_db_api
     .get('/conf')
-    .then(settings => getCommitInfo(commitHash, JSON.parse(settings)))
+    .then(settings => {
+      console.log('fire');
+
+      return getCommitInfo(commitHash, settings.data.data);
+    })
     .then(commitInfo => yndx_db_api.post('/build/request', commitInfo))
     .then(r => res.send(`Сборка для коммита ${commitHash} добавлена в очередь`))
-    .catch(err => res.send(err));
+    .catch(next);
 });
 
 // GET /api/builds/:buildId
-router.get('/:buildId', (req, res) => {
+// 1d06e279-6698-47b1-bcb7-9d4e688c9b20
+// 13e9d499-afae-4a7a-8242-67fa6d41b8ce
+router.get('/:buildId', async (req, res) => {
   const buildId = req.params.buildId;
+  let limit = 25;
+  let offset = 0;
+  let stopCheck = false;
+  while (!stopCheck) {
+    const params = {
+      offset: !!offset ? offset : undefined,
+      limit: !!limit ? limit : undefined,
+    };
 
-  yndx_db_api.get('/build/list').then(r => {
-    const buildInfo = r.data.data.filter(e => e.id === buildId);
+    const buildListChunk = await yndx_db_api.get('/build/list', { params });
 
-    return buildInfo.length > 0 ? res.send(buildInfo) : res.send(`Не нашли build c id:${buildId}`);
-  });
+    const buildInfo = buildListChunk.data.data.filter(e => e.id === buildId);
+
+    if (buildInfo.length > 0) {
+      stopCheck = true;
+      return res.send(buildInfo);
+    }
+    if (buildListChunk.data.data.length < limit) {
+      stopCheck = true;
+      return res.send(`Для build ${buildId} еще нет логов`);
+    }
+    offset += limit;
+  }
 });
 
 // GET /api/builds/:buildId/logs

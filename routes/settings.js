@@ -5,56 +5,52 @@ const { gitClone, getLastCommit, getCommitInfo } = require('../child_process/ind
 
 // GET /api/settings
 router.get('/', (req, res) => {
-  yndx_db_api.get('/conf').then(r => res.send(r.data));
+  yndx_db_api.get('/conf').then(r => res.send(r.data.data));
 });
 
 // POST /api/settings
 router.post('/', (req, res, next) => {
-  // пока что всегда возвращает true
-  if (!isValidConfigarationSettings(req.body)) {
-    return res.send('Не валидные настройки');
-  }
-
-  console.log('приехали настройки:', req.body);
-  const settings = req.body || {
-    repoName: 'voskresla/shri_2020_hw_0001',
-    buildCommand: 'npm run build',
-    mainBranch: 'master',
-    period: 0,
-  };
+  const settings = req.body;
   let tmpCommitHash = null;
+
+  if (!isValidConfigarationSettings(settings)) {
+    next('Не валидные настройки');
+    return;
+  }
 
   // Паралелим клонирование и запись конфига. Будем вести свой лог-файл для
   // статуса клонирования. Сверятся с ним в остальных endpoint и выдавать ошибку
   // юзеру если клонирования не получилось.
+
+  // Запускаем gitClone (он же проверяет есть ли такой репозиторий, если есть,
+  // запустит git pull, если новый репозиторий - склонирует в ./repos)
   gitClone(settings)
-    .then(r => {
-      // ругаемся финальным статусом в консоль
-      console.log('Закончили git clone');
-      // console.log(settings);
-      // запускаем последний коммит на билд
-      // или если сделаем очрередь то ставим последний коммит в очередь
+    // запускаем последний коммит на билд
+    // TODO: как-то проверяем что этот коммит уже был? Или сначала проверим
+    // clone был или pull, а потом по ТЗ решим запускать последний коммит на
+    // билд или нет?
+    // или если сделаем очрередь то ставим последний коммит в очередь
+    .then(() => {
       return getLastCommit(settings);
     })
     .then(commitHash => {
-      console.log('закончили getLastCommit:', commitHash);
+      // запомнили хэш, понадобиться дальше по цепочке. другого способа
+      // протащить данные через несколько then пока не придумал.
       tmpCommitHash = commitHash;
       return getCommitInfo(commitHash, settings);
     })
+    // поставили коммит в очередь
     .then(commitInfo => {
-      console.log('закончили getCommitInfo:', commitInfo);
       return yndx_db_api.post('/build/request', commitInfo);
     })
-    .then(r => console.log(`Сборка для коммита ${tmpCommitHash} добавлена в очередь`))
+    .then(() => console.log(`Сборка для коммита ${tmpCommitHash} добавлена в очередь`))
     .catch(next);
 
+  // Паралельно запустили сохранение настроек в базу.
   yndx_db_api
     .post('/conf', settings)
-
-    .then(r => res.send('конфигурация сохранена'))
+    .then(() => res.send('Конфигурация сохранена'))
     .catch(next);
-
-  // пытаемся найти репозиторий
 });
 
 router.delete('/', (req, res) => {
@@ -63,7 +59,19 @@ router.delete('/', (req, res) => {
 
 module.exports = router;
 
-// TODO: написать проверку, на клиенте конечно проверим, но и тут тоже
 function isValidConfigarationSettings(settings) {
+  const { repoName, buildCommand, mainBranch, period } = settings;
+  if (typeof repoName !== 'string' || repoName.split('/').length !== 2) {
+    return false;
+  }
+  if (typeof repoName !== 'string' || buildCommand.length === 0) {
+    return false;
+  }
+  if (typeof mainBranch !== 'string' || buildCommand.length === 0) {
+    return false;
+  }
+  if (typeof period !== 'number') {
+    return false;
+  }
   return true;
 }
