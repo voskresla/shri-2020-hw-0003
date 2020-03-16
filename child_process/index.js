@@ -9,7 +9,7 @@ const myLogger = require('../logs/logger');
 // - resolve c объектом данных
 // - reject если не нашли коммита
 exports.getCommitInfo = (commitHash, settings) => {
-  console.log('in get commit info', settings);
+  // console.log('in get commit info', settings);
   const [username, repository] = settings.repoName.split('/');
   return new Promise((resolve, reject) => {
     exec(
@@ -43,9 +43,9 @@ exports.getCommitInfo = (commitHash, settings) => {
           resolve(commitInfo);
         }
 
-        console.log('out:', stdout);
-        console.log('error:', error);
-        console.log('err:', stderr);
+        // console.log('out:', stdout);
+        // console.log('error:', error);
+        // console.log('err:', stderr);
       },
     );
     // const git = spawn('git', ['reflog', `--format="%h|%an|%s|%D" | grep ${commitHash} -m 1`], {

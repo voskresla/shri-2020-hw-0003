@@ -5,6 +5,7 @@ const yndx_db_api = require('../api/yndx_ci');
 const { getCommitInfo } = require('../child_process');
 const router = express.Router();
 const createError = require('http-errors');
+const myLogger = require('../logs/logger');
 
 // GET /api/builds
 router.get('/', (req, res, next) => {
@@ -26,18 +27,17 @@ router.get('/', (req, res, next) => {
 // POST /api/builds/:commitHash
 // добавление сборки в очередь
 router.post('/:commitHash', (req, res, next) => {
-  console.log('in builds commithash');
   const commitHash = req.params.commitHash;
+
   // TODO: вынести в отдельный метод для yndx_api
   yndx_db_api
     .get('/conf')
-    .then(settings => {
-      console.log('fire');
-
-      return getCommitInfo(commitHash, settings.data.data);
-    })
+    .then(settings => getCommitInfo(commitHash, settings.data.data))
     .then(commitInfo => yndx_db_api.post('/build/request', commitInfo))
-    .then(r => res.send(`Сборка для коммита ${commitHash} добавлена в очередь`))
+    .then(r => {
+      console.log(`Сборка для коммита ${commitHash} добавлена в очередь`);
+      res.send(`Сборка для коммита ${commitHash} добавлена в очередь`);
+    })
     .catch(next);
 });
 
