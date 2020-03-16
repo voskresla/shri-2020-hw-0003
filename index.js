@@ -31,56 +31,6 @@ app.use('/api/builds', buildsRoutes);
 // NOTE: а где появиться cancel build ?
 // Пока что без настоящей очереди. Забирает последние 25 тупо каждый раз и берет
 // первый Waiting оттуда. Отправляет его на build.
-// TODO: перенести в utils/build-agent
-// const buildAgent = setInterval(() => {
-//   console.log('run build-agent');
-//   let buildId = null;
-//   let dateTime = null;
-
-//   // стучимся в yndx -> build/list
-//   yndx_db_api
-//     .get('/build/list')
-//     .then(buildList => {
-//       // берем пока первый с конца build со статусом waiting
-//       // TODO: переделать так чтобы забирать первый из очереди, а не последний
-//       // TODO: Не забывай что по дефолту там offset=0 и limit 25
-//       // NOTE: для выставления статуса билда что принимаем за fail ? Только
-//       // айди билда? А если какой-то из endpoint недоступен?
-//       const build = buildList.data.data.filter(build => build.status === 'Waiting')[0];
-//       // console.log(build);
-//       if (!build) {
-//         return Promise.reject('Нет больше билдов в очереди');
-//       }
-//       buildId = build.id;
-//       dateTime = new Date();
-//       console.log(`взяли в работу ${buildId}`);
-
-//       return yndx_db_api.post('/build/start', { buildId, dateTime });
-//     })
-//     .then(async r => {
-//       await new Promise(r => setTimeout(r, 2000));
-//       const duration = differenceInMilliseconds(new Date(), dateTime);
-//       const success = Boolean(Math.floor(Math.random() * Math.floor(2)));
-//       const buildLog = 'my build log string';
-//       console.log(
-//         `закончили сборку для: ${buildId}, время сборки: ${duration}, статус: ${success}`,
-//       );
-
-//       return yndx_db_api.post('/build/finish', { buildId, duration, success, buildLog });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       // надо решить что делаем? отменяем весь билд? ставим ему canceled ?
-//     });
-// }, 5000);
-
-// BUILD AGENT ROUTES
-
-// route -> /build/start
-// route -> /build/finish
-// route -> /build/cancel
-
-// Пробуем новую очередь
 
 const queue = require('./util/queue');
 
@@ -107,9 +57,6 @@ const tmpTimer = setInterval(() => {
             duration = differenceInMilliseconds(new Date(), dateTime);
             success = Boolean(Math.floor(Math.random() * Math.floor(2)));
             const buildLog = 'my build log string';
-            // console.log(
-            //   `закончили сборку для: ${buildId}, время сборки: ${duration}, статус: ${success}`,
-            // );
 
             return yndx_db_api.post('/build/finish', { buildId, duration, success, buildLog });
           })
