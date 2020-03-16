@@ -4,24 +4,15 @@
 // TODO: возможно добваить протенький стейт для настроек чтобы отовсюду до него
 // можно было достучаться
 
-// TODO: как кэшировать логи? Создаем карту логов. Будет объект с информацией по
-// билду. Первый раз выкачивая лог - добавим в этот объект его. При каждой
-// запрос лога будем сначала смотреть в этот объект. А при каждом билде/ребилде
-// брать хэш от лога и обновлять объект кэшей.
-
-// TODO: увы, свою очередь придется-таки написать. Должна уметь, внезапно,
-// очередь. (важно понят что процесс запуска идет не по таймеру а в методе
-// очереиди add). Хорошо если будет уметь в таймаут (выбери это таймаут для
-// конкретной задачи или от времени добавления тоже)
+// TODO: добавить проверку на репозиторий при запуске билда из очереди. Вдруг
+// репы то и нет еще или клон упал в процессе.
 
 const express = require('express');
 
 const path = require('path');
-const { spawn } = require('child_process');
 const yndx_db_api = require('./api/yndx_ci');
 const { settingsRoutes, buildsRoutes } = require('./routes');
-const { differenceInSeconds, differenceInMilliseconds } = require('date-fns');
-const errorHandler = require('./middleware/createError');
+const { differenceInMilliseconds } = require('date-fns');
 const PORT = 3000;
 
 const app = express();

@@ -1,3 +1,7 @@
+// TODO: пример очереди взят с
+// https://github.com/HowProgrammingWorks/ConcurrentQueue/blob/master/JavaScript/1-channels.js
+// Сделать свою.
+
 const yndx_db_api = require('../api/yndx_ci');
 const { differenceInSeconds, differenceInMilliseconds } = require('date-fns');
 
@@ -96,46 +100,3 @@ module.exports = queue = Queue.channels(3)
   .success(res => console.log(`\nЗакончили работу id: ${res.name}`))
   .failure(err => console.log(`Ошибка: ${err}`))
   .drain(() => console.log('Очередь пустая'));
-
-// for (let i = 0; i < 10; i++) {
-//   const x = function() {
-//     return yndx_db_api.get('/conf');
-//   };
-//   queue.add({ name: `Task${i}`, fn: x });
-// }
-
-// yndx_db_api.get('/build/list').then(buildList => {
-//   const builds = buildList.data.data.filter(build => build.status === 'Waiting');
-//   console.log(builds);
-//   builds.forEach(build => {
-//     const buildId = build.id;
-//     const dateTime = new Date();
-
-//     const jobFn = function() {
-//       return yndx_db_api
-//         .post('/build/start', { buildId, dateTime })
-//         .then(async r => {
-//           await new Promise(r => setTimeout(r, 2000));
-//           const duration = differenceInMilliseconds(new Date(), dateTime);
-//           const success = Boolean(Math.floor(Math.random() * Math.floor(2)));
-//           const buildLog = 'my build log string';
-//           console.log(
-//             `закончили сборку для: ${buildId}, время сборки: ${duration}, статус: ${success}`,
-//           );
-
-//           return yndx_db_api.post('/build/finish', { buildId, duration, success, buildLog });
-//         })
-//         .then(r => {
-//           return Promise.resolve({ name: buildId });
-//         })
-//         .catch(err => {
-//           console.log(err);
-//         });
-//     };
-
-//     queue.add({
-//       name: buildId,
-//       fn: jobFn,
-//     });
-//   });
-// });

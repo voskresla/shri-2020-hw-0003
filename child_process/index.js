@@ -42,45 +42,8 @@ exports.getCommitInfo = (commitHash, settings) => {
 
           resolve(commitInfo);
         }
-
-        // console.log('out:', stdout);
-        // console.log('error:', error);
-        // console.log('err:', stderr);
       },
     );
-    // const git = spawn('git', ['reflog', `--format="%h|%an|%s|%D" | grep ${commitHash} -m 1`], {
-    //   cwd: path.join(process.cwd(), 'repos', repository),
-    // });
-
-    // git.stdout.on('data', data => {
-    //   const buffer = new Buffer.from(data).toString('utf8').split('|');
-
-    //   // console.log(buffer);
-
-    //   const commitMessage = buffer[2];
-    //   const commitHash = buffer[0];
-    //   const branchName = buffer[3];
-    //   const authorName = buffer[1];
-
-    //   // TODO: откуда берем branch? И какая тут логика: ищем по всем веткам /
-    //   // только в ветке из настроек? тогда что значит "любой коммит можно
-    //   // запустить на билд" ?
-    //   const commitInfo = {
-    //     commitMessage,
-    //     commitHash,
-    //     branchName,
-    //     authorName,
-    //   };
-
-    //   resolve(commitInfo);
-    // });
-
-    // git.stderr.on('data', data => {
-    //   console.log('data stderr:', data.toString());
-    //   reject(`Не смогли найти коммит: ${commitHash}`);
-    // });
-
-    // git.on('close', code => {});
   });
 };
 
@@ -97,6 +60,7 @@ exports.getCommitInfo = (commitHash, settings) => {
 // - удачно склонировали репозиторий
 // - удачно прошел pull
 exports.gitClone = ({ repoName, mainBranch }) => {
+  console.log(`Начинаем клонировать репозиторий ${repoName}`);
   return new Promise((resolve, reject) => {
     const [username, repository] = repoName.split('/');
     // проверяем есть ли уже такой репозиторий
@@ -104,7 +68,7 @@ exports.gitClone = ({ repoName, mainBranch }) => {
       // если такого репозитория нет в папке repos то пытаемся его скачать с
       // гитхаба
       if (error) {
-        myLogger.put(repoName, 'clone-start');
+        // myLogger.put(repoName, 'clone-start');
 
         const clone = spawn('git', [
           'clone',
@@ -114,18 +78,18 @@ exports.gitClone = ({ repoName, mainBranch }) => {
 
         clone.on('close', data => {
           if (data == 0) {
-            myLogger.put(repoName, 'clone-success');
+            // myLogger.put(repoName, 'clone-success');
             resolve('clone-success');
           }
 
-          myLogger.put(repoName, 'clone-fail');
+          // myLogger.put(repoName, 'clone-fail');
           reject('clone-fail');
         });
       }
       // если есть такая папка - делаем гит пул
       // git -C <Path to directory> pull
       else {
-        myLogger.put(repoName, 'pull-start');
+        // myLogger.put(repoName, 'pull-start');
 
         const pull = spawn('git', [
           '-C',
@@ -137,11 +101,11 @@ exports.gitClone = ({ repoName, mainBranch }) => {
         // пока предположим что все что не exit code:0 - ошибка
         pull.on('close', data => {
           if (data !== 0) {
-            myLogger.put(repository, 'pull-failed');
+            // myLogger.put(repository, 'pull-failed');
             reject('pull - fail');
           }
 
-          myLogger.put(repoName, 'pull-success');
+          // myLogger.put(repoName, 'pull-success');
           resolve('pull - success');
         });
       }

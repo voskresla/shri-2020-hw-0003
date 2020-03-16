@@ -31,6 +31,7 @@ router.post('/', (req, res, next) => {
     // билд или нет?
     // или если сделаем очрередь то ставим последний коммит в очередь
     .then(() => {
+      console.log('Клонирование успешно');
       return getLastCommit(settings);
     })
     .then(commitHash => {
