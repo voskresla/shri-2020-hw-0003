@@ -1,0 +1,357 @@
+/* fonts */
+
+@font-face {
+    font-family: YS Text;
+    font-weight: 400;
+    font-style: normal;
+
+    src: url(//yastatic.net/islands/_/PyVcRbwHetz0gOVWLonWH7Od8zM.woff2)
+        format("woff2"),
+      url(//yastatic.net/islands/_/bIx8jOfCEfR-mECoDUEZywDBuHA.woff)
+        format("woff");
+  }
+  @font-face {
+    font-family: YS Text;
+    font-weight: 500;
+    font-style: normal;
+
+    src: url(//yastatic.net/islands/_/7_GKBdKFbUPzKlghJRv55xgz0FQ.woff2)
+        format("woff2"),
+      url(//yastatic.net/islands/_/SmqPmIMEXrW4lOY8QrhTUVDbrro.woff)
+        format("woff");
+  }
+  @font-face {
+    font-family: YS Text;
+    font-weight: 700;
+    font-style: normal;
+
+    src: url(//yastatic.net/islands/_/6Roy0LCd05cK4nNCipgzheYcNVU.woff2)
+        format("woff2"),
+      url(//yastatic.net/islands/_/KtHQR1erf3spayoIM4M4ngg0e2E.woff)
+        format("woff");
+  }
+  
+  /* resets */
+  
+  body {
+    margin: 0;
+
+    letter-spacing: 0.06px;
+
+    font-family: YS Text, Helvetica Neue, Arial, sans-serif;
+
+    font-feature-settings: "liga", "kern";
+  }
+  input {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  
+  svg {
+    fill: currentColor;
+  }
+  
+  /* theme */
+  
+  :root {
+    /* base */
+    --yandex-base: 48;
+    --green-base: 142;
+    --red-base: 0;
+    --orange-base: 36;
+    --gray-base: 210;
+    --blue-gray-base: 200;
+    /* semantic */
+    /* принимаем базовый за 500. Все что меньше -> светлее. Все что больше ->
+    темнее */
+    /* в HSL gray и blue-gray какбудто не отличаются, поэтому везде вощьмем gray
+    */
+    /* Поделим на action / control / ghost / error / success
+    Потому что завтра дизайнер захочет другой цвет control или новый тип кнопки, а
+   у нас будет просто добавить семантический набор цветов + модификатор view_  */
+    --color-action-500: hsl(var(--yandex-base), 100%, 50%);
+    --color-action-600: hsl(var(--yandex-base), 100%, calc(100% - 53%));
+    --color-action-700: hsl(var(--yandex-base), 100%, calc(100% - 65%));
+    --color-success-500: hsl(var(--green-base), 100%, 35%);
+    --color-error-500: hsl(var(--red-base), 100%, 60%);
+    --color-warning-500: hsl(var(--orange-base), 100%, 50%);
+    --color-control-500: hsl(var(--gray-base), 2%, 51%);
+    --color-control-450: hsl(var(--gray-base), 0%, 70%);
+    --color-control-470: hsl(var(--gray-base), 0%, 85%);
+    --color-control-400: hsl(var(--gray-base), 0%, 86%);
+    --color-control-300: hsl(var(--gray-base), 0%, 90%);
+    --color-control-200: hsl(var(--gray-base), 0%, 95%);
+    --color-ghost-500: hsl(var(--gray-base), 0%, 95%);
+    --color-ghost-600: hsl(var(--gray-base), 0%, 85%);
+    --color-ghost-700: hsl(var(--gray-base), 0%, 80%);
+    --color-ghost-730: hsl(var(--gray-base), 0%, 70%);
+    --color-ghost-750: hsl(var(--gray-base), 2%, 51%);
+    --color-ghost-800: hsl(var(--gray-base), 0%, 50%);
+    --color-ghost-850: hsl(var(--gray-base), 0%, 35%);
+    --color-ghost-900: hsl(var(--gray-base), 1%, 27%);
+    --color-blue-ghost-500: hsl(var(--blue-gray-base), 11%, 95%);
+  }
+  
+  .theme * {
+    box-sizing: border-box;
+  }
+  .theme_color_project-default {
+    --color-bg-action: var(--color-action-500);
+    --color-bg-action-hovered: var(--color-action-600);
+    --color-bg-action-border-focused: var(--color-action-700);
+    --color-bg-control: var(--color-control-300);
+    --color-bg-control-border: var(--color-control-470);
+    --color-bg-control-border-focused: var(--color-control-450);
+    --color-bg-control-hovered: var(--color-control-400);
+    --color-bg-control-disabled: var(--color-control-200);
+    --color-bg-disabled: var(--color-ghost-500);
+    --color-bg-border: var(--color-ghost-600);
+    --color-bg-valid: var(--color-success-500);
+    --color-bg-invalid: var(--color-error-500);
+    --color-bg-main: #fff;
+    --color-bg-ghost: var(--color-ghost-500);
+    --color-bg-blue-ghost: var(--color-blue-ghost-500);
+    --color-typo-semi-ghost: var(--color-ghost-730);
+    --color-typo-ghost: var(--color-ghost-750);
+    --color-typo-dark: var(--color-ghost-900);
+    --color-typo-semi-dark: var(--color-ghost-850);
+    --color-typo-disabled: var(--color-ghost-800);
+    --color-typo-success: var(--color-success-500);
+    --color-typo-error: var(--color-error-500);
+    --color-typo-warning: var(--color-warning-500);
+  }
+  .theme_size_default {
+    --typo-line-height-16: 16px;
+    --typo-line-height-15: 15px;
+    --typo-line-height-18: 18px;
+    --typo-line-height-20: 20px;
+    --typo-line-height-22: 22px;
+    --typo-line-height-28: 28px;
+    --typo-line-height-36: 36px;
+    --typo-line-height-38: 38px;
+    --typo-size-10: 10px;
+    --typo-size-13: 13px;
+    --typo-size-15: 15px;
+    --typo-size-16: 16px;
+    --typo-size-18: 18px;
+    --typo-size-24: 24px;
+  }
+  .theme_space_default {
+    --space-4: 4px;
+    --space-6: 6px;
+    --space-7: 7px;
+    --space-8: 8px;
+    --space-10: 10px;
+    --space-12: 12px;
+    --space-13: 13px;
+    --space-14: 14px;
+    --space-16: 16px;
+    --space-18: 18px;
+    --space-20: 20px;
+    --space-22: 22px;
+    --space-24: 24px;
+    --space-32: 32px;
+  }
+  
+  .theme_icon-size_default {
+    --icon-size-28: 28px;
+    --icon-size-36: 36px;
+  }
+  
+  /* TODO: найти где я это использовал, когда еще не хотел менять размеры через модификаторы. */
+  @media screen and (max-width: 1024px) {
+    .theme_space_default {
+      --space-18: 18px;
+    }
+  }
+  .theme_gap_small {
+    --gap: var(--space-13);
+  }
+  @media screen and (min-width: 1024px) {
+    .theme_gap_small {
+      --gap: var(--space-18);
+    }
+  }
+  
+  /* decorator */
+  .decorator {
+    display: flex;
+  }
+  @media screen and (max-width: 1024px) {
+    .decorator.hide_mobile {
+      display: none;
+    }
+  }
+  
+  /* page  */
+  .page {
+    height: 100vh;
+  }
+  
+  /* grid */
+  .grid {
+    display: grid;
+
+    width: 100%;
+  }
+  
+  @media screen and (min-width: 1024px) {
+    .grid_m-columns_12 {
+      grid-template-columns: repeat(12, 1fr);
+    }
+  }
+  @media screen and (max-width: 1024px) {
+    .grid_s-columns_4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .grid_col-gap_full {
+    column-gap: var(--gap);
+  }
+  
+  @media screen and (min-width: 1024px) {
+    .grid__fraction_m-col_4 {
+      -ms-grid-column-span: 4;
+      grid-column: span 4;
+    }
+    .grid__fraction_m-col_4.grid__fraction_m-offset_4 {
+      grid-column: 5 / span 4;
+    }
+    .grid__fraction_m-col_7 {
+      -ms-grid-column-span: 7;
+      grid-column: span 7;
+    }
+  }
+  
+  @media screen and (max-width: 1024px) {
+    .grid__fraction_s-col_4 {
+      -ms-grid-column-span: 4;
+      grid-column: span 4;
+    }
+  }
+  
+  /* naming-problem */
+  /* There are only two hard things in Computer Science: cache invalidation and
+  naming things. -- Phil Karlton */
+  /* TODO: есть сумашедшая идея попробовать воткнуть тут icon-content, чем не
+  вертикальный icon-content ? ) */
+  .naming-problem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .naming-problem__logo {
+    margin: 0 auto;
+    margin-bottom: var(--space-32);
+  }
+  
+  .naming-problem__message {
+    margin-bottom: var(--space-24);
+  }
+  
+  .naming-problem__controls {
+    margin: 0 auto;
+  }
+  
+  /* text */
+  .text {
+    color: #000;
+  }
+  .text_right {
+    text-align: right;
+  }
+  .text_center {
+    text-align: center;
+  }
+  
+  /* .text_view_default {
+    color: var(--color-typo-default);
+  } */
+  
+  .text_view_ghost {
+    color: var(--color-typo-ghost);
+  }
+  .text_view_semi-ghost {
+    color: var(--color-typo-semi-ghost);
+  }
+  .text_view_semi-dark {
+    color: var(--color-typo-semi-dark);
+  }
+  .text_view_dark {
+    color: var(--color-typo-dark);
+  }
+  .text_view_success {
+    color: var(--color-typo-success);
+  }
+  .text_view_error {
+    color: var(--color-typo-error);
+  }
+  .text_view_warning {
+    color: var(--color-typo-warning);
+  }
+  
+  @media screen and (min-width: 1024px) {
+    .text_view_truncate {
+      overflow: hidden;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  
+  .text.text_type_link {
+    display: inline-block;
+  }
+  
+  .text_size_s {
+    font-size: var(--typo-size-13);
+    line-height: var(--typo-line-height-18);
+  }
+  .text_size_s.text_type_link {
+    font-size: var(--typo-size-13);
+    line-height: var(--typo-size-16);
+  }
+  
+  .text_size_m {
+    font-size: var(--typo-size-15);
+    line-height: var(--typo-line-height-20);
+  }
+  .text_size_m.text_type_h2 {
+    margin-bottom: var(--space-8);
+  }
+  .text_size_xl {
+    font-size: var(--typo-size-24);
+    line-height: var(--typo-line-height-28);
+  }
+  @media screen and (max-width: 1024px) {
+    .text_size_24_38.text_type_h1,
+    .text_size_xl.text_type_h1 {
+      font-size: var(--typo-size-18);
+      line-height: var(--typo-line-height-22);
+    }
+  }
+  .text_size_18_20 {
+    font-size: var(--typo-size-18);
+  }
+  .text_size_15_20,
+  .text_size_18_20 {
+    line-height: var(--typo-line-height-20);
+  }
+  .text_size_15_20 {
+    font-size: var(--typo-line-height-15);
+  }
+  .text_size_13_16 {
+    font-size: var(--typo-size-13);
+    line-height: var(--typo-line-height-16);
+  }
+  .text_size_13_15 {
+    font-size: var(--typo-size-13);
+    line-height: var(--typo-line-height-15);
+  }
+  .text_size_24_38 {
+    font-size: var(--typo-size-24);
+    line-height: var(--typo-line-height-38);
+  }
+  
