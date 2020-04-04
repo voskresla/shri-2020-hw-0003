@@ -1,0 +1,86 @@
+/* card  */
+.card {
+  display: flex;
+
+  padding: var(--space-12) var(--space-24);
+
+  border-radius: 6px;
+  box-shadow: 0 1px 1px rgba(67, 68, 69, 0.3), 0 0 1px rgba(67, 68, 69, 0.3);
+}
+
+.card_summary:hover {
+  cursor: pointer;
+
+  box-shadow: 0px 2px 8px rgba(67, 68, 69, 0.3),
+    0px 0px 1px rgba(67, 68, 69, 0.3);
+}
+
+@media screen and (max-width: 1024px) {
+  .card {
+    padding: var(--space-16) var(--space-12);
+  }
+}
+
+.card__token {
+  padding-right: var(--space-10);
+}
+
+.card__content {
+  display: flex;
+  flex-grow: 1;
+
+  min-width: 0;
+}
+@media screen and (max-width: 1024px) {
+  .card__content {
+    flex-direction: column;
+  }
+}
+
+.card__history {
+  flex-grow: 1;
+
+  min-width: 0;
+}
+
+.card__status {
+  display: flex;
+}
+@media screen and (max-width: 1024px) {
+  .card__status {
+    flex-direction: column;
+  }
+}
+
+.card__number {
+  margin-right: var(--space-4);
+}
+@media screen and (max-width: 1024px) {
+  .card__number {
+    margin-bottom: var(--space-8);
+  }
+}
+
+.card__meta {
+  flex-shrink: 0;
+}
+@media screen and (max-width: 1024px) {
+  /* TODO: можно ли избавиться в пользу модификатора блока meta ->
+    meta_m-hr_top? */
+  .card__meta_m-hr_top {
+    padding-top: var(--space-8);
+
+    border-top: 1px solid var(--color-bg-border);
+  }
+}
+
+/* СУПЕР КОСТЫЛИ */
+
+/* Проблема в детальной карточке, из-за организации card__history через list.
+Лишний margin. В целом все равно надо переделать всю логику горизонтально-вертикально на
+grid + grid-auto-flow + grid-gap, поэтому оставим пока так */
+@media screen and (max-width: 1024px) {
+  .card__history .meta_hr_top {
+    margin-top: 0;
+  }
+}

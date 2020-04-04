@@ -1,0 +1,106 @@
+/* input */
+.input {
+  border: 2px solid;
+  border-color: var(--color-bg-border);
+  border-radius: 4px;
+}
+
+.input_view_error {
+  border-color: var(--color-bg-invalid);
+}
+
+.input_size_m {
+  height: var(--typo-line-height-36);
+  padding-right: var(--space-13);
+  padding-left: var(--space-13);
+}
+
+.input_width_full {
+  flex: 1 1 auto;
+}
+.input_width_52 {
+  width: 52px;
+  max-width: 100px;
+}
+
+.input_shape_append-right:not(:last-child) {
+  border-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input__group {
+  display: flex;
+  align-items: center;
+}
+
+.input__group_required .input__label:after {
+  content: "*";
+
+  color: red;
+}
+
+/* по дефолту считаем что input__group distribute horizontal. для изменения
+  вводим модификатор */
+.input__group_vertical {
+  align-items: stretch;
+  flex-direction: column;
+}
+.input__group_vertical .input__label {
+  margin-right: 0;
+  margin-bottom: var(--space-6);
+}
+
+.input__label {
+  margin-right: var(--space-8);
+}
+
+.input__controls {
+  display: flex;
+}
+
+.input__controls-append {
+  display: flex;
+  align-items: center;
+
+  margin-left: -2px;
+}
+
+/* TODO: изменить такое решение на решение от button_view
+  вводим такой сложный селектор для будущей раскраски */
+.input ~ .input__controls-append .icon {
+  color: var(--color-ghost-700);
+}
+
+/* компенсируем отрицательный марджин у control-append */
+.input__controls-append .text {
+  margin-left: calc(var(--space-8) + 2px);
+}
+
+.input__controls-append .button {
+  z-index: 0;
+
+  height: 100%;
+
+  background-color: transparent;
+}
+
+/* не портим высоту border'ом и вводим его через :after 
+  TODO: возможно стоить завести отдельный модификатор для кнопки from_xxx
+  */
+.input__controls-append .button:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  content: "";
+
+  border: 2px solid var(--color-bg-border);
+  border-left: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 0;
+}

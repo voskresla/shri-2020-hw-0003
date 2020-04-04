@@ -1,0 +1,42 @@
+/* footer */
+.footer {
+  flex-shrink: 0;
+
+  background-color: var(--color-bg-blue-ghost);
+}
+
+.footer__content {
+  display: flex;
+  justify-content: space-between;
+
+  max-width: 824px;
+  margin: 0 auto;
+  padding: var(--space-7) 0;
+}
+@media screen and (max-width: 1024px) {
+  .footer__content {
+    flex-direction: column;
+
+    padding: var(--space-12) var(--space-16);
+  }
+  .footer__content > * {
+    margin-bottom: var(--space-8);
+  }
+}
+
+.footer__links {
+  display: flex;
+  align-items: center;
+}
+
+/* Или переопределить <a> в resets. А по-хорошему вобще завести блок link, там же
+  точно будут view_ и type_. А сам <a> использоваться может и не на тексте. Блок
+  лучше. (хотя мне ближе Фет) */
+.footer__links a {
+  margin-right: var(--space-12);
+}
+
+.footer__copyright {
+  display: flex;
+  align-items: center;
+}

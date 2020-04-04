@@ -1,0 +1,120 @@
+/* button */
+.button {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+
+  margin-right: var(--space-8);
+  padding: 0;
+
+  cursor: pointer;
+  white-space: nowrap;
+
+  border: 0;
+  border-radius: 4px;
+}
+.button_distribute_center {
+  display: flex;
+  justify-content: center;
+}
+.button_size_s {
+  min-width: var(--icon-size-28);
+
+  font-size: var(--typo-size-13);
+  line-height: var(--typo-line-height-28);
+}
+.button_size_m {
+  min-width: var(--icon-size-36);
+
+  font-size: var(--typo-size-13);
+  line-height: var(--typo-line-height-36);
+}
+
+.button:last-child {
+  margin-right: 0;
+}
+.button:focus {
+  /* outline: 0; */
+}
+
+.button_view_action {
+  background-color: var(--color-bg-action);
+}
+.button_view_action:hover {
+  background-color: var(--color-bg-action-hovered);
+}
+.button_view_action:focus:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  content: "";
+
+  border: 2px solid var(--color-bg-action-border-focused);
+  border-radius: 4px;
+}
+.button_view_action:focus:disabled:after {
+  border: 2px solid var(--color-bg-control-border-focused);
+}
+.button_view_action:disabled {
+  color: var(--color-typo-disabled);
+  background-color: var(--color-bg-disabled);
+}
+
+.button_view_control {
+  background-color: var(--color-bg-control);
+}
+.button_view_control:hover {
+  background-color: var(--color-bg-control-hovered);
+}
+.button_view_control:focus:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  content: "";
+
+  border: 2px solid var(--color-bg-control-border-focused);
+  border-radius: 4px;
+}
+.button_view_control:focus:disabled:after {
+  border: 2px solid var(--color-bg-border-focused);
+}
+.button_view_control:disabled {
+  color: var(--color-typo-disabled);
+  background-color: var(--color-bg-disabled);
+}
+
+.button__text {
+  position: relative;
+
+  display: inline-block;
+
+  width: 100%;
+
+  vertical-align: top;
+}
+
+/* TODO: подумать как избавиться от каскада */
+.button_size_s .button__text {
+  margin-top: 0;
+  margin-right: var(--space-13);
+  margin-bottom: 0;
+  margin-left: var(--space-13);
+}
+.button_size_m .button__text {
+  margin-top: 0;
+  margin-right: var(--space-20);
+  margin-bottom: 0;
+  margin-left: var(--space-20);
+}
+
+/* TODO:  возможно стоить переделать на блок icon-content */
+.icon + .button__text {
+  margin-left: 24px;
+}

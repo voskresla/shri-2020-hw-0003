@@ -1,0 +1,30 @@
+/* list */
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.list__item:not(:first-child) {
+  margin-top: var(--space-8);
+}
+
+/* .list__item:last-child {
+    margin-top: 0;
+  } */
+
+.list__controls {
+  display: flex;
+
+  padding-top: var(--space-8);
+}
+@media screen and (max-width: 1024px) {
+  .list__controls {
+    flex-direction: column;
+  }
+  /* TODO: аналогично .form__controls .button -> попробовать
+    избавиться/переиграть отступ  */
+  .list__controls .button {
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+}

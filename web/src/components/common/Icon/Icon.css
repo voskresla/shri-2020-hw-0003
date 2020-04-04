@@ -1,0 +1,50 @@
+/* icon */
+.icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+}
+@media screen and (max-width: 1024px) {
+  .icon {
+    position: relative;
+  }
+}
+
+.icon_size_s {
+  width: var(--icon-size-28);
+  height: var(--icon-size-28);
+
+  line-height: var(--typo-line-height-28);
+}
+.icon_size_m {
+  width: var(--icon-size-36);
+
+  line-height: var(--typo-line-height-36);
+}
+.icon_view_ghost {
+  color: var(--color-typo-ghost);
+}
+.icon_view_semi-ghost {
+  color: var(--color-typo-semi-ghost);
+}
+.icon_view_semi-dark {
+  color: var(--color-typo-semi-dark);
+}
+.icon_view_dark {
+  color: var(--color-typo-dark);
+}
+.icon_view_success {
+  color: var(--color-typo-success);
+}
+.icon_view_error {
+  color: var(--color-typo-error);
+}
+.icon_view_warning {
+  color: var(--color-typo-warning);
+}

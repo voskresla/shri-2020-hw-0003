@@ -8,14 +8,8 @@ import {
   POST_SETTINGS_SUCCESS,
   POST_SETTINGS_ERROR,
 } from "../actions/";
-const initialSettingsState = {
-  repoName: "",
-  buildCommand: "",
-  mainBranch: "",
-  period: "",
-};
 
-export default (state = initialSettingsState, action) => {
+export default (state = {}, action) => {
   // console.log("action.payload from settingsReducer:", action.payload);
   switch (action.type) {
     case SAVE_SETTINGS_TO_REDUX:

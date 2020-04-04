@@ -8,9 +8,17 @@ const {
 } = require("../child_process/index");
 
 // GET /api/settings
-router.get("/", (req, res) => {
-  console.log("GET settings");
-  yndx_db_api.get("/conf").then(r => res.send(r.data.data));
+router.get("/", (req, res, next) => {
+  console.log("GET /api/settings");
+
+  yndx_db_api.get("/conf").then(r => {
+    if (r.status === 200) {
+      res.status(200).json(r.data.data)
+    } else {
+      res.status(500).end()
+    }
+
+  }).catch(next);
 });
 
 // POST /api/settings

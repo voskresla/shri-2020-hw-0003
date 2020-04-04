@@ -1,0 +1,22 @@
+/* icon-content */
+/* блок иконка + [текст] */
+.icon-content {
+  display: flex;
+}
+
+.icon-content__icon {
+  justify-content: center;
+}
+.icon-content__icon_size_m {
+  width: 16px;
+  height: 16px;
+}
+.icon-content__icon_indent-r_4 {
+  margin-right: 4px;
+}
+
+/* поскольку решение для кнопок с иконками сделано через absolute на десктопе,
+  приходится вот так */
+.icon-content__icon .icon {
+  position: relative;
+}
