@@ -17,6 +17,14 @@ export const SAVE_CURRENT_BUILD_TO_REDUX = "SAVE_CURRENT_BUILD_TO_REDUX";
 export const FETCH_BUILDS_SUCCESS = "FETCH_BUILDS_SUCCESS"
 export const FETCH_BUILDS_ERROR = "FETCH_BUILDS_ERROR"
 
+export const FETCH_BUILD_BY_NUMBER_ERROR = "FETCH_BUILD_BY_NUMBER_ERROR"
+export const FETCH_BUILD_BY_NUMBER_SUCCESS = "FETCH_BUILD_BY_NUMBER_SUCCESS"
+export const FETCH_LOG_BY_BUILD_ID_SUCCESS = "FETCH_LOG_BY_BUILD_ID_SUCCESS"
+export const FETCH_LOG_BY_BUILD_ID_ERROR = "FETCH_LOG_BY_BUILD_ID_ERROR"
+export const CLEAR_CURRENT_BUILD_FROM_REDUX = "CLEAR_CURRENT_BUILD_FROM_REDUX"
+
+export const RUN_REBUILD_BY_HASH = "RUN_REBUILD_BY_HASH"
+
 export const init = () => async (dispatch) => {
 	try {
 		const response = await api.get("/settings");
@@ -64,18 +72,60 @@ export const getBuildsListFromYNDX = () => async (dispatch) => {
 		const response = await api.get('/builds')
 		dispatch({ type: FETCH_BUILDS_SUCCESS, payload: response.data })
 	} catch (e) {
-		console.log('FETCH_BUILDS_ERROR')
+		console.log('FETCH_BUILDS_ERROR // TODO: дописать обработку ошибки')
 		dispatch({ type: FETCH_BUILDS_ERROR })
 	}
 }
 
 export const getCurrentBuildByNumber = (number) => async (dispatch) => {
 	try {
+		const response = await api.get(`/builds/${number}`)
+		if (response.status === 200 && response.statusText !== 'OK') {
+			dispatch({ type: FETCH_BUILD_BY_NUMBER_ERROR, payload: response.data.message });
+			return
+		}
+		dispatch({ type: FETCH_BUILD_BY_NUMBER_SUCCESS, payload: response.data })
 
+		const buildId = response.data.id
+		const log = await api.get(`/builds/${buildId}/logs`)
+		if (log.status === 200 && log.statusText !== 'OK') {
+			dispatch({ type: FETCH_LOG_BY_BUILD_ID_ERROR, payload: log.data.message });
+			return
+		}
+
+		dispatch({ type: FETCH_LOG_BY_BUILD_ID_SUCCESS, payload: log.data })
 	} catch (e) {
-
+		dispatch({ type: FETCH_BUILD_BY_NUMBER_ERROR, payload: 'Что-то пошло не так на сервере' });
 	}
 }
+
+export const clearCurrentBuildFlags = () => {
+	return {
+		type: CLEAR_CURRENT_BUILD_FROM_REDUX,
+	};
+}
+
+// export const runRebuild = (hash) => async (dispatch) => {
+// 	try {
+// 		const response = await api.post(`/builds/${hash}`)
+// 		if (response.status === 200 && response.statusText !== 'OK') {
+// 			dispatch({ type: RUN_REBUILD_BY_HASH_ERROR, payload: response.data.message });
+// 			return
+// 		}
+// 		dispatch({ type: FETCH_BUILD_BY_NUMBER_SUCCESS, payload: response.data })
+
+// 		const buildId = response.data.id
+// 		const log = await api.get(`/builds/${buildId}/logs`)
+// 		if (log.status === 200 && log.statusText !== 'OK') {
+// 			dispatch({ type: FETCH_LOG_BY_BUILD_ID_ERROR, payload: log.data.message });
+// 			return
+// 		}
+
+// 		dispatch({ type: FETCH_LOG_BY_BUILD_ID_SUCCESS, payload: log.data })
+// 	} catch (e) {
+// 		dispatch({ type: FETCH_BUILD_BY_NUMBER_ERROR, payload: 'Что-то пошло не так на сервере' });
+// 	}
+// }
 
 
 

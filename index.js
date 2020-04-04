@@ -41,55 +41,55 @@ const queue = require("./util/queue");
 // Пока проверяем только первые 100
 // TODO: придумать как красиво решить вопрос бхода всего листа, вдруг где-то
 // затисались Waitnig билды.
-// const tmpTimer = setInterval(() => {
-//   // console.log("Проверяем build/list");
-//   yndx_db_api.get("/build/list", { params: { limit: 100 } }).then(buildList => {
-//     const builds = buildList.data.data.filter(
-//       build => build.status === "Waiting"
-//     );
-//     // console.log(builds);
-//     builds.forEach(build => {
-//       const buildId = build.id;
+const tmpTimer = setInterval(() => {
+    // console.log("Проверяем build/list");
+    yndx_db_api.get("/build/list", { params: { limit: 100 } }).then(buildList => {
+        const builds = buildList.data.data.filter(
+            build => build.status === "Waiting"
+        );
+        // console.log(builds);
+        builds.forEach(build => {
+            const buildId = build.id;
 
-//       const dateTime = new Date();
+            const dateTime = new Date();
 
-//       const jobFn = function () {
-//         let duration = undefined;
-//         let success = undefined;
-//         return yndx_db_api
-//           .post("/build/start", { buildId, dateTime })
-//           .then(async r => {
-//             await new Promise(r =>
-//               setTimeout(
-//                 r,
-//                 Math.floor(Math.random() * (5000 - 2000 + 1) + 2000)
-//               )
-//             );
-//             duration = differenceInMilliseconds(new Date(), dateTime);
-//             success = Boolean(Math.floor(Math.random() * Math.floor(2)));
-//             const buildLog = log;
+            const jobFn = function () {
+                let duration = undefined;
+                let success = undefined;
+                return yndx_db_api
+                    .post("/build/start", { buildId, dateTime })
+                    .then(async r => {
+                        await new Promise(r =>
+                            setTimeout(
+                                r,
+                                Math.floor(Math.random() * (5000 - 2000 + 1) + 2000)
+                            )
+                        );
+                        duration = differenceInMilliseconds(new Date(), dateTime);
+                        success = Boolean(Math.floor(Math.random() * Math.floor(2)));
+                        const buildLog = log;
 
-//             return yndx_db_api.post("/build/finish", {
-//               buildId,
-//               duration,
-//               success,
-//               buildLog
-//             });
-//           })
-//           .then(r => {
-//             return Promise.resolve({ name: buildId, duration, success });
-//           })
-//           .catch(err => {
-//             console.log(err);
-//           });
-//       };
+                        return yndx_db_api.post("/build/finish", {
+                            buildId,
+                            duration,
+                            success,
+                            buildLog
+                        });
+                    })
+                    .then(r => {
+                        return Promise.resolve({ name: buildId, duration, success });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            };
 
-//       queue.add({
-//         name: buildId,
-//         fn: jobFn
-//       });
-//     });
-//   });
-// }, 10000);
+            queue.add({
+                name: buildId,
+                fn: jobFn
+            });
+        });
+    });
+}, 10000);
 
 app.listen(PORT, () => console.log("Server listening at port: ", PORT));

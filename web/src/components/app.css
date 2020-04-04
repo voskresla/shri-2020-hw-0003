@@ -355,7 +355,7 @@
     line-height: var(--typo-line-height-38);
   }
 
-  .initerror {
+  .initerror-full {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -366,4 +366,55 @@
     padding-right: 20px;
     padding-left: 20px;
   }
+  .initerror {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  /* log */
+.log {
+  margin-top: 20px;
+
+  border-radius: 6px;
+  background-color: var(--color-bg-ghost);
+}
+
+@media screen and (max-width: 1024px) {
+  .log {
+    border-radius: 0px;
+  }
+}
+
+.log__pre_scroll {
+  overflow-x: scroll;
+}
+.log__pre_scroll::-webkit-scrollbar {
+  width: 70px;
+  height: 4px;
+
+  -webkit-appearance: none;
+}
+.log__pre_scroll::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, 0.5);
+}
+
+/* pre */
+.pre {
+  margin: 0;
+  padding: var(--space-8) var(--space-12);
+
+  font: monospace;
+  font-size: var(--typo-size-10);
+  line-height: var(--typo-line-height-20);
+}
+
   

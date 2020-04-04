@@ -43,11 +43,12 @@ router.post("/:commitHash", (req, res, next) => {
     .catch(next);
 });
 
-// GET /api/builds/:buildId
+// GET /api/builds/:buildNumber
 // 1d06e279-6698-47b1-bcb7-9d4e688c9b20
 // 13e9d499-afae-4a7a-8242-67fa6d41b8ce
-router.get("/:buildId", async (req, res) => {
-  const buildId = req.params.buildId;
+router.get("/:buildNumber", async (req, res) => {
+  console.log(`GET build #${req.params.buildNumber} details`)
+  const buildNumber = Number(req.params.buildNumber);
   let limit = 25;
   let offset = 0;
   let stopCheck = false;
@@ -59,15 +60,17 @@ router.get("/:buildId", async (req, res) => {
 
     const buildListChunk = await yndx_db_api.get("/build/list", { params });
 
-    const buildInfo = buildListChunk.data.data.filter(e => e.id === buildId);
+    const buildInfo = buildListChunk.data.data.filter(e => e.buildNumber === buildNumber);
 
     if (buildInfo.length > 0) {
       stopCheck = true;
-      return res.send(buildInfo);
+      return res.send(buildInfo[0]);
     }
     if (buildListChunk.data.data.length < limit) {
       stopCheck = true;
-      return res.send(`Для build ${buildId} еще нет логов`);
+      res.statusMessage = 'ERROR'
+      console.log(`Не нашли сборку #${req.params.buildNumber}`)
+      return res.status(200).send({ message: `Кажется Вы что-то делаете не так. Сборки под номером ${buildNumber} еще не существует.` });
     }
     offset += limit;
   }
@@ -76,13 +79,16 @@ router.get("/:buildId", async (req, res) => {
 // GET /api/builds/:buildId/logs
 router.get("/:buildId/logs", (req, res, next) => {
   const buildId = req.params.buildId;
+  console.log(`GET logs for #${buildId}`)
 
   yndx_db_api
     .get("/build/log", { params: { buildId } })
     .then(r => {
-      r.data.length > 0
-        ? res.send(r.data)
-        : res.send(`Для build ${buildId} еще нет логов`);
+      if (r.data.length > 0) {
+        return res.send(r.data)
+      }
+      res.statusMessage = 'ERROR'
+      return res.status(200).send({ message: `Для сборки ${buildId} еще нет логов` });
     })
     .catch(next);
 });

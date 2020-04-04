@@ -24,7 +24,7 @@ class App extends Component {
 							<Footer />
 						</>
 						: !isError &&
-						<div className="initerror">
+						<div className="initerror-full">
 							<span>Инициализируем приложение...</span>
 							(задержка выставленна на стороне сервера)
 					</div>}

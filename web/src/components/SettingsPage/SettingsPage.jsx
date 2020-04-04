@@ -40,6 +40,7 @@ export class SettingsPage extends Component {
 
 	handleSave = (e) => {
 		e.preventDefault()
+		this.props.clearSettingsFlags()
 		if (!this.checkValidity()) return
 
 		this.saveSettings()
