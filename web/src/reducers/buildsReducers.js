@@ -1,22 +1,31 @@
-import { SAVE_BUILDS_TO_REDUX, SAVE_CURRENT_BUILD_TO_REDUX } from "../actions/";
+import { FETCH_BUILDS_SUCCESS, FETCH_BUILDS_ERROR } from "../actions/";
 
-const initialBuildsState = {};
+const initialBuildListState = [];
+const initialCurrentBuild = {}
 
-export const saveBuilds = (state = initialBuildsState, action) => {
-  // console.log("action.payload from buildsReducer:", action.payload);
+export const buildsList = (state = initialBuildListState, action) => {
   switch (action.type) {
-    case SAVE_BUILDS_TO_REDUX:
-      return action.payload;
+    case FETCH_BUILDS_SUCCESS:
+      return action.payload
     default:
       return state;
   }
 };
 
-export const currentBuild = (state = {}, action) => {
+export const currentBuild = (state = initialCurrentBuild, action) => {
   switch (action.type) {
-    case SAVE_CURRENT_BUILD_TO_REDUX:
-      return action.payload;
+    case FETCH_BUILDS_SUCCESS:
+      return action.payload
     default:
       return state;
   }
 };
+
+// export const currentBuild = (state = {}, action) => {
+//   switch (action.type) {
+//     case SAVE_CURRENT_BUILD_TO_REDUX:
+//       return action.payload;
+//     default:
+//       return state;
+//   }
+// };

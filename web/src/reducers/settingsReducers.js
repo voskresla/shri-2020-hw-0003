@@ -1,14 +1,13 @@
 import {
-	SAVE_SETTINGS_TO_REDUX,
-	FETCH_SETTINGS_BEGIN,
-	FETCH_SETTINGS_SUCCESS,
+	CLEAR_SETTINGS_FLAGS,
 	FETCH_SETTINGS_ERROR,
-	SAVE_SETTINGS_TO_YNDX,
+	SAVE_SETTINGS_TO_REDUX,
 	POST_SETTINGS_BEGIN,
 	POST_SETTINGS_SUCCESS,
 	POST_SETTINGS_ERROR,
 } from "../actions/";
 
+// TODO:  refactor initialSettingState
 const initialSettingsState = {
 	conf: {},
 	isLoaded: false,
@@ -18,7 +17,6 @@ const initialSettingsState = {
 	isSavingToError: false,
 	isError: false,
 	errorText: '',
-	successText: ''
 }
 
 export default (state = initialSettingsState, action) => {
@@ -57,6 +55,14 @@ export default (state = initialSettingsState, action) => {
 				isSavingToYNDXError: false,
 				errorText: 'Сохранение прошло успешно.',
 				isSavedToYNDX: true
+			};
+		case CLEAR_SETTINGS_FLAGS:
+			return {
+				...state,
+				isSavingToYNDX: false,
+				isSavingToYNDXError: false,
+				errorText: '',
+				isSavedToYNDX: false
 			};
 		default:
 			return state;
