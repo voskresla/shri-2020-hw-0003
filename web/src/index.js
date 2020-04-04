@@ -7,10 +7,13 @@ import thunk from "redux-thunk";
 
 import { history } from "./utils/";
 import reducers from "./reducers";
+import { getSettingsFromYNDX } from './actions'
 import App from "./components/App";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
+
+store.dispatch(getSettingsFromYNDX())
 
 ReactDOM.render(
 	<React.StrictMode>

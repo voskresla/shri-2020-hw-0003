@@ -5,7 +5,7 @@
   border-radius: 4px;
 }
 
-.input_view_error {
+.input_view_error:required {
   border-color: var(--color-bg-invalid);
 }
 

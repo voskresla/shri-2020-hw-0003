@@ -12,17 +12,17 @@ export const initialSettings = {
 };
 
 export const placeholders = {
-	repoName: "default placeholder",
-	buildCommand: "default build command",
-	mainBranch: "default MainBranch",
+	repoName: "username/repository",
+	buildCommand: "npm run start",
+	mainBranch: "branch",
 	period: "0"
 };
 
 export const mapSettings = (settings) => {
 	if (!Object.keys(settings).length) settings = initialSettings
-	
+
 	return Object.keys(settings)
-		.filter(key => key !== "id")
+		.filter(key => Object.keys(placeholders).includes(key))
 		.map(key => {
 			switch (key) {
 				case "repoName":
@@ -30,14 +30,17 @@ export const mapSettings = (settings) => {
 						id: key,
 						label: "Github repository",
 						placeholder: placeholders[key],
-						value: settings[key]
+						value: settings[key],
+						required: true,
+						pattern: ".+/.+"
 					};
 				case "buildCommand":
 					return {
 						id: key,
 						label: "Build Command",
 						placeholder: placeholders[key],
-						value: settings[key]
+						value: settings[key],
+						required: true,
 					};
 				case "mainBranch":
 					return {
@@ -51,7 +54,8 @@ export const mapSettings = (settings) => {
 						id: key,
 						label: "Synchronize every",
 						placeholder: placeholders[key],
-						value: settings[key]
+						value: settings[key],
+						type: 'number'
 					};
 				default:
 					break;

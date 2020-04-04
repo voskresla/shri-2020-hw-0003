@@ -1,5 +1,6 @@
 // import API
 import api from "../api/schoolcicerver";
+import { history } from '../utils/'
 
 // CONST
 export const SAVE_SETTINGS_TO_REDUX = "SAVE_SETTINGS_TO_REDUX";
@@ -14,61 +15,52 @@ export const POST_SETTINGS_ERROR = "POST_SETTINGS_ERROR";
 export const SAVE_BUILDS_TO_REDUX = "SAVE_BUILDS_TO_REDUX";
 export const SAVE_CURRENT_BUILD_TO_REDUX = "SAVE_CURRENT_BUILD_TO_REDUX";
 
-export const saveSettings = (payload) => {
-  return {
-    type: SAVE_SETTINGS_TO_REDUX,
-    payload: payload,
-  };
-};
-
-export const saveSettingsYndx = (settings) => async (dispatch) => {
-  // console.log("fire get from YNDX");
-  // START POSTING
-  dispatch({ type: POST_SETTINGS_BEGIN });
-
-  try {
-    const response = await api.post("/settings", settings);
-
-    dispatch({ type: POST_SETTINGS_SUCCESS });
-    dispatch({ type: saveSettings, payload: response.data });
-    // это нужно мне для того чтобы в компоненте что-то показывать если хорошо и плохо
-    return Promise.resolve();
-  } catch (e) {
-    dispatch({ type: POST_SETTINGS_ERROR });
-    // это нужно мне для того чтобы в компоненте что-то показывать если хорошо и плохо
-    return Promise.reject(e);
-  }
-};
-
+// забрали настройки с сервера
 export const getSettingsFromYNDX = () => async (dispatch) => {
-  // console.log("fire get from YNDX");
-  // START FETCHING
-  dispatch({ type: FETCH_SETTINGS_BEGIN });
-  // SUCCESS FETCHING
-  try {
-    // NOTE: не напиши сюда dispatch:SAVE_SETTINGS, считаю что плохо размазывать, вызови лучше функцию в логике компонента
-    // хотя в доке Redux Reddit они вызывают dispatch внутри dispatch. Может и можно.
-    const response = await api.get("/settings");
-    dispatch({ type: FETCH_SETTINGS_SUCCESS });
-    // это нужно мне для того чтобы в компоненте что-то показывать если хорошо и плохо
-    return Promise.resolve(response);
-  } catch (e) {
-    // это нужно мне для того чтобы в компоненте что-то показывать если хорошо и плохо
-    dispatch({ type: FETCH_SETTINGS_ERROR });
-    return Promise.reject();
-  }
+	try {
+		const response = await api.get("/settings");
+		dispatch({ type: SAVE_SETTINGS_TO_REDUX, payload: response.data });
+	} catch (e) {
+		dispatch({ type: FETCH_SETTINGS_ERROR })
+	}
 };
+
+export const saveSettingsToYNDX = (settings) => async (dispatch) => {
+	dispatch({ type: POST_SETTINGS_BEGIN });
+	try {
+		const response = await api.post("/settings", settings);
+
+		if (response.status === 200 && response.statusText !== 'OK') {
+			dispatch({ type: POST_SETTINGS_ERROR, payload: response.data.message });
+			return
+		}
+
+		dispatch({ type: POST_SETTINGS_SUCCESS })
+
+		function sleep(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		}
+		await sleep(1000);
+
+		history.push('/')
+	} catch (e) {
+
+		dispatch({ type: POST_SETTINGS_ERROR, payload: 'Сервер недоступен.' });
+	}
+};
+
+
 
 export const saveBuildsToRedux = (payload) => {
-  return {
-    type: SAVE_BUILDS_TO_REDUX,
-    payload: payload,
-  };
+	return {
+		type: SAVE_BUILDS_TO_REDUX,
+		payload: payload,
+	};
 };
 
 export const saveCurrentBuildToRedux = (payload) => {
-  return {
-    type: SAVE_CURRENT_BUILD_TO_REDUX,
-    payload: payload,
-  };
+	return {
+		type: SAVE_CURRENT_BUILD_TO_REDUX,
+		payload: payload,
+	};
 };

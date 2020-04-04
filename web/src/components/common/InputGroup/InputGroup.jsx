@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./InputGroup.css";
+import { parseWithOptions } from "date-fns/fp";
 
 export default class InputGroup extends Component {
 	handleChange = e => {
@@ -22,10 +23,12 @@ export default class InputGroup extends Component {
 					<input
 						value={this.props.inputValue}
 						id={this.props.id}
-						type="text"
+						type={this.props.type || 'text'}
 						onChange={this.handleChange}
 						placeholder={this.props.placeholder}
 						className={inputclass}
+						required={this.props.required}
+						pattern={this.props.pattern}
 					/>
 					{this.props.renderAppend && (
 						<div className="input__controls-append">{this.props.renderAppend}</div>
