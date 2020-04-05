@@ -6,7 +6,8 @@ import {
 	FETCH_LOG_BY_BUILD_ID_ERROR,
 	FETCH_LOG_BY_BUILD_ID_SUCCESS,
 	CLEAR_CURRENT_BUILD_FROM_REDUX,
-	RUN_REBUILD_BY_HASH_ERROR
+	RUN_REBUILD_BY_HASH_ERROR,
+	SHOW_MORE
 } from "../actions/";
 
 const initialBuildListState = [];
@@ -21,10 +22,13 @@ export const buildsList = (state = initialBuildListState, action) => {
 	switch (action.type) {
 		case FETCH_BUILDS_SUCCESS:
 			return [...action.payload]
+		case SHOW_MORE:
+			return [...state, ...action.payload]
 		default:
 			return state;
 	}
 };
+
 
 export const currentBuild = (state = initialCurrentBuild, action) => {
 	switch (action.type) {

@@ -108,6 +108,7 @@ export class SettingsPage extends Component {
 												required={item.required}
 												pattern={item.pattern}
 												type={item.type}
+												vertical={item.vertical}
 												renderAppend={
 													<Button
 														handleClick={(e) => {

@@ -29,7 +29,7 @@ export default class Card extends Component {
 	render() {
 		const card = this.props.item;
 		return (
-			<div className="card card_summary" onClick={this.handleCardClick}>
+			<div className={`card ${this.props.nosummary ? null : 'card_summary'}`} onClick={this.handleCardClick}>
 				<div className={className("token")}>
 					{/* TODO: сделать компонент IconContent */}
 					<div className="icon-content">
@@ -70,7 +70,7 @@ export default class Card extends Component {
 										</div>
 									</div>
 									<div className="icon-content__content text text_size_13_16">
-										{card.branchName.toString().slice(0, 4)}
+										<span>{card.branchName.toString().slice(0, 6)} </span>
 										<a className="text text_view_ghost">
 											{card.commitHash.slice(0, 6)}
 										</a>

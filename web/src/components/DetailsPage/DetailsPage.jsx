@@ -53,7 +53,7 @@ export class DetailsPage extends Component {
         return (
             <>
                 <LayoutContainer className={{ size: "s", align: "center" }}>
-                    <Header>
+                    <Header isDetailsLocation={this.props.settings.conf.repoName}>
                         <Button
                             className={{
                                 size: "s",
@@ -81,7 +81,7 @@ export class DetailsPage extends Component {
                     "m-indent-b": "16"
                 }}>
                     {isLoaded && !isError &&
-                        <Card item={this.props.currentBuild.build} />
+                        <Card item={this.props.currentBuild.build} nosummary={true} />
                     }
                     {isError && <div className='initerror'>{this.props.currentBuild.errorText}</div>}
 

@@ -9,17 +9,20 @@ import LinkButton from '../common/LinkButton/LinkButton.jsx'
 import List from '../common/List/List'
 import Card from '../common/Card/Card'
 import RunBuildPopUp from '../common/RunBuildPopUp/RunBuildPopUp'
+import Button from '../common/Button/Button'
 
 const cards = items => items.map(item => <Card type="summary" item={item} />);
 
 export class HistoryPage extends Component {
 
     state = {
-        showPopup: false
+        showPopup: false,
+        offset: 0,
+        hideShowMore: false
     }
 
     componentDidMount() {
-        this.props.getBuildsFromYNDX()
+        this.props.getBuildsListFromYNDX()
     }
 
     handleRunbuildClick = (e) => {
@@ -29,6 +32,17 @@ export class HistoryPage extends Component {
 
     handleCancelPopupClick = () => {
         this.setState({ showPopup: false })
+    }
+
+    handleShowMoreClick = (e) => {
+        e.preventDefault()
+        const offset = this.state.offset + 25
+        this.props.getBuildsListFromYNDX(null, offset)
+        this.setState({ offset })
+
+        if (this.props.builds.length < offset) {
+            this.setState({ hideShowMore: true })
+        }
     }
 
     render() {
@@ -61,21 +75,39 @@ export class HistoryPage extends Component {
                     className={
                         {
                             size: "s",
-                            align: "center"
+                            align: "center",
+                            'indent-b': 20,
+                            grow: 1
                         }
                     }
+
                 >
                     {!isEmpty ?
                         <div
                             className='initerror'
                         >
-                            Список пуст. Возможно у Вас нет сохраненных настроек. LINK
+                            Список пуст. Возможно у Вас нет сохраненных настроек.
                         </div>
-                        : <List
-                            items={
-                                cards(this.props.builds)
+                        : <>
+                            <List
+                                items={
+                                    cards(this.props.builds)
+                                }
+                            />
+                            {!this.state.hideShowMore &&
+                                <div style={{ marginTop: '10px' }}>
+                                    <Button
+                                        className={{
+                                            size: "m",
+                                            distribute: "center",
+                                            view: "control"
+                                        }}
+                                        text="Show more"
+                                        handleClick={(e) => this.handleShowMoreClick(e)}
+                                    />
+                                </div>
                             }
-                        />
+                        </>
                     }
                 </LayoutContainer>
                 <RunBuildPopUp show={this.state.showPopup} cancelHandle={this.handleCancelPopupClick} />
@@ -91,7 +123,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    getBuildsFromYNDX: getBuildsListFromYNDX
+    getBuildsListFromYNDX
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HistoryPage)

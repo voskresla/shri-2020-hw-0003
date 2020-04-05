@@ -17,6 +17,7 @@ export const SAVE_CURRENT_BUILD_TO_REDUX = "SAVE_CURRENT_BUILD_TO_REDUX";
 
 export const FETCH_BUILDS_SUCCESS = "FETCH_BUILDS_SUCCESS"
 export const FETCH_BUILDS_ERROR = "FETCH_BUILDS_ERROR"
+export const SHOW_MORE = "SHOW_MORE"
 
 export const FETCH_BUILD_BY_NUMBER_ERROR = "FETCH_BUILD_BY_NUMBER_ERROR"
 export const FETCH_BUILD_BY_NUMBER_SUCCESS = "FETCH_BUILD_BY_NUMBER_SUCCESS"
@@ -69,9 +70,12 @@ export const clearSettingsFlags = () => {
 	};
 }
 
-export const getBuildsListFromYNDX = () => async (dispatch) => {
+export const getBuildsListFromYNDX = (limit = undefined, offset = undefined) => async (dispatch) => {
 	try {
-		const response = await api.get('/builds')
+		const response = await api.get(`/builds`, { params: { offset, limit } })
+
+		if (offset) return dispatch({ type: SHOW_MORE, payload: response.data })
+
 		dispatch({ type: FETCH_BUILDS_SUCCESS, payload: response.data })
 	} catch (e) {
 		console.log('FETCH_BUILDS_ERROR // TODO: дописать обработку ошибки')

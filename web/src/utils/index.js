@@ -32,7 +32,8 @@ export const mapSettings = (settings) => {
 						placeholder: placeholders[key],
 						value: settings[key],
 						required: true,
-						pattern: ".+/.+"
+						pattern: ".+/.+",
+						vertical: true
 					};
 				case "buildCommand":
 					return {
@@ -41,13 +42,15 @@ export const mapSettings = (settings) => {
 						placeholder: placeholders[key],
 						value: settings[key],
 						required: true,
+						vertical: true
 					};
 				case "mainBranch":
 					return {
 						id: key,
 						label: "Main Branch",
 						placeholder: placeholders[key],
-						value: settings[key]
+						value: settings[key],
+						vertical: true
 					};
 				case "period":
 					return {
@@ -55,7 +58,8 @@ export const mapSettings = (settings) => {
 						label: "Synchronize every",
 						placeholder: placeholders[key],
 						value: settings[key],
-						type: 'number'
+						type: 'number',
+						pattern: '\\d'
 					};
 				default:
 					break;

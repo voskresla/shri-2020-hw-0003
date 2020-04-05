@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux'
-import { Convert } from 'ansi-to-html'
 
 import { runRebuild, clearCurrentBuildFlags } from '../../../actions/index'
 
@@ -8,12 +7,6 @@ import InputGroup from "../InputGroup/InputGroup";
 import Button from "../Button/Button";
 
 import "./RunBuild.css";
-
-const convert = (log) => new Convert({
-    newline: true,
-    fg: '#000',
-    escapeXML: true
-}).toHtml
 
 export class RunBuild extends Component {
     state = {
@@ -56,13 +49,14 @@ export class RunBuild extends Component {
                             inputValue={this.state.inputValue}
                             handleChange={this.handleInputChange}
                             placeholder={"commit hash"}
-                            renderAppend={
-                                <Button
-                                    // handleClick={this.handleSubmit}
-                                    className={{ size: "m", distribute: "center" }}
-                                    iconName={"inputclose"}
-                                />
-                            }
+                            vertical={true}
+                        // renderAppend={
+                        //     <Button
+                        //         // handleClick={this.handleSubmit}
+                        //         className={{ size: "m", distribute: "center" }}
+                        //         iconName={"inputclose"}
+                        //     />
+                        // }
                         />
                         <span className={'text text_size_s text_view_ghost'}>{this.props.errorText}</span>
                     </div>
