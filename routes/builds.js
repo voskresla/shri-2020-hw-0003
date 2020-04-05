@@ -28,8 +28,8 @@ router.get("/", (req, res, next) => {
 // POST /api/builds/:commitHash
 // добавление сборки в очередь
 router.post("/:commitHash", (req, res, next) => {
-  console.log("POST :commithash");
   const commitHash = req.params.commitHash;
+  console.log(`POST :commithash ${commitHash}`);
 
   // TODO: вынести в отдельный метод для yndx_api
   yndx_db_api
@@ -40,7 +40,12 @@ router.post("/:commitHash", (req, res, next) => {
       console.log(`Сборка для коммита ${commitHash} добавлена в очередь`);
       res.json(r.data);
     })
-    .catch(next);
+    .catch(e => {
+      // console.log(e)
+      console.log(`Не смогли поставить сборку в очередь по коммиту #${commitHash}`)
+      res.statusMessage = 'ERROR'
+      return res.status(200).send({ message: `Ошибка. Возможно такого коммита нет?` });
+    });
 });
 
 // GET /api/builds/:buildNumber

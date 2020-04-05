@@ -8,13 +8,27 @@ import Header from '../common/Header/Header'
 import LinkButton from '../common/LinkButton/LinkButton.jsx'
 import List from '../common/List/List'
 import Card from '../common/Card/Card'
+import RunBuildPopUp from '../common/RunBuildPopUp/RunBuildPopUp'
 
 const cards = items => items.map(item => <Card type="summary" item={item} />);
 
 export class HistoryPage extends Component {
 
+    state = {
+        showPopup: false
+    }
+
     componentDidMount() {
         this.props.getBuildsFromYNDX()
+    }
+
+    handleRunbuildClick = (e) => {
+        e.preventDefault()
+        this.setState({ showPopup: true })
+    }
+
+    handleCancelPopupClick = () => {
+        this.setState({ showPopup: false })
     }
 
     render() {
@@ -31,16 +45,14 @@ export class HistoryPage extends Component {
                             text={"Run build"}
                             iconName={"run"}
                             hideMobile={true}
-                            href={"/runbuild"}
+                            clickHandle={(e) => this.handleRunbuildClick(e)}
                         />
                         <LinkButton
                             className={{
                                 size: "s",
                                 view: "control",
                             }}
-                            // text={"Settings"}
                             iconName={"settings"}
-                            // hideMobile={true}
                             href={"/settings"}
                         />
                     </Header>
@@ -53,9 +65,9 @@ export class HistoryPage extends Component {
                         }
                     }
                 >
-                    {/* {!isEmpty ?
+                    {!isEmpty ?
                         <div
-                            class='initerror'
+                            className='initerror'
                         >
                             Список пуст. Возможно у Вас нет сохраненных настроек. LINK
                         </div>
@@ -64,13 +76,9 @@ export class HistoryPage extends Component {
                                 cards(this.props.builds)
                             }
                         />
-                    } */}
-                    <List
-                        items={
-                            cards(this.props.builds)
-                        }
-                    />
+                    }
                 </LayoutContainer>
+                <RunBuildPopUp show={this.state.showPopup} cancelHandle={this.handleCancelPopupClick} />
             </>
         )
     }

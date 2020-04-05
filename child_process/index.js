@@ -9,25 +9,26 @@ const path = require('path');
 // - resolve c объектом данных
 // - reject если не нашли коммита
 exports.getCommitInfo = (commitHash, settings) => {
-  // console.log('in get commit info', settings);
+  console.log('in get commit info', settings);
   const [username, repository] = settings.repoName.split('/');
   return new Promise((resolve, reject) => {
     exec(
-      `git reflog --format="%H|%an|%s|%D" | grep ${commitHash} -m 1`,
+      `git log --format="%H|%an|%s|%D" | grep ${commitHash} -m 1`,
       {
         cwd: path.join(process.cwd(), 'repos', repository),
       },
       (error, stdout, stderr) => {
         if (error) {
+          console.log(error)
           reject(`Не смогли найти коммит: ${commitHash}`);
         } else {
           const buffer = new Buffer.from(stdout).toString('utf8').split('|');
 
-          // console.log(buffer);
+          console.log(buffer);
 
           const commitMessage = buffer[2];
           const commitHash = buffer[0];
-          const branchName = buffer[3];
+          const branchName = settings.mainBranch;
           const authorName = buffer[1];
 
           // TODO: откуда берем branch? И какая тут логика: ищем по всем веткам /
@@ -39,6 +40,8 @@ exports.getCommitInfo = (commitHash, settings) => {
             branchName,
             authorName,
           };
+
+          console.log(commitInfo)
 
           resolve(commitInfo);
         }

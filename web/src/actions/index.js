@@ -1,5 +1,6 @@
 // import API
 import api from "../api/schoolcicerver";
+import { history } from '../utils'
 
 // CONST
 export const CLEAR_SETTINGS_FLAGS = "CLEAR_SETTINGS_FLAGS";
@@ -24,6 +25,7 @@ export const FETCH_LOG_BY_BUILD_ID_ERROR = "FETCH_LOG_BY_BUILD_ID_ERROR"
 export const CLEAR_CURRENT_BUILD_FROM_REDUX = "CLEAR_CURRENT_BUILD_FROM_REDUX"
 
 export const RUN_REBUILD_BY_HASH = "RUN_REBUILD_BY_HASH"
+export const RUN_REBUILD_BY_HASH_ERROR = "RUN_REBUILD_BY_HASH_ERROR"
 
 export const init = () => async (dispatch) => {
 	try {
@@ -105,27 +107,21 @@ export const clearCurrentBuildFlags = () => {
 	};
 }
 
-// export const runRebuild = (hash) => async (dispatch) => {
-// 	try {
-// 		const response = await api.post(`/builds/${hash}`)
-// 		if (response.status === 200 && response.statusText !== 'OK') {
-// 			dispatch({ type: RUN_REBUILD_BY_HASH_ERROR, payload: response.data.message });
-// 			return
-// 		}
-// 		dispatch({ type: FETCH_BUILD_BY_NUMBER_SUCCESS, payload: response.data })
+export const runRebuild = (hash) => async (dispatch) => {
+	try {
+		const response = await api.post(`/builds/${hash}`).catch(e => { throw new Error() })
+		if (response.status === 200 && response.statusText !== 'OK') {
+			dispatch({ type: RUN_REBUILD_BY_HASH_ERROR, payload: response.data.message });
+			return
+		}
 
-// 		const buildId = response.data.id
-// 		const log = await api.get(`/builds/${buildId}/logs`)
-// 		if (log.status === 200 && log.statusText !== 'OK') {
-// 			dispatch({ type: FETCH_LOG_BY_BUILD_ID_ERROR, payload: log.data.message });
-// 			return
-// 		}
+		history.push(`/build/${response.data.data.buildNumber}`)
 
-// 		dispatch({ type: FETCH_LOG_BY_BUILD_ID_SUCCESS, payload: log.data })
-// 	} catch (e) {
-// 		dispatch({ type: FETCH_BUILD_BY_NUMBER_ERROR, payload: 'Что-то пошло не так на сервере' });
-// 	}
-// }
+	} catch (e) {
+		dispatch({ type: FETCH_BUILD_BY_NUMBER_ERROR, payload: 'Что-то пошло не так на сервере' });
+	}
+}
+
 
 
 

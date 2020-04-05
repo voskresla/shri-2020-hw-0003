@@ -6,12 +6,13 @@
 
   height: 100%;
 }
-.layout_v-ratio_1-full-1 .layout__container:nth-child(2) {
+.layout_v-ratio_1-full-1 .layout__container:nth-last-child(2) {
   flex-grow: 1;
 }
 
 .layout__container {
   width: 100%;
+  padding-bottom: 20px;
 }
 @media screen and (max-width: 1024px) {
   .layout__container {
@@ -30,6 +31,9 @@
   margin: 0 auto;
 }
 .layout__container_size_s {
+  max-width: 824px;
+}
+.layout__container_size_m-full {
   max-width: 824px;
 }
 @media screen and (max-width: 1024px) {

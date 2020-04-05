@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Convert from 'ansi-to-html'
 
-import { getCurrentBuildByNumber, clearCurrentBuildFlags } from '../../actions/index'
+import { getCurrentBuildByNumber, clearCurrentBuildFlags, runRebuild } from '../../actions/index'
 
 import LayoutContainer from '../common/Layout/LayoutContainer.jsx'
 import Header from '../common/Header/Header'
@@ -9,6 +10,11 @@ import LinkButton from '../common/LinkButton/LinkButton.jsx'
 import Button from '../common/Button/Button'
 import Card from '../common/Card/Card'
 
+const convert = (log) => new Convert({
+    newline: true,
+    fg: '#000',
+    escapeXML: true
+}).toHtml(log)
 export class DetailsPage extends Component {
 
     componentDidMount() {
@@ -17,10 +23,23 @@ export class DetailsPage extends Component {
 
     handleRebuildClick = () => {
         console.log('fire handleRevuildClick')
+        this.props.runRebuild(this.props.currentBuild.build.commitHash)
+
+    }
+
+    componentDidUpdate(prev) {
+        if (prev.location.pathname !== this.props.location.pathname) {
+            this.props.clearCurrentBuildFlags()
+            this.props.getCurrentBuildByNumber(this.props.match.params.number)
+        }
     }
 
     componentWillUnmount() {
         this.props.clearCurrentBuildFlags()
+    }
+
+    getLogHtml(log) {
+        return { __html: convert(log) };
     }
 
     render() {
@@ -64,16 +83,27 @@ export class DetailsPage extends Component {
                     {isLoaded && !isError &&
                         <Card item={this.props.currentBuild.build} />
                     }
-                    {isError && <div class='initerror'>{this.props.currentBuild.errorText}</div>}
+                    {isError && <div className='initerror'>{this.props.currentBuild.errorText}</div>}
 
-                    {isLoaded && <div class="log">
-                        <div class="log__pre log__pre_scroll">
-                            <div class="pre">
+
+                </LayoutContainer>
+                <LayoutContainer
+                    className={{
+                        align: "center",
+                        size: "m-full",
+
+                        "indent-b": "20",
+                        "m-indent-b": "16"
+                    }}
+                >
+                    {isLoaded && <div className="log">
+                        <div className="log__pre log__pre_scroll">
+                            <div className="pre">
                                 {isLoaded && isLogsLoaded && !isLogError &&
-                                    <div class='inner'>{this.props.currentBuild.buildLog}</div>
+                                    <div className='inner' dangerouslySetInnerHTML={this.getLogHtml(this.props.currentBuild.buildLog)}></div>
                                 }
-                                {!isLogsLoaded && !isLogError && <div class='initerror'>...загрузка логов</div>}
-                                {isLogError && <div class='initerror'>Для этой сборки еще нет логов</div>}
+                                {!isLogsLoaded && !isLogError && <div className='initerror'>...загрузка логов</div>}
+                                {isLogError && <div className='initerror'>Для этой сборки еще нет логов</div>}
                             </div>
                         </div>
                     </div>}
@@ -95,7 +125,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     getCurrentBuildByNumber,
-    clearCurrentBuildFlags
+    clearCurrentBuildFlags,
+    runRebuild
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailsPage)

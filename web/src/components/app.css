@@ -380,8 +380,7 @@
 
   /* log */
 .log {
-  margin-top: 20px;
-
+  /* margin-top: 20px; */
   border-radius: 6px;
   background-color: var(--color-bg-ghost);
 }
