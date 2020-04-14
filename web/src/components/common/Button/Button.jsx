@@ -17,7 +17,7 @@ export default class Button extends Component {
 		return (
 			<button
 				type='button'
-				id={this.props.id}
+				id={this.props.id || iconName}
 				disabled={this.props.mydisabled}
 				className={className(this.props.className)}
 				onClick={this.props.handleClick}

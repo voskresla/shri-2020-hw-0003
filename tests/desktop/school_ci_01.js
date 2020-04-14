@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
 
 describe('simple scenarios', function () {
-	it('init. должен показать сроку инициализации приложения', function () {
+	it('init. должен показать строку инициализации приложения', function () {
 		return this.browser
 			.url('/')
 			.getText('.initerror-full span')
@@ -16,7 +16,7 @@ describe('simple scenarios', function () {
 
 		return this.browser
 			.url('/')
-			.waitForExist(xStr, 2000)
+			.waitForExist(xStr, 3000)
 			.then(function (v) {
 				assert.isTrue(v)
 			});

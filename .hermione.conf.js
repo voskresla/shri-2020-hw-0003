@@ -6,11 +6,12 @@ module.exports = {
     },
 
     browsers: {
-        chrome: {
+        firefox: {
             desiredCapabilities: {
                 browserName: 'firefox',
             }
         }
     },
-    baseUrl: 'http://localhost:3000/'
+    baseUrl: 'http://localhost:3000/',
+    retry: 3
 };
