@@ -81,7 +81,7 @@ export class SettingsPage extends Component {
 				<LayoutContainer className={{ size: "s", align: "center" }}>
 					<Header />
 				</LayoutContainer>
-				<LayoutContainer className={{ size: "s", align: "center" }}>
+				<LayoutContainer id="SettingsPage" className={{ size: "s", align: "center" }}>
 					<div className="grid grid_m-columns_12 grid_col-gap_full grid grid_s-columns_12">
 						<div className="grid__fraction grid__fraction_m-col_7">
 							<form className="form" ref={this.settingsForm}>

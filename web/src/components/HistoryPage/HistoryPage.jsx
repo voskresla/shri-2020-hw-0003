@@ -72,6 +72,7 @@ export class HistoryPage extends Component {
                     </Header>
                 </LayoutContainer>
                 <LayoutContainer
+                    id='HistoryPage'
                     className={
                         {
                             size: "s",

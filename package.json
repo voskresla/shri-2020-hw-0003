@@ -4,16 +4,52 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start-cra": "cd web && npm run start"
+    "test:unit": "NODE_ENV=test jest",
+    "test:integration": "./node_modules/.bin/hermione",
+    "start-cra": "cd web && npm run start",
+    "start-selenium": "./node_modules/.bin/selenium-standalone start"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/preset-env": "^7.9.5",
     "axios": "^0.19.2",
+    "chai": "^4.2.0",
     "cors": "^2.8.5",
     "date-fns": "^2.10.0",
     "express": "^4.17.1",
-    "https": "^1.0.0"
+    "hermione": "^3.1.0",
+    "https": "^1.0.0",
+    "jest": "^25.3.0",
+    "supertest": "^4.0.2",
+    "xhr-mock": "^2.5.1"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "chrome": 52
+          }
+        }
+      ]
+    ]
+  },
+  "jest": {
+    "verbose": true,
+    "modulePathIgnorePatterns": [
+      "<rootDir>/repos/"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx)?$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ]
+  },
+  "devDependencies": {
+    "selenium-standalone": "^6.17.0"
   }
 }

@@ -12,15 +12,17 @@ export default class Button extends Component {
 		const iconName = false || this.props.iconName;
 		const text = false || this.props.text;
 		const hideMobile = this.props.hideMobile ? "decorator hide_mobile" : "";
-		const iconSize =  this.props.iconSize || 's' 
+		const iconSize = this.props.iconSize || 's'
 
 		return (
 			<button
+				type='button'
+				id={this.props.id}
 				disabled={this.props.mydisabled}
 				className={className(this.props.className)}
 				onClick={this.props.handleClick}
 			>
-				{iconName && <Icon className={{ size: iconSize  }} name={iconName}></Icon>}
+				{iconName && <Icon className={{ size: iconSize }} name={iconName}></Icon>}
 				{text && <div className={`button__text ${hideMobile}`}>{text}</div>}
 			</button>
 		);

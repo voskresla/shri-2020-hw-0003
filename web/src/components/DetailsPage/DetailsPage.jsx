@@ -55,6 +55,7 @@ export class DetailsPage extends Component {
                 <LayoutContainer className={{ size: "s", align: "center" }}>
                     <Header isDetailsLocation={this.props.settings.conf.repoName}>
                         <Button
+                            id='rebuild_button'
                             className={{
                                 size: "s",
                                 view: "control",

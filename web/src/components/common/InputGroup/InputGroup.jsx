@@ -39,7 +39,7 @@ export default class InputGroup extends Component {
 
 				</div>
 				{!this.props.vertical &&
-					<div class='tex text_size_s text_view_dark' style={{ 'margin-left': '8px' }}>
+					<div className='tex text_size_s text_view_dark' style={{ 'marginLeft': '8px' }}>
 						minutes
 			</div>
 				}
