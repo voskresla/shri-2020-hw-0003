@@ -99,7 +99,6 @@ export const getBuildsListFromYNDX = (limit = undefined, offset = undefined) => 
 }
 
 export const getCurrentBuildByNumber = (number) => async (dispatch) => {
-
 	if (number === undefined) return
 
 	try {
