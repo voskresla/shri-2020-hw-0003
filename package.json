@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:unit": "NODE_ENV=test jest",
+    "test:unit": "jest --no-cache ",
     "test:integration": "./node_modules/.bin/hermione",
     "start-cra": "cd web && npm run start",
     "start-selenium": "./node_modules/.bin/selenium-standalone start"
@@ -14,6 +14,7 @@
   "dependencies": {
     "@babel/preset-env": "^7.9.5",
     "axios": "^0.19.2",
+    "babel-jest": "^25.3.0",
     "chai": "^4.2.0",
     "cors": "^2.8.5",
     "date-fns": "^2.10.0",
