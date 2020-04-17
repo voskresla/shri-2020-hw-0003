@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import { history } from "./utils/";
 import { store } from './store'
 import { getSettingsFromYNDX, init } from './actions'
-import App from "./components/App";
+import App from "./components/Appp";
 
 
 

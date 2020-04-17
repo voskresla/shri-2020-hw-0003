@@ -11,7 +11,15 @@
 ## Для запуска
 
 ```bash
-npm i && cd web && npm i && cd ..
+nvm use 11.15.0
+npm i 
+cd web 
+npm i 
+cd ..
+```
+В ./web надо положить .env c содержимым:
+```
+SKIP_PREFLIGHT_CHECK=true
 ```
 
 Перед тестами, для подготовки хранилища:
@@ -42,6 +50,8 @@ npm run start-selemium
 ```
 
 - в отдельном терминале запустить hermione
+
+ВАЖНО: два дня я пытался ее запустить. В итоге работает только на node 11.15.0 и только в firefox. Chrome отказывается запускать с `java..error`. В Sfari не может нажать на кнопку (есть issue от selenium по этому поводу).
 ```bash
 npm run test:integration
 ```

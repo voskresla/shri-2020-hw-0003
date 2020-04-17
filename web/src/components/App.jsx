@@ -7,6 +7,8 @@ import Footer from './common/Footer/Footer'
 
 import './app.css'
 
+const tpm = '';
+
 class App extends Component {
 	render() {
 		const isLoaded = this.props.settings.isLoaded

@@ -9,7 +9,7 @@
     "test:integration": "./node_modules/.bin/hermione",
     "start-cra": "cd web && npm run start",
     "start-ci-server": "node index.js",
-    "start-selenium": "./node_modules/.bin/selenium-standalone start"
+    "start-selenium": "./node_modules/.bin/selenium-standalone install && ./node_modules/.bin/selenium-standalone start"
   },
   "author": "",
   "license": "ISC",
