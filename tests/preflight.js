@@ -91,7 +91,7 @@ const prepareForTest = () => {
 			const promisesArray = builds.map((e, i) =>
 				new Promise(resolve => setTimeout(() => {
 					console.log(`№:`, i);
-					resolve(api.post("/build/request", e))
+					resolve(api.post("/build/request", e).catch(e => console.log('Ошибка сервера - это нормально.')))
 				},
 					Math.floor(Math.random() * (1000 - 2000 + 1) + 2000))
 				)
