@@ -1,17 +1,17 @@
 module.exports = {
-    sets: {
-        desktop: {
-            files: 'tests/desktop'
-        }
-    },
+	sets: {
+		desktop: {
+			files: 'tests/desktop'
+		}
+	},
 
-    browsers: {
-        firefox: {
-            desiredCapabilities: {
-                browserName: 'firefox',
-            }
-        }
-    },
-    baseUrl: 'http://localhost:3000/',
-    retry: 3
+	browsers: {
+		firefox: {
+			desiredCapabilities: {
+				browserName: 'firefox',
+			}
+		}
+	},
+	baseUrl: 'http://localhost:3000/',
+	retry: 7
 };
