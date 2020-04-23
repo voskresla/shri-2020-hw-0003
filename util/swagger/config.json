@@ -1,0 +1,9 @@
+{
+  "schemas": [
+    {
+      "url": "https://hw.shri.yandex/api/swagger/v1/swagger.json",
+      "format": "json"
+    }
+  ],
+  "projectDir": "./"
+}

@@ -1,0 +1,634 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "School CI API",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ],
+  "paths": {
+    "/build/list": {
+      "get": {
+        "tags": [
+          "Build"
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildModelArrayHomeworkApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildModelArrayHomeworkApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildModelArrayHomeworkApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/build/log": {
+      "get": {
+        "tags": [
+          "Build"
+        ],
+        "parameters": [
+          {
+            "name": "buildId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/build/details": {
+      "get": {
+        "tags": [
+          "Build"
+        ],
+        "parameters": [
+          {
+            "name": "buildId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildModelHomeworkApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildModelHomeworkApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildModelHomeworkApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/build/request": {
+      "post": {
+        "tags": [
+          "Build"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueueBuildInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueueBuildInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueueBuildInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildRequestResultModelHomeworkApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildRequestResultModelHomeworkApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildRequestResultModelHomeworkApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/build/start": {
+      "post": {
+        "tags": [
+          "Build"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartBuildInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartBuildInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartBuildInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/build/finish": {
+      "post": {
+        "tags": [
+          "Build"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FinishBuildInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FinishBuildInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FinishBuildInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/build/cancel": {
+      "post": {
+        "tags": [
+          "Build"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelBuildInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelBuildInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelBuildInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/conf": {
+      "get": {
+        "tags": [
+          "BuildConfiguration"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigurationModelHomeworkApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigurationModelHomeworkApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigurationModelHomeworkApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "BuildConfiguration"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigurationInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigurationInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigurationInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "BuildConfiguration"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BuildStatus": {
+        "enum": [
+          "Waiting",
+          "InProgress",
+          "Success",
+          "Fail",
+          "Canceled"
+        ],
+        "type": "string"
+      },
+      "BuildModel": {
+        "required": [
+          "authorName",
+          "branchName",
+          "buildNumber",
+          "commitHash",
+          "commitMessage",
+          "configurationId",
+          "id",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "configurationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "buildNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "commitMessage": {
+            "type": "string"
+          },
+          "commitHash": {
+            "type": "string"
+          },
+          "branchName": {
+            "type": "string"
+          },
+          "authorName": {
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BuildStatus"
+              }
+            ]
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuildModelArrayHomeworkApiResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BuildModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuildModelHomeworkApiResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BuildModel"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "QueueBuildInput": {
+        "required": [
+          "authorName",
+          "branchName",
+          "commitHash",
+          "commitMessage"
+        ],
+        "type": "object",
+        "properties": {
+          "commitMessage": {
+            "type": "string"
+          },
+          "commitHash": {
+            "type": "string"
+          },
+          "branchName": {
+            "type": "string"
+          },
+          "authorName": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuildRequestResultModel": {
+        "required": [
+          "buildNumber",
+          "id",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "buildNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BuildStatus"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuildRequestResultModelHomeworkApiResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BuildRequestResultModel"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StartBuildInput": {
+        "required": [
+          "buildId",
+          "dateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "buildId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dateTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FinishBuildInput": {
+        "required": [
+          "buildId",
+          "buildLog",
+          "duration",
+          "success"
+        ],
+        "type": "object",
+        "properties": {
+          "buildId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "buildLog": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CancelBuildInput": {
+        "required": [
+          "buildId"
+        ],
+        "type": "object",
+        "properties": {
+          "buildId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigurationModel": {
+        "required": [
+          "buildCommand",
+          "id",
+          "mainBranch",
+          "period",
+          "repoName"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "repoName": {
+            "type": "string"
+          },
+          "buildCommand": {
+            "type": "string"
+          },
+          "mainBranch": {
+            "type": "string"
+          },
+          "period": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigurationModelHomeworkApiResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConfigurationModel"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigurationInput": {
+        "required": [
+          "buildCommand",
+          "mainBranch",
+          "period",
+          "repoName"
+        ],
+        "type": "object",
+        "properties": {
+          "repoName": {
+            "type": "string"
+          },
+          "buildCommand": {
+            "type": "string"
+          },
+          "mainBranch": {
+            "type": "string"
+          },
+          "period": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme.<br/>\n                      Enter 'Bearer' [space] and then your token in the text input below.<br/>\n                      Example: 'Bearer 12345abcdef'",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
+}

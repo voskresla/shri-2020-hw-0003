@@ -11,7 +11,7 @@ module.exports = {
 	},
 	plugins: [
 		'@typescript-eslint',
-		'compat',
+		// 'compat',
 		'import',
 		'react',
 	],
@@ -19,7 +19,7 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
-		'plugin:compat/recommended',
+		// 'plugin:compat/recommended',
 		'plugin:import/errors',
 		'plugin:import/warnings',
 		'plugin:import/typescript',
@@ -35,26 +35,26 @@ module.exports = {
 			SwitchCase: 1,
 		}],
 
-		'quotes': ['error', 'single'
+		'quotes': ['error', 'single',
 		],
-		'object-curly-spacing': ['error', 'always'
+		'object-curly-spacing': ['error', 'always',
 		],
-		'semi': ['error', 'never'
+		'semi': ['error', 'never',
 		],
-		'comma-dangle': ['error', 'always-multiline'
+		'comma-dangle': ['error', 'always-multiline',
 		],
 		// typescript
 		'@typescript-eslint/explicit-member-accessibility': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/ban-ts-ignore': 'off',
-		'@typescript-eslint/semi': ['error', 'never'
+		'@typescript-eslint/semi': ['error', 'never',
 		],
 		'@typescript-eslint/member-delimiter-style': ['error',
 			{
 				multiline: {
 					delimiter: 'none',
 				},
-			}
+			},
 		],
 		'@typescript-eslint/no-empty-function': 'off',
 		// import
@@ -63,12 +63,12 @@ module.exports = {
 				ignore: [
 					'\\?module$',
 				],
-			}
+			},
 		],
 		'import/order': ['error',
 			{
 				'newlines-between': 'always',
-			}
+			},
 		],
 		// jsx
 		'react/prop-types': 'off',
@@ -77,9 +77,9 @@ module.exports = {
 		'react/no-string-refs': 'off',
 		'react/no-unknown-property': ['error',
 			{
-				ignore: ['class'
+				ignore: ['class',
 				],
-			}
+			},
 		],
 		'react/jsx-wrap-multilines': ['error',
 			{
@@ -90,26 +90,26 @@ module.exports = {
 				condition: 'parens-new-line',
 				logical: 'parens-new-line',
 				prop: 'parens-new-line',
-			}
+			},
 		],
 		'react/jsx-max-props-per-line': ['error',
 			{
 				maximum: 2,
-			}
+			},
 		],
-		'react/jsx-first-prop-new-line': ['error', 'multiline'
+		'react/jsx-first-prop-new-line': ['error', 'multiline',
 		],
 		'react/jsx-closing-tag-location': 'error',
 		'react/jsx-closing-bracket-location': 'error',
 		'react/jsx-one-expression-per-line': ['error',
 			{
 				allow: 'literal',
-			}
+			},
 		],
 		'react/jsx-max-depth': ['error',
 			{
 				max: 5,
-			}
+			},
 		],
 	},
 	overrides: [
