@@ -4,11 +4,11 @@ import "./List.css";
 
 const className = cn("list");
 
-// export interface ListProps {
-// 	items: 
-// }
+export interface ListProps {
+	items: React.ReactNode[] // TODO: а вот как бы сюда засунуть еще и пропсы ноды
+}
 
-export default class List extends Component {
+export default class List extends Component<ListProps> {
 	render() {
 		return (
 			<div className="list">

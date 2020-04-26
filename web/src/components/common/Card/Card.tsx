@@ -11,6 +11,7 @@ import "./IconContent.css";
 
 const className = cn("card");
 
+
 export enum BuildStatusEnum {
 	Waiting = 'Waiting',
 	InProgress = 'InProgress',
@@ -31,10 +32,10 @@ export interface BuildModel {
 	start?: string
 	duration?: number
 }
-
 export interface CardProps {
 	item: BuildModel
-	nosummary: boolean
+	nosummary?: boolean,
+	type?: 'summary'
 }
 
 // TODO: дописать пропс title + card_summary

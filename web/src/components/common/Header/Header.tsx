@@ -14,7 +14,8 @@ export interface SettingsModel {
 }
 
 export interface HeaderProps {
-	isDetailsLocation: string // но вобще то можно и из SettingModel забирать, вопрос надо ли. 
+	isDetailsLocation?: string,
+	children?: React.ReactNode[]
 }
 
 class Header extends Component<HeaderProps> {

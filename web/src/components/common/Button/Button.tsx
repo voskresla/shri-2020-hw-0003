@@ -16,9 +16,9 @@ export interface ButtonProps {
 	hideMobile?: boolean
 	iconSize?: keyof typeof IconSize
 	mydisabled?: boolean
-	className?: ReturnType<ClassNameFormatter>
+	className?: {[key:string]: string | number}
 	href?: HTMLHyperlinkElementUtils['href']
-	handleClick: () => void
+	handleClick: (e: React.MouseEvent) => void
 }
 
 export default class Button extends Component<ButtonProps> {

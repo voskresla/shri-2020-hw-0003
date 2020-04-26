@@ -7,15 +7,26 @@ import LayoutContainer from '../common/Layout/LayoutContainer'
 import Header from '../common/Header/Header'
 import LinkButton from '../common/LinkButton/LinkButton'
 import List from '../common/List/List'
-import Card from '../common/Card/Card'
+import Card, { BuildModel } from '../common/Card/Card'
 import RunBuildPopUp from '../common/RunBuildPopUp/RunBuildPopUp'
 import Button from '../common/Button/Button'
 
-const cards = items => items.map(item => <Card type="summary" item={item} />);
+export interface HistoryPageProps {
+	getBuildsListFromYNDX: (flag?: null, offset?: HistoryPageState['offset']) => void
+	builds: BuildModel[]
+}
 
-export class HistoryPage extends Component {
+export interface HistoryPageState {
+	showPopup: boolean,
+	offset: number,
+	hideShowMore: boolean
+}
 
-	state = {
+const cards = (items: BuildModel[]): React.ReactNode[] => items.map(item => <Card type="summary" item={item} />);
+
+export class HistoryPage extends Component<HistoryPageProps, HistoryPageState> {
+
+	state: HistoryPageState = {
 		showPopup: false,
 		offset: 0,
 		hideShowMore: false
@@ -25,8 +36,8 @@ export class HistoryPage extends Component {
 		this.props.getBuildsListFromYNDX()
 	}
 
-	handleRunbuildClick = (e) => {
-		e.preventDefault()
+	handleRunbuildClick = (e?:React.MouseEvent) => {
+		e?.preventDefault()
 		this.setState({ showPopup: true })
 	}
 
@@ -34,7 +45,7 @@ export class HistoryPage extends Component {
 		this.setState({ showPopup: false })
 	}
 
-	handleShowMoreClick = (e) => {
+	handleShowMoreClick = (e:React.MouseEvent) => {
 		e.preventDefault()
 		const offset = this.state.offset + 25
 		this.props.getBuildsListFromYNDX(null, offset)
@@ -117,7 +128,7 @@ export class HistoryPage extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: { builds: BuildModel[] }) => {
 	return {
 		builds: state.builds
 	}
