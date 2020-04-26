@@ -1,7 +1,7 @@
-const settingsRoutes = require('./settings');
-const buildsRoutes = require('./builds');
+const settingsRoutes = require('./settings')
+const buildsRoutes = require('./builds')
 
 module.exports = {
-  settingsRoutes,
-  buildsRoutes,
-};
+	settingsRoutes,
+	buildsRoutes,
+}
