@@ -4,18 +4,9 @@ import { connect } from "react-redux";
 
 import "./Header.css";
 
-// TODO: найти место этому интерфейсу. Будет нужен в redux, использует в сервере
-export interface SettingsModel {
-	id: string
-	repoName: string
-	buildCommand: string
-	mainBranch: string
-	period: number
-}
-
 export interface HeaderProps {
 	isDetailsLocation?: string,
-	children?: React.ReactNode[]
+	children?: React.ReactNode[] | React.ReactNode // TODO: как-то это можно сделать проще
 }
 
 class Header extends Component<HeaderProps> {

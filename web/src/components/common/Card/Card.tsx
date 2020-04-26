@@ -4,6 +4,7 @@ import { format, formatDistanceStrict, addSeconds } from "date-fns";
 import { ru } from "date-fns/locale";
 
 import Icon, { IconType } from "../Icon/Icon";
+import { BuildModel } from '../../../store'
 
 import "./Card.css";
 import "./Meta.css";
@@ -12,26 +13,7 @@ import "./IconContent.css";
 const className = cn("card");
 
 
-export enum BuildStatusEnum {
-	Waiting = 'Waiting',
-	InProgress = 'InProgress',
-	Success = 'Success',
-	Fail = 'Fail',
-	Canceled = 'Canceled'
-}
 
-export interface BuildModel {
-	id: string
-	configurationId: string
-	buildNumber: number
-	commitMessage: string
-	commitHash: string
-	branchName: string
-	authorName: string
-	status: BuildStatusEnum
-	start?: string
-	duration?: number
-}
 export interface CardProps {
 	item: BuildModel
 	nosummary?: boolean,

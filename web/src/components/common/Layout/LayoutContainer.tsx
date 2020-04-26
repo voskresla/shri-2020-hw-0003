@@ -5,7 +5,7 @@ const className = withNaming({ e: "__", m: "_" })("layout", "container");
 
 interface LayoutContainerProps {
 	id?: string
-	className: ReturnType<typeof className> | {[key:string]:string|number}
+	className: { [key:string]: string | number | boolean } // TODO: не нравиться. Разберись уже с className
 }
 
 export default class LayoutContainer extends Component<LayoutContainerProps> {

@@ -1,21 +1,33 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Convert from 'ansi-to-html'
-
 import { getCurrentBuildByNumber, clearCurrentBuildFlags, runRebuild } from '../../actions/index'
-
+import { StoreTypes, BuildModel } from '../../store'
+import { RouteComponentProps } from 'react-router'
 import LayoutContainer from '../common/Layout/LayoutContainer'
 import Header from '../common/Header/Header'
 import LinkButton from '../common/LinkButton/LinkButton'
 import Button from '../common/Button/Button'
 import Card from '../common/Card/Card'
 
-const convert = (log) => new Convert({
+
+const convert = (log: string) => new Convert({
 	newline: true,
 	fg: '#000',
 	escapeXML: true
 }).toHtml(log)
-export class DetailsPage extends Component {
+
+type StateTypes = Pick<StoreTypes, 'currentBuild' | 'settings'>
+
+interface DispatchProps {
+	getCurrentBuildByNumber: (number?: string) => void // TODO: actionCreator -> void ли он возвращает?
+	runRebuild: (commitHash: BuildModel['commitHash']) => void
+	clearCurrentBuildFlags: () => void
+}
+
+type DetailsPageProps = StateTypes & DispatchProps & RouteComponentProps<{ number?: string }>
+
+export class DetailsPage extends Component<DetailsPageProps> {
 
 	componentDidMount() {
 		this.props.getCurrentBuildByNumber(this.props.match.params.number)
@@ -27,7 +39,7 @@ export class DetailsPage extends Component {
 
 	}
 
-	componentDidUpdate(prev) {
+	componentDidUpdate(prev: DetailsPageProps) {
 		if (prev.location.pathname !== this.props.location.pathname) {
 			this.props.clearCurrentBuildFlags()
 			this.props.getCurrentBuildByNumber(this.props.match.params.number)
@@ -38,7 +50,7 @@ export class DetailsPage extends Component {
 		this.props.clearCurrentBuildFlags()
 	}
 
-	getLogHtml(log) {
+	getLogHtml(log: string) {
 		return { __html: convert(log) };
 	}
 
@@ -117,7 +129,7 @@ export class DetailsPage extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: StoreTypes): StateTypes => {
 	return {
 		currentBuild: state.currentBuild,
 		settings: state.settings
@@ -130,4 +142,4 @@ const mapDispatchToProps = {
 	runRebuild
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailsPage)
+export default connect<StateTypes,DispatchProps,{},StoreTypes>(mapStateToProps, mapDispatchToProps)(DetailsPage)

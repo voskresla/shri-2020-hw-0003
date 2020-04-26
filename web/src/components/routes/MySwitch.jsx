@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import StartPage from '../StartPage/StartPage'
 import HistoryPage from '../HistoryPage/HistoryPage'
 import SettingsPage from '../SettingsPage/SettingsPage'
-import DetailsPage from '../DetailsPage/DetailsPage.jsx'
+import DetailsPage from '../DetailsPage/DetailsPage'
 
 class MySwitch extends Component {
 	render() {
