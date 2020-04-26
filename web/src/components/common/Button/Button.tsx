@@ -5,17 +5,19 @@ import "./Button.css";
 
 import Icon from "../Icon/Icon";
 import { IconName, IconSize } from '../Icon/Icon'
+import { ClassNameFormatter } from "@bem-react/classname";
 
 const className = cn("button");
 
-type ButtonProps = {
-	id: string
-	iconName: keyof typeof IconName
-	text: string
-	hideMobile: boolean
+export interface ButtonProps {
+	id?: string
+	iconName?: keyof typeof IconName
+	text?: string
+	hideMobile?: boolean
 	iconSize?: keyof typeof IconSize
-	mydisabled: boolean
-	className: string
+	mydisabled?: boolean
+	className?: ReturnType<ClassNameFormatter>
+	href?: HTMLHyperlinkElementUtils['href']
 	handleClick: () => void
 }
 

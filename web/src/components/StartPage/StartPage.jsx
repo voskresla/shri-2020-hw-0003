@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
-import LayoutContainer from '../common/Layout/LayoutContainer.jsx'
+import LayoutContainer from '../common/Layout/LayoutContainer'
 import Header from '../common/Header/Header'
-import LinkButton from '../common/LinkButton/LinkButton.jsx'
+import LinkButton from '../common/LinkButton/LinkButton'
 
 export default class StartPage extends Component {
 	render() {

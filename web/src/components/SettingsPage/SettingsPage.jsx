@@ -5,7 +5,7 @@ import { saveSettingsToYNDX, clearSettingsFlags } from '../../actions'
 
 // TODO: необработанная ошибка на сервере если пустое имя BranchName
 
-import LayoutContainer from '../common/Layout/LayoutContainer.jsx'
+import LayoutContainer from '../common/Layout/LayoutContainer'
 import Header from '../common/Header/Header'
 import Button from '../common/Button/Button'
 import InputGroup from '../common/InputGroup/InputGroup'
