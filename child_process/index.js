@@ -1,53 +1,47 @@
 const { spawn, exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-// const yndx_db_api = require('../api/yndx_ci');
-// const myLogger = require('../logs/logger');
 
-// Собираем данные по коммиту. Вне зависмости от того какая ветка стоить в
-// настрйкищем коммит через reflog и отдаем информацию по первому найденному
-// - resolve c объектом данных
-// - reject если не нашли коммита
 exports.getCommitInfo = (commitHash, settings) => {
-  console.log('in get commit info', settings);
-  const [username, repository] = settings.repoName.split('/');
-  return new Promise((resolve, reject) => {
-    exec(
-      `git log --format="%H|%an|%s|%D" | grep ${commitHash} -m 1`,
-      {
-        cwd: path.join(process.cwd(), 'repos', repository),
-      },
-      (error, stdout, stderr) => {
-        if (error) {
-          console.log(error)
-          reject(`Не смогли найти коммит: ${commitHash}`);
-        } else {
-          const buffer = new Buffer.from(stdout).toString('utf8').split('|');
+	console.log('in get commit info', settings);
+	const [username, repository] = settings.repoName.split('/');
+	return new Promise((resolve, reject) => {
+		exec(
+			`git log --format="%H|%an|%s|%D" | grep ${commitHash} -m 1`,
+			{
+				cwd: path.join(process.cwd(), 'repos', repository),
+			},
+			(error, stdout, stderr) => {
+				if (error) {
+					console.log(error)
+					reject(`Не смогли найти коммит: ${commitHash}`);
+				} else {
+					const buffer = new Buffer.from(stdout).toString('utf8').split('|');
 
-          console.log(buffer);
+					console.log(buffer);
 
-          const commitMessage = buffer[2];
-          const commitHash = buffer[0];
-          const branchName = settings.mainBranch;
-          const authorName = buffer[1];
+					const commitMessage = buffer[2];
+					const commitHash = buffer[0];
+					const branchName = settings.mainBranch;
+					const authorName = buffer[1];
 
-          // TODO: откуда берем branch? И какая тут логика: ищем по всем веткам /
-          // только в ветке из настроек? тогда что значит "любой коммит можно
-          // запустить на билд" ?
-          const commitInfo = {
-            commitMessage,
-            commitHash,
-            branchName,
-            authorName,
-          };
+					// TODO: откуда берем branch? И какая тут логика: ищем по всем веткам /
+					// только в ветке из настроек? тогда что значит "любой коммит можно
+					// запустить на билд" ?
+					const commitInfo = {
+						commitMessage,
+						commitHash,
+						branchName,
+						authorName,
+					};
 
-          console.log(commitInfo)
+					console.log(commitInfo)
 
-          resolve(commitInfo);
-        }
-      },
-    );
-  });
+					resolve(commitInfo);
+				}
+			},
+		);
+	});
 };
 
 // gitClone сейчас выполняет функции:
@@ -63,57 +57,57 @@ exports.getCommitInfo = (commitHash, settings) => {
 // - удачно склонировали репозиторий
 // - удачно прошел pull
 exports.gitClone = ({ repoName, mainBranch }) => {
-  console.log(`Начинаем клонировать репозиторий ${repoName}`);
-  return new Promise((resolve, reject) => {
-    const [username, repository] = repoName.split('/');
-    // проверяем есть ли уже такой репозиторий
-    fs.access(path.join(process.cwd(), 'repos', repository), error => {
-      // если такого репозитория нет в папке repos то пытаемся его скачать с
-      // гитхаба
-      if (error) {
-        // myLogger.put(repoName, 'clone-start');
+	console.log(`Начинаем клонировать репозиторий ${repoName}`);
+	return new Promise((resolve, reject) => {
+		const [username, repository] = repoName.split('/');
+		// проверяем есть ли уже такой репозиторий
+		fs.access(path.join(process.cwd(), 'repos', repository), error => {
+			// если такого репозитория нет в папке repos то пытаемся его скачать с
+			// гитхаба
+			if (error) {
+				// myLogger.put(repoName, 'clone-start');
 
-        const clone = spawn('git', [
-          'clone',
-          `https://github.com/${username}/${repository}.git`,
-          path.join(process.cwd(), 'repos', repository),
-        ]);
+				const clone = spawn('git', [
+					'clone',
+					`https://github.com/${username}/${repository}.git`,
+					path.join(process.cwd(), 'repos', repository),
+				]);
 
-        clone.on('close', data => {
-          if (data == 0) {
-            // myLogger.put(repoName, 'clone-success');
-            resolve('clone-success');
-          }
+				clone.on('close', data => {
+					if (data == 0) {
+						// myLogger.put(repoName, 'clone-success');
+						resolve('clone-success');
+					}
 
-          // myLogger.put(repoName, 'clone-fail');
-          reject('clone-fail');
-        });
-      }
-      // если есть такая папка - делаем гит пул
-      // git -C <Path to directory> pull
-      else {
-        // myLogger.put(repoName, 'pull-start');
+					// myLogger.put(repoName, 'clone-fail');
+					reject('clone-fail');
+				});
+			}
+			// если есть такая папка - делаем гит пул
+			// git -C <Path to directory> pull
+			else {
+				// myLogger.put(repoName, 'pull-start');
 
-        const pull = spawn('git', [
-          '-C',
-          path.join(process.cwd(), 'repos', repository).toString(),
-          'pull',
-          'origin',
-        ]);
+				const pull = spawn('git', [
+					'-C',
+					path.join(process.cwd(), 'repos', repository).toString(),
+					'pull',
+					'origin',
+				]);
 
-        // пока предположим что все что не exit code:0 - ошибка
-        pull.on('close', data => {
-          if (data !== 0) {
-            // myLogger.put(repository, 'pull-failed');
-            reject('pull - fail');
-          }
+				// пока предположим что все что не exit code:0 - ошибка
+				pull.on('close', data => {
+					if (data !== 0) {
+						// myLogger.put(repository, 'pull-failed');
+						reject('pull - fail');
+					}
 
-          // myLogger.put(repoName, 'pull-success');
-          resolve('pull - success');
-        });
-      }
-    });
-  });
+					// myLogger.put(repoName, 'pull-success');
+					resolve('pull - success');
+				});
+			}
+		});
+	});
 };
 
 // Ищем и забираем послежний коммит из ветки mainBranch из репозитория из
@@ -121,15 +115,15 @@ exports.gitClone = ({ repoName, mainBranch }) => {
 // - resolve c хэшем коммита
 // - reject если ошибка в git rev-parse
 exports.getLastCommit = settings => {
-  const [username, repository] = settings.repoName.split('/');
-  const repoPath = path.join(process.cwd(), 'repos', repository);
+	const [username, repository] = settings.repoName.split('/');
+	const repoPath = path.join(process.cwd(), 'repos', repository);
 
-  return new Promise((resolve, reject) => {
-    const revParse = spawn('git', ['rev-parse', 'HEAD'], { cwd: repoPath });
-    revParse.stdout.on('data', data => {
-      const buffer = new Buffer.from(data).toString('utf8').split('\n');
-      resolve(buffer[0]);
-    });
-    revParse.on('close', data => reject('rev-parse - fail'));
-  });
+	return new Promise((resolve, reject) => {
+		const revParse = spawn('git', ['rev-parse', 'HEAD'], { cwd: repoPath });
+		revParse.stdout.on('data', data => {
+			const buffer = new Buffer.from(data).toString('utf8').split('\n');
+			resolve(buffer[0]);
+		});
+		revParse.on('close', data => reject('rev-parse - fail'));
+	});
 };

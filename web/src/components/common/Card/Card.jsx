@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { cn, history } from "../../../utils";
-import { format, addMilliseconds, differenceInSeconds, formatDistanceStrict } from "date-fns";
+import { format, addMilliseconds, differenceInSeconds, formatDistanceStrict, addSeconds } from "date-fns";
 import { ru } from "date-fns/locale";
 
 import Icon from "../Icon/Icon";
@@ -153,7 +153,7 @@ export default class Card extends Component {
 										{card.duration
 											? formatDistanceStrict(
 												new Date(card.start),
-												addMilliseconds(new Date(card.start), card.duration)
+												addSeconds(new Date(card.start), card.duration)
 											)
 											: "в очереди"}
 									</div>
