@@ -9,7 +9,8 @@
     "test:integration": "./node_modules/.bin/hermione",
     "start-cra": "cd web && npm run start",
     "start-ci-server": "node index.js",
-    "start-selenium": "./node_modules/.bin/selenium-standalone install && ./node_modules/.bin/selenium-standalone start"
+    "start-selenium": "./node_modules/.bin/selenium-standalone install && ./node_modules/.bin/selenium-standalone start",
+    "server:watch": "TS_NODE_FILES=1 nodemon index.js -r ts-node/register"
   },
   "author": "",
   "license": "ISC",
@@ -61,6 +62,9 @@
     ]
   },
   "devDependencies": {
-    "selenium-standalone": "^6.17.0"
+    "nodemon": "^2.0.3",
+    "selenium-standalone": "^6.17.0",
+    "ts-node": "^8.9.1",
+    "typescript": "^3.8.3"
   }
 }
