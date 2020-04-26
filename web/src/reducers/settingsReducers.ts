@@ -5,7 +5,9 @@ import {
 	POST_SETTINGS_BEGIN,
 	POST_SETTINGS_SUCCESS,
 	POST_SETTINGS_ERROR,
-} from "../actions/";
+} from "../actions";
+import { SettingsModel } from "../utils";
+import { SettingsStoreTypes } from "../store";
 
 // TODO:  refactor initialSettingState
 const initialSettingsState = {
@@ -19,8 +21,7 @@ const initialSettingsState = {
 	errorText: '',
 }
 
-export default (state = initialSettingsState, action) => {
-	// console.log("action.payload from settingsReducer:", action.payload);
+export default (state = initialSettingsState, action: { type: any; payload: any; }) => {
 	switch (action.type) {
 		case SAVE_SETTINGS_TO_REDUX:
 			return {

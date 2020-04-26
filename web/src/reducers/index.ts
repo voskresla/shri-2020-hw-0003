@@ -3,7 +3,7 @@ import settingsReducers from "./settingsReducers";
 import { buildsList, currentBuild } from "./buildsReducers";
 
 export default combineReducers({
-  settings: settingsReducers,
-  builds: buildsList,
-  currentBuild: currentBuild,
+	settings: settingsReducers,
+	builds: buildsList,
+	currentBuild: currentBuild,
 });

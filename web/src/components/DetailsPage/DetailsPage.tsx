@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps} from 'react-redux'
 import Convert from 'ansi-to-html'
 import { getCurrentBuildByNumber, clearCurrentBuildFlags, runRebuild } from '../../actions/index'
 import { StoreTypes, BuildModel } from '../../store'
@@ -9,6 +9,8 @@ import Header from '../common/Header/Header'
 import LinkButton from '../common/LinkButton/LinkButton'
 import Button from '../common/Button/Button'
 import Card from '../common/Card/Card'
+import { ThunkAction } from 'redux-thunk'
+import {Action} from 'redux'
 
 
 const convert = (log: string) => new Convert({
@@ -19,13 +21,23 @@ const convert = (log: string) => new Convert({
 
 type StateTypes = Pick<StoreTypes, 'currentBuild' | 'settings'>
 
-interface DispatchProps {
-	getCurrentBuildByNumber: (number?: string) => void // TODO: actionCreator -> void ли он возвращает?
-	runRebuild: (commitHash: BuildModel['commitHash']) => void
-	clearCurrentBuildFlags: () => void
+const mapStateToProps = (state: StoreTypes): StateTypes => {
+	return {
+		currentBuild: state.currentBuild,
+		settings: state.settings
+	}
 }
 
-type DetailsPageProps = StateTypes & DispatchProps & RouteComponentProps<{ number?: string }>
+const mapDispatchToProps = {
+	getCurrentBuildByNumber,
+	clearCurrentBuildFlags,
+	runRebuild
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps)
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+type DetailsPageProps = StateTypes & RouteComponentProps<{ number: string }> & PropsFromRedux
 
 export class DetailsPage extends Component<DetailsPageProps> {
 
@@ -129,17 +141,4 @@ export class DetailsPage extends Component<DetailsPageProps> {
 	}
 }
 
-const mapStateToProps = (state: StoreTypes): StateTypes => {
-	return {
-		currentBuild: state.currentBuild,
-		settings: state.settings
-	}
-}
-
-const mapDispatchToProps = {
-	getCurrentBuildByNumber,
-	clearCurrentBuildFlags,
-	runRebuild
-}
-
-export default connect<StateTypes,DispatchProps,{},StoreTypes>(mapStateToProps, mapDispatchToProps)(DetailsPage)
+export default connector(DetailsPage)

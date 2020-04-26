@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 
 import { getBuildsListFromYNDX } from '../../actions/'
 
@@ -8,14 +8,19 @@ import Header from '../common/Header/Header'
 import LinkButton from '../common/LinkButton/LinkButton'
 import List from '../common/List/List'
 import Card from '../common/Card/Card'
-import { BuildModel } from '../../store'
+import { BuildModel, StoreTypes } from '../../store'
 import RunBuildPopUp from '../common/RunBuildPopUp/RunBuildPopUp'
 import Button from '../common/Button/Button'
 
-export interface HistoryPageProps {
-	getBuildsListFromYNDX: (flag?: null, offset?: HistoryPageState['offset']) => void
-	builds: BuildModel[]
+const mapStateToProps = (state: StoreTypes) => {
+	return {
+		builds: state.builds
+	}
 }
+const mapDispatchToProps = {
+	getBuildsListFromYNDX
+}
+const connector = connect(mapStateToProps, mapDispatchToProps)
 
 export interface HistoryPageState {
 	showPopup: boolean,
@@ -23,9 +28,11 @@ export interface HistoryPageState {
 	hideShowMore: boolean
 }
 
+type PropsFromRedux = ConnectedProps<typeof connector>
+
 const cards = (items: BuildModel[]): React.ReactNode[] => items.map(item => <Card type="summary" item={item} />);
 
-export class HistoryPage extends Component<HistoryPageProps, HistoryPageState> {
+export class HistoryPage extends Component<PropsFromRedux, HistoryPageState> {
 
 	state: HistoryPageState = {
 		showPopup: false,
@@ -49,7 +56,7 @@ export class HistoryPage extends Component<HistoryPageProps, HistoryPageState> {
 	handleShowMoreClick = (e:React.MouseEvent) => {
 		e.preventDefault()
 		const offset = this.state.offset + 25
-		this.props.getBuildsListFromYNDX(null, offset)
+		this.props.getBuildsListFromYNDX(undefined, offset)
 		this.setState({ offset })
 
 		if (this.props.builds.length < offset) {
@@ -129,14 +136,4 @@ export class HistoryPage extends Component<HistoryPageProps, HistoryPageState> {
 	}
 }
 
-const mapStateToProps = (state: { builds: BuildModel[] }) => {
-	return {
-		builds: state.builds
-	}
-}
-
-const mapDispatchToProps = {
-	getBuildsListFromYNDX
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(HistoryPage)
+export default connector(HistoryPage)

@@ -1,6 +1,10 @@
 // import API
 import api from "../api/schoolcicerver";
-import { history } from '../utils'
+import { history, SettingsModel } from '../utils'
+import { Dispatch, Action } from 'redux'
+import { BuildModel, StoreTypes } from "../store";
+import { ThunkAction } from 'redux-thunk'
+import { AxiosResponse } from 'axios'
 
 // CONST
 export const CLEAR_SETTINGS_FLAGS = "CLEAR_SETTINGS_FLAGS";
@@ -43,17 +47,27 @@ export const actionsTypeCONST = {
 	RUN_REBUILD_BY_HASH_ERROR,
 }
 
-export const init = () => async (dispatch) => {
+interface SaveSettingsToReduxAction {
+	type: typeof SAVE_SETTINGS_TO_REDUX,
+	payload: SettingsModelResponse
+}
+interface FetchSettingError {
+	type: typeof FETCH_SETTINGS_ERROR,
+}
+interface SettingsModelResponse {
+	data: SettingsModel
+}
+export const init = (): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<FetchSettingError | SaveSettingsToReduxAction>) => {
 	try {
-		const response = await api.get("/settings");
+		const response = await api.get<{}, AxiosResponse<SettingsModelResponse>>("/settings");
 		dispatch({ type: SAVE_SETTINGS_TO_REDUX, payload: response.data });
 	} catch (e) {
 		dispatch({ type: FETCH_SETTINGS_ERROR })
-
 	}
 }
 
-export const getSettingsFromYNDX = () => async (dispatch) => {
+
+export const getSettingsFromYNDX = (): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<SaveSettingsToReduxAction | FetchSettingError>) => {
 	try {
 		const response = await api.get("/settings");
 		dispatch({ type: SAVE_SETTINGS_TO_REDUX, payload: response.data });
@@ -62,7 +76,7 @@ export const getSettingsFromYNDX = () => async (dispatch) => {
 	}
 };
 
-export const saveSettingsToYNDX = (settings) => async (dispatch) => {
+export const saveSettingsToYNDX = (settings: SettingsModel) => async (dispatch: Dispatch) => {
 	dispatch({ type: POST_SETTINGS_BEGIN });
 
 	try {
@@ -85,7 +99,7 @@ export const clearSettingsFlags = () => {
 	};
 }
 
-export const getBuildsListFromYNDX = (limit = undefined, offset = undefined) => async (dispatch) => {
+export const getBuildsListFromYNDX = (limit?: number, offset?: number) => async (dispatch: Dispatch) => {
 	try {
 		const response = await api.get(`/builds`, { params: { offset, limit } })
 
@@ -98,7 +112,7 @@ export const getBuildsListFromYNDX = (limit = undefined, offset = undefined) => 
 	}
 }
 
-export const getCurrentBuildByNumber = (number) => async (dispatch) => {
+export const getCurrentBuildByNumber = (number: BuildModel['buildNumber'] | string): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch) => {
 	if (number === undefined) return
 
 	try {
@@ -129,7 +143,7 @@ export const clearCurrentBuildFlags = () => {
 	};
 }
 
-export const runRebuild = (hash) => async (dispatch) => {
+export const runRebuild = (hash: BuildModel['commitHash']): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch) => {
 	try {
 		const response = await api.post(`/builds/${hash}`).catch(e => { throw new Error() })
 		if (response.status === 200 && response.statusText !== 'OK') {

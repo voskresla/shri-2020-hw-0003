@@ -8,7 +8,9 @@ import {
 	CLEAR_CURRENT_BUILD_FROM_REDUX,
 	RUN_REBUILD_BY_HASH_ERROR,
 	SHOW_MORE
-} from "../actions/";
+} from "../actions";
+
+import { Action } from 'redux'
 
 const initialBuildListState = [];
 const initialCurrentBuild = {
@@ -17,6 +19,11 @@ const initialCurrentBuild = {
 	errorText: '',
 	logErrorText: ''
 }
+
+// interface buildsListAction {
+// 	type: Actions.FETCH_BUILDS_SUCCESS | Actions.SHOW_MORE,
+// 	payload: any
+// }
 
 export const buildsList = (state = initialBuildListState, action) => {
 	switch (action.type) {
