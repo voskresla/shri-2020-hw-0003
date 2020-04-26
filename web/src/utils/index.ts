@@ -40,10 +40,10 @@ export enum InputLabels {
 }
 
 export interface MapSettings {
-	id: string,
-	label: keyof typeof InputLabels,
-	placeholder: string,
-	value: string | number,
+	id?: string,
+	label?: keyof typeof InputLabels,
+	placeholder?: string,
+	value?: string | number,
 	required?: boolean,
 	pattern?: string,
 	vertical?: boolean,

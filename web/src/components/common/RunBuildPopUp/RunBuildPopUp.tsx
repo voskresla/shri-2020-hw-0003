@@ -34,13 +34,17 @@ interface RunBuildOwnProps {
 	show: boolean
 }
 
+interface RunBuildState {
+	inputValue: string
+	errorText: string
+}
+
 export type RunBuildProps = PropsFromRedux & RunBuildOwnProps
 
-export class RunBuild extends Component<RunBuildProps> {
+export class RunBuild extends Component<RunBuildProps, RunBuildState> {
     state = {
         inputValue: "",
         errorText: ''
-        // isValid: false
     };
 
     handleClose = (e: React.MouseEvent) => {
@@ -49,9 +53,11 @@ export class RunBuild extends Component<RunBuildProps> {
         this.props.cancelHandle()
     };
 
-    handleInputChange = (id: string, value: string) => {
+    handleInputChange = (value?: string) => {
         if (this.props.errorText) this.props.clearCurrentBuildFlags()
-        this.setState({ inputValue: value });
+		if (value) {
+			this.setState({ inputValue: value });
+		}
     };
 
     handleSubmit = (e: React.MouseEvent) => {
