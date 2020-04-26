@@ -6,6 +6,14 @@ import "./Icon.css";
 
 const className = cn("icon");
 
+export enum IconType {
+	Success = "success",
+	InProgress = "warning",
+	Fail =  "error",
+	Waiting = "warning",
+	Canceled = "error"
+}
+
 export enum IconName {
 	calendar = 'calendar',
 	clock = 'clock',
@@ -27,16 +35,15 @@ export enum IconSize {
 
 // TODO: внезапно type используется одинаково с name -> переделать, оставить один проп
 interface IconProps {
-	myClassName: { size?: string, view?: string }
-	// TODO: сейчас оставили чтобы замигало что нет type и name
-	type?: keyof typeof IconName
-	name: keyof typeof IconName
+	className: { size?: string, view?: IconType }
+	type?: IconType
+	name?: keyof typeof IconName
 }
 
 export default class Icon extends Component<IconProps> {
   render() {
     return (
-      <div className={className(this.props.myClassName)}>
+      <div className={className(this.props.className)}>
 			{this.props.type
 			// @ts-ignore
 			? icons[this.props.type].render()

@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { cn, history } from "../../../utils";
-import { format, addMilliseconds, differenceInSeconds, formatDistanceStrict, addSeconds } from "date-fns";
+import { format, formatDistanceStrict, addSeconds } from "date-fns";
 import { ru } from "date-fns/locale";
 
-import Icon from "../Icon/Icon";
-import List from "../List/List";
+import Icon, { IconType } from "../Icon/Icon";
 
 import "./Card.css";
 import "./Meta.css";
@@ -12,16 +11,34 @@ import "./IconContent.css";
 
 const className = cn("card");
 
-const iconTypeMap = {
-	Success: "success",
-	InProgress: "warning",
-	Fail: "error",
-	Waiting: "warning",
-	Canceled: "error"
-};
+export enum BuildStatusEnum {
+	Waiting = 'Waiting',
+	InProgress = 'InProgress',
+	Success = 'Success',
+	Fail = 'Fail',
+	Canceled = 'Canceled'
+}
+
+export interface BuildModel {
+	id: string
+	configurationId: string
+	buildNumber: number
+	commitMessage: string
+	commitHash: string
+	branchName: string
+	authorName: string
+	status: BuildStatusEnum
+	start?: string
+	duration?: number
+}
+
+export interface CardProps {
+	item: BuildModel
+	nosummary: boolean
+}
 
 // TODO: дописать пропс title + card_summary
-export default class Card extends Component {
+export default class Card extends Component<CardProps> {
 	handleCardClick = () => {
 		history.push(`/build/${this.props.item.buildNumber}`);
 	};
@@ -35,8 +52,8 @@ export default class Card extends Component {
 					<div className="icon-content">
 						<div className="icon-content__icon text text_view_success">
 							<Icon
-								type={iconTypeMap[this.props.item.status]}
-								myClassName={{ view: iconTypeMap[this.props.item.status] }}
+								type={IconType[this.props.item.status]}
+								className={{ view: IconType[this.props.item.status] }}
 							/>
 						</div>
 					</div>
@@ -150,7 +167,7 @@ export default class Card extends Component {
 								</div>
 								<div className="icon-content__content">
 									<div className="text text_size_13_16 text_view_ghost">
-										{card.duration
+										{card.duration && card.start
 											? formatDistanceStrict(
 												new Date(card.start),
 												addSeconds(new Date(card.start), card.duration)

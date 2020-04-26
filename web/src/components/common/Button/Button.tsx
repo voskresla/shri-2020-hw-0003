@@ -23,10 +23,10 @@ export interface ButtonProps {
 
 export default class Button extends Component<ButtonProps> {
 	render() {
-		const iconName = false || this.props.iconName;
-		const text = false || this.props.text;
+		const iconName = this.props.iconName;
+		const text = 	this.props.text;
 		const hideMobile = this.props.hideMobile ? "decorator hide_mobile" : "";
-		const iconSize: keyof typeof IconSize = this.props.iconSize || 's'
+		const iconSize = this.props.iconSize || 's'
 
 		return (
 			<button
@@ -36,7 +36,7 @@ export default class Button extends Component<ButtonProps> {
 				className={className(this.props.className)}
 				onClick={this.props.handleClick}
 			>
-				{iconName && <Icon myClassName={{ size: iconSize }} name={iconName}></Icon>}
+				{iconName && <Icon className={{ size: iconSize }} name={iconName}></Icon>}
 				{text && <div className={`button__text ${hideMobile}`}>{text}</div>}
 			</button>
 		);
