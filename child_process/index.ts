@@ -8,7 +8,7 @@ import { SettingsModel } from './../routes/settings'
 
 interface QueueBuildInput {
 	commitMessage: string
-	commitHash: string
+	commitHash: BuildModel['commitHash']
 	branchName: string
 	authorName: string
 }
@@ -72,8 +72,19 @@ export interface SerializerSettings {
 	mainBranch: SettingsModel['mainBranch']
 }
 
+// REVIEW: так сделано чтобы можно было брать не только GitCloneStatus.succes, но и 'success'. Тут безтолку, а иногда полезно.
+export enum GitCloneStatus {
+	success = 'success',
+	fail = 'fail',
+}
+
+export enum GitPullStatus {
+	success = 'success',
+	fail = 'fail',
+}
+
 export type GitCLoneFn = (
-	{ repoName, mainBranch }: SerializerSettings) => Promise<string>
+	{ repoName, mainBranch }: SerializerSettings) => Promise<keyof typeof GitCloneStatus | keyof typeof GitPullStatus>
 
 export const gitClone: GitCLoneFn = ({ repoName }) => {
 	console.log(`Начинаем клонировать репозиторий ${repoName}`)
@@ -95,11 +106,11 @@ export const gitClone: GitCLoneFn = ({ repoName }) => {
 				clone.on('close', data => {
 					if (data == 0) {
 						// myLogger.put(repoName, 'clone-success');
-						resolve('clone-success')
+						resolve(GitCloneStatus.success)
 					}
 
 					// myLogger.put(repoName, 'clone-fail');
-					reject('clone-fail')
+					reject(GitCloneStatus.fail)
 				})
 			}
 			// если есть такая папка - делаем гит пул
@@ -118,11 +129,11 @@ export const gitClone: GitCLoneFn = ({ repoName }) => {
 				pull.on('close', data => {
 					if (data !== 0) {
 						// myLogger.put(repository, 'pull-failed');
-						reject('pull - fail')
+						reject(GitPullStatus.success)
 					}
 
 					// myLogger.put(repoName, 'pull-success');
-					resolve('pull - success')
+					resolve(GitPullStatus.fail)
 				})
 			}
 		})

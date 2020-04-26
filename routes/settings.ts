@@ -38,10 +38,10 @@ router.get('/', async (req, res, next) => {
 	}).catch(next)
 })
 
-type ExpressResponse = string | { message: string }
+type RouteSettingsPOSTExpressResponse = string | { message: string }
 
 // POST /api/settings
-router.post<{}, ExpressResponse, SettingsModel>('/', (req, res, next) => {
+router.post<{}, RouteSettingsPOSTExpressResponse, SettingsModel>('/', (req, res, next) => {
 	const settings = req.body
 	// declare let tmpCommitHash: string
 	let tmpCommitHash: null | string = null
@@ -54,18 +54,17 @@ router.post<{}, ExpressResponse, SettingsModel>('/', (req, res, next) => {
 		return
 	}
 
-	gitClone(settings)
-		.then(async () => {
-			console.log('Сохраняем настройки в хранилище')
+	gitClone(settings).then(async () => {
+		console.log('Сохраняем настройки в хранилище')
 
-			function sleep(ms: number) {
-				return new Promise(resolve => setTimeout(resolve, ms))
-			}
-			await sleep(5000)
+		function sleep(ms: number) {
+			return new Promise(resolve => setTimeout(resolve, ms))
+		}
+		await sleep(5000)
 
-			return yndxApi
-				.post('/conf', settings)
-		})
+		return yndxApi
+			.post('/conf', settings)
+	})
 		.then(() => {
 			console.log('Клонирование успешно')
 			return getLastCommit(settings)
