@@ -1,15 +1,21 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 
 import Layout from "./common/Layout/Layout";
 import MySwitch from "./routes/MySwitch";
-import Footer from './common/Footer/Footer.tsx'
+import Footer from './common/Footer/Footer'
 
 import './app.css'
+import { StoreTypes } from "../store";
 
-const tpm = '';
+const mapStateToProps = (state: StoreTypes) => {
+	return { settings: state.settings }
+}
+const connector = connect(mapStateToProps)
 
-class App extends Component {
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+class App extends Component<PropsFromRedux> {
 	render() {
 		const isLoaded = this.props.settings.isLoaded
 		const isError = this.props.settings.isError
@@ -36,11 +42,4 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return { settings: state.settings }
-}
-
-const mapDispatchToProps = {
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connector(App)
