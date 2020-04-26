@@ -1,48 +1,58 @@
-const { spawn, exec } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { spawn, exec } from 'child_process'
+import fs from 'fs'
+import path from 'path'
 
-exports.getCommitInfo = (commitHash, settings) => {
-	console.log('in get commit info', settings);
-	const [username, repository] = settings.repoName.split('/');
+import { BuildModel } from '../routes'
+
+import { SettingsModel } from './../routes/settings'
+
+interface QueueBuildInput {
+	commitMessage: string
+	commitHash: string
+	branchName: string
+	authorName: string
+}
+
+type GetCommitInfoFn = (commitHash: BuildModel['commitHash'], settings: SettingsModel) => Promise<QueueBuildInput>
+
+export const getCommitInfo: GetCommitInfoFn = (commitHash, settings) => {
+	console.log('in get commit info', settings)
+
+	const repository = settings.repoName.split('/')[1]
+
 	return new Promise((resolve, reject) => {
 		exec(
 			`git log --format="%H|%an|%s|%D" | grep ${commitHash} -m 1`,
 			{
 				cwd: path.join(process.cwd(), 'repos', repository),
 			},
-			(error, stdout, stderr) => {
+			(error, stdout) => {
 				if (error) {
-					console.log(error)
-					reject(`Не смогли найти коммит: ${commitHash}`);
+					reject(`Не смогли найти коммит: ${commitHash}`)
 				} else {
-					const buffer = new Buffer.from(stdout).toString('utf8').split('|');
+					// TODO: возможно тут надо new Buffer
+					const buffer = Buffer.from(stdout).toString('utf8').split('|')
 
-					console.log(buffer);
+					const commitMessage = buffer[2]
+					const commitHash = buffer[0]
+					const branchName = settings.mainBranch
+					const authorName = buffer[1]
 
-					const commitMessage = buffer[2];
-					const commitHash = buffer[0];
-					const branchName = settings.mainBranch;
-					const authorName = buffer[1];
-
-					// TODO: откуда берем branch? И какая тут логика: ищем по всем веткам /
-					// только в ветке из настроек? тогда что значит "любой коммит можно
-					// запустить на билд" ?
 					const commitInfo = {
 						commitMessage,
 						commitHash,
 						branchName,
 						authorName,
-					};
+					}
 
 					console.log(commitInfo)
 
-					resolve(commitInfo);
+					resolve(commitInfo)
 				}
 			},
-		);
-	});
-};
+		)
+	})
+}
 
 // gitClone сейчас выполняет функции:
 // - проверяет есть ли такой репозиторий уже в папке ./repos
@@ -56,10 +66,19 @@ exports.getCommitInfo = (commitHash, settings) => {
 // gitClone выйдет с resolve, если:
 // - удачно склонировали репозиторий
 // - удачно прошел pull
-exports.gitClone = ({ repoName, mainBranch }) => {
-	console.log(`Начинаем клонировать репозиторий ${repoName}`);
+
+export interface SerializerSettings {
+	repoName: SettingsModel['repoName']
+	mainBranch: SettingsModel['mainBranch']
+}
+
+export type GitCLoneFn = (
+	{ repoName, mainBranch }: SerializerSettings) => Promise<string>
+
+export const gitClone: GitCLoneFn = ({ repoName }) => {
+	console.log(`Начинаем клонировать репозиторий ${repoName}`)
 	return new Promise((resolve, reject) => {
-		const [username, repository] = repoName.split('/');
+		const [username, repository] = repoName.split('/')
 		// проверяем есть ли уже такой репозиторий
 		fs.access(path.join(process.cwd(), 'repos', repository), error => {
 			// если такого репозитория нет в папке repos то пытаемся его скачать с
@@ -71,17 +90,17 @@ exports.gitClone = ({ repoName, mainBranch }) => {
 					'clone',
 					`https://github.com/${username}/${repository}.git`,
 					path.join(process.cwd(), 'repos', repository),
-				]);
+				])
 
 				clone.on('close', data => {
 					if (data == 0) {
 						// myLogger.put(repoName, 'clone-success');
-						resolve('clone-success');
+						resolve('clone-success')
 					}
 
 					// myLogger.put(repoName, 'clone-fail');
-					reject('clone-fail');
-				});
+					reject('clone-fail')
+				})
 			}
 			// если есть такая папка - делаем гит пул
 			// git -C <Path to directory> pull
@@ -93,37 +112,41 @@ exports.gitClone = ({ repoName, mainBranch }) => {
 					path.join(process.cwd(), 'repos', repository).toString(),
 					'pull',
 					'origin',
-				]);
+				])
 
 				// пока предположим что все что не exit code:0 - ошибка
 				pull.on('close', data => {
 					if (data !== 0) {
 						// myLogger.put(repository, 'pull-failed');
-						reject('pull - fail');
+						reject('pull - fail')
 					}
 
 					// myLogger.put(repoName, 'pull-success');
-					resolve('pull - success');
-				});
+					resolve('pull - success')
+				})
 			}
-		});
-	});
-};
+		})
+	})
+}
 
 // Ищем и забираем послежний коммит из ветки mainBranch из репозитория из
 // настроек
 // - resolve c хэшем коммита
 // - reject если ошибка в git rev-parse
-exports.getLastCommit = settings => {
-	const [username, repository] = settings.repoName.split('/');
-	const repoPath = path.join(process.cwd(), 'repos', repository);
+
+export type GetLastCommitFn = (settings: SettingsModel) => Promise<string>
+
+export const getLastCommit: GetLastCommitFn = (settings) => {
+	const repository = settings.repoName.split('/')[0]
+	const repoPath = path.join(process.cwd(), 'repos', repository)
 
 	return new Promise((resolve, reject) => {
-		const revParse = spawn('git', ['rev-parse', 'HEAD'], { cwd: repoPath });
+		const revParse = spawn('git', ['rev-parse', 'HEAD'], { cwd: repoPath })
 		revParse.stdout.on('data', data => {
-			const buffer = new Buffer.from(data).toString('utf8').split('\n');
-			resolve(buffer[0]);
-		});
-		revParse.on('close', data => reject('rev-parse - fail'));
-	});
-};
+			// TODO:  возможно надо new Buffer
+			const buffer = Buffer.from(data).toString('utf8').split('\n')
+			resolve(buffer[0])
+		})
+		revParse.on('close', () => reject('rev-parse - fail'))
+	})
+}
