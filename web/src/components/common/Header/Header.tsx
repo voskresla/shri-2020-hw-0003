@@ -4,9 +4,22 @@ import { connect } from "react-redux";
 
 import "./Header.css";
 
-class Header extends Component {
+// TODO: найти место этому интерфейсу. Будет нужен в redux, использует в сервере
+export interface SettingsModel {
+	id: string
+	repoName: string
+	buildCommand: string
+	mainBranch: string
+	period: number
+}
+
+export interface HeaderProps {
+	isDetailsLocation: string // но вобще то можно и из SettingModel забирать, вопрос надо ли. 
+}
+
+class Header extends Component<HeaderProps> {
 	render() {
-		const isDetailsLocation = !!this.props.isDetailsLocation
+		const isDetailsLocation: boolean = !!this.props.isDetailsLocation
 
 		return (
 			<div className="header">
@@ -26,9 +39,5 @@ class Header extends Component {
 		);
 	}
 }
-
-const mapStateToProps = (state) => {
-	// return { currentBuild: state.currentBuild };
-};
 
 export default connect()(Header);
