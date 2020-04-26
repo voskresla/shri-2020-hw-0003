@@ -47,15 +47,15 @@ export const actionsTypeCONST = {
 	RUN_REBUILD_BY_HASH_ERROR,
 }
 
+interface SettingsModelResponse {
+	data: SettingsModel
+}
 interface SaveSettingsToReduxAction {
 	type: typeof SAVE_SETTINGS_TO_REDUX,
-	payload: SettingsModelResponse
+	payload: SettingsModelResponse | SettingsModel
 }
 interface FetchSettingError {
 	type: typeof FETCH_SETTINGS_ERROR,
-}
-interface SettingsModelResponse {
-	data: SettingsModel
 }
 export const init = (): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<FetchSettingError | SaveSettingsToReduxAction>) => {
 	try {
@@ -66,21 +66,24 @@ export const init = (): ThunkAction<void, StoreTypes, unknown, Action<string>> =
 	}
 }
 
-
 export const getSettingsFromYNDX = (): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<SaveSettingsToReduxAction | FetchSettingError>) => {
 	try {
-		const response = await api.get("/settings");
+		const response = await api.get<{}, AxiosResponse<SettingsModelResponse>>("/settings");
 		dispatch({ type: SAVE_SETTINGS_TO_REDUX, payload: response.data });
 	} catch (e) {
 		dispatch({ type: FETCH_SETTINGS_ERROR })
 	}
 };
 
-export const saveSettingsToYNDX = (settings: SettingsModel) => async (dispatch: Dispatch) => {
+interface PostSettings {
+	type: typeof POST_SETTINGS_BEGIN | typeof POST_SETTINGS_SUCCESS | typeof POST_SETTINGS_ERROR
+	payload?: { message: string } | string
+}
+export const saveSettingsToYNDX = (settings: SettingsModel): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<PostSettings | SaveSettingsToReduxAction>) => {
 	dispatch({ type: POST_SETTINGS_BEGIN });
 
 	try {
-		const response = await api.post("/settings", settings);
+		const response = await api.post<{}, AxiosResponse<{ message: string }>>("/settings", settings);
 		if (response.status === 200 && response.statusText !== 'OK') {
 			dispatch({ type: POST_SETTINGS_ERROR, payload: response.data.message });
 			return
@@ -99,24 +102,48 @@ export const clearSettingsFlags = () => {
 	};
 }
 
-export const getBuildsListFromYNDX = (limit?: number, offset?: number) => async (dispatch: Dispatch) => {
+
+interface FetchBuilds {
+	type: typeof FETCH_BUILDS_SUCCESS | typeof FETCH_BUILDS_ERROR | typeof SHOW_MORE
+	payload?: FetchBuildsResponse
+}
+interface FetchBuildsResponse {
+	data: BuildModel[]
+}
+export const getBuildsListFromYNDX = (limit?: number, offset?: number): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<FetchBuilds>) => {
 	try {
-		const response = await api.get(`/builds`, { params: { offset, limit } })
+		const response = await api.get<{}, AxiosResponse<FetchBuildsResponse>>(`/builds`, { params: { offset, limit } })
 
 		if (offset) return dispatch({ type: SHOW_MORE, payload: response.data })
 
 		dispatch({ type: FETCH_BUILDS_SUCCESS, payload: response.data })
 	} catch (e) {
-		console.log('FETCH_BUILDS_ERROR // TODO: дописать обработку ошибки')
 		dispatch({ type: FETCH_BUILDS_ERROR })
 	}
 }
 
-export const getCurrentBuildByNumber = (number: BuildModel['buildNumber'] | string): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch) => {
+interface FetchBuildByNumber {
+	type: typeof FETCH_BUILD_BY_NUMBER_ERROR | typeof FETCH_BUILD_BY_NUMBER_SUCCESS
+	payload: FetchBuildByNumberResponse | string
+}
+interface FetchBuildByNumberResponse {
+	data: BuildModel
+	message: string
+	id: string
+}
+interface FetchLogById {
+	type: typeof FETCH_LOG_BY_BUILD_ID_ERROR | typeof FETCH_LOG_BY_BUILD_ID_SUCCESS
+	payload: FetchLogByIdResponse | string
+}
+interface FetchLogByIdResponse {
+	data: string // TODO: взять из модельки FinishBuildInput: BuildLog когда дойдешь до нее
+	message: string
+}
+export const getCurrentBuildByNumber = (number: BuildModel['buildNumber'] | string): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<FetchBuildByNumber | FetchLogById>) => {
 	if (number === undefined) return
 
 	try {
-		const response = await api.get(`/builds/${number}`)
+		const response = await api.get<{}, AxiosResponse<FetchBuildByNumberResponse>>(`/builds/${number}`)
 		if (response.status === 200 && response.statusText !== 'OK') {
 			dispatch({ type: FETCH_BUILD_BY_NUMBER_ERROR, payload: response.data.message });
 			return
@@ -124,7 +151,7 @@ export const getCurrentBuildByNumber = (number: BuildModel['buildNumber'] | stri
 		dispatch({ type: FETCH_BUILD_BY_NUMBER_SUCCESS, payload: response.data })
 
 		const buildId = response.data.id
-		const log = await api.get(`/builds/${buildId}/logs`)
+		const log = await api.get<{}, AxiosResponse<FetchLogByIdResponse>>(`/builds/${buildId}/logs`)
 		if (log.status === 200 && log.statusText !== 'OK') {
 			dispatch({ type: FETCH_LOG_BY_BUILD_ID_ERROR, payload: log.data.message });
 			return
@@ -143,9 +170,17 @@ export const clearCurrentBuildFlags = () => {
 	};
 }
 
-export const runRebuild = (hash: BuildModel['commitHash']): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch) => {
+interface RunRebuild {
+	type: typeof RUN_REBUILD_BY_HASH_ERROR
+	payload: RunRebuildResponse | string
+}
+interface RunRebuildResponse {
+	data: BuildModel
+	message: string
+}
+export const runRebuild = (hash: BuildModel['commitHash']): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<RunRebuild | FetchBuildByNumber>) => {
 	try {
-		const response = await api.post(`/builds/${hash}`).catch(e => { throw new Error() })
+		const response = await api.post<{}, AxiosResponse<RunRebuildResponse>>(`/builds/${hash}`).catch(e => { throw new Error() })
 		if (response.status === 200 && response.statusText !== 'OK') {
 			dispatch({ type: RUN_REBUILD_BY_HASH_ERROR, payload: response.data.message });
 			return
