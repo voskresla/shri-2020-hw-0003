@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 
 import { runRebuild, clearCurrentBuildFlags } from '../../../actions/index'
 
@@ -7,26 +7,54 @@ import InputGroup from "../InputGroup/InputGroup";
 import Button from "../Button/Button";
 
 import "./RunBuild.css";
+import { StoreTypes,BuildModel } from "../../../store";
 
-export class RunBuild extends Component {
+const mapStateToProps = (state:StoreTypes) => {
+	return {
+		errorText: state.currentBuild.errorText
+    }
+}
+
+interface DispatchProps {
+	clearCurrentBuildFlags: () => void
+	runRebuild: (commitHash: BuildModel['commitHash']) => void
+}
+
+const mapDispatchToProps:DispatchProps = {
+    runRebuild,
+    clearCurrentBuildFlags
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps)
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+interface RunBuildOwnProps {
+	cancelHandle: () => void
+	show: boolean
+}
+
+export type RunBuildProps = PropsFromRedux & RunBuildOwnProps
+
+export class RunBuild extends Component<RunBuildProps> {
     state = {
         inputValue: "",
         errorText: ''
         // isValid: false
     };
 
-    handleClose = e => {
+    handleClose = (e: React.MouseEvent) => {
         if (this.props.errorText) this.props.clearCurrentBuildFlags()
         e.preventDefault();
         this.props.cancelHandle()
     };
 
-    handleInputChange = (id, value) => {
+    handleInputChange = (id: string, value: string) => {
         if (this.props.errorText) this.props.clearCurrentBuildFlags()
         this.setState({ inputValue: value });
     };
 
-    handleSubmit = (e) => {
+    handleSubmit = (e: React.MouseEvent) => {
         if (this.props.errorText) this.props.clearCurrentBuildFlags()
         e.preventDefault();
         this.props.runRebuild(this.state.inputValue)
@@ -45,18 +73,10 @@ export class RunBuild extends Component {
                     </div>
                     <div className="modal__input">
                         <InputGroup
-                            // valid={false}
                             inputValue={this.state.inputValue}
                             handleChange={this.handleInputChange}
                             placeholder={"commit hash"}
                             vertical={true}
-                        // renderAppend={
-                        //     <Button
-                        //         // handleClick={this.handleSubmit}
-                        //         className={{ size: "m", distribute: "center" }}
-                        //         iconName={"inputclose"}
-                        //     />
-                        // }
                         />
                         <span className={'text text_size_s text_view_ghost'}>{this.props.errorText}</span>
                     </div>
@@ -86,16 +106,5 @@ export class RunBuild extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        errorText: state.currentBuild.errorText
-    }
-}
-
-const mapDispatchToProps = {
-    runRebuild,
-    clearCurrentBuildFlags
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(RunBuild)
+export default connector(RunBuild)
 

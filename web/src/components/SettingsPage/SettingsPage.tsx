@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import { mapSettings, history, SettingsModel, Placeholder } from '../../utils'
 import { saveSettingsToYNDX, clearSettingsFlags } from '../../actions'
 
@@ -167,7 +167,7 @@ export class SettingsPage extends Component<SettingsPageProps, SettingPageState>
 	}
 }
 
-const mapStateToProps = (state: StoreTypes): StateTypes => {
+const mapStateToProps = (state: StoreTypes) => {
 	return {
 		conf: state.settings.conf,
 		isSavingToYNDXError: state.settings.isSavingToYNDXError,
