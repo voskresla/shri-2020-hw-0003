@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import Layout from "./common/Layout/Layout";
 import MySwitch from "./routes/MySwitch";
-import Footer from './common/Footer/Footer'
+import Footer from './common/Footer/Footer.tsx'
 
 import './app.css'
 

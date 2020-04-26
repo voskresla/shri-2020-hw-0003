@@ -36,7 +36,7 @@ export default class Card extends Component {
 						<div className="icon-content__icon text text_view_success">
 							<Icon
 								type={iconTypeMap[this.props.item.status]}
-								className={{ view: iconTypeMap[this.props.item.status] }}
+								myClassName={{ view: iconTypeMap[this.props.item.status] }}
 							/>
 						</div>
 					</div>

@@ -18,7 +18,14 @@ export const placeholders = {
 	period: "0"
 };
 
-export const mapSettings = (settings) => {
+export interface SettingsModel {
+	repoName: string
+	buildCommand: string
+	mainBranch: string
+	period: string
+}
+
+export const mapSettings = (settings: SettingsModel) => {
 	if (!Object.keys(settings).length) settings = initialSettings
 
 	return Object.keys(settings)
