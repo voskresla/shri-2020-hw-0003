@@ -31,6 +31,7 @@ export enum IconName {
 
 export enum IconSize {
 	s = 's',
+	m = 'm',
 }
 
 // TODO: внезапно type используется одинаково с name -> переделать, оставить один проп

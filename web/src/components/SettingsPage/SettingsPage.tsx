@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { mapSettings, history } from '../../utils/index'
+import { mapSettings, history, SettingsModel, Placeholder } from '../../utils'
 import { saveSettingsToYNDX, clearSettingsFlags } from '../../actions'
 
 // TODO: необработанная ошибка на сервере если пустое имя BranchName
@@ -11,8 +11,20 @@ import Button from '../common/Button/Button'
 import InputGroup from '../common/InputGroup/InputGroup'
 
 import './SettingsPage.css'
+import { StoreTypes, SettingsStoreTypes } from '../../store'
 
-export class SettingsPage extends Component {
+type StateTypes = Pick<SettingsStoreTypes, 'conf' | 'isSavingToYNDXError' | 'isSavedToYNDX' | 'errorText'>
+
+interface DispatchProps {
+	clearSettingsFlags: () => void
+	saveSettingsToYNDX: (settings: SettingsModel) => void
+}
+
+type SettingsPageProps = StateTypes & DispatchProps 
+
+type SettingPageState = SettingsModel & {[key:string]:string}
+
+export class SettingsPage extends Component<SettingsPageProps, SettingPageState> {
 
 	// REVIEW: нужен для controlledInputs + valid + posting + disabled (вроде нуджен только тут, пока не будем выносить)
 	state = {
@@ -23,7 +35,7 @@ export class SettingsPage extends Component {
 		period: "",
 	}
 
-	settingsForm = React.createRef()
+	settingsForm = React.createRef<HTMLFormElement>()
 
 	componentDidMount() {
 		if (this.props.conf.repoName) this.setState({ ...this.props.conf })
@@ -33,12 +45,15 @@ export class SettingsPage extends Component {
 		this.props.clearSettingsFlags()
 	}
 
-	handleInputChange = (id, value) => {
-		this.setState({ [id]: value });
+	// TODO: но вобще должно быть не string а четкие значения из plaseholders | settingmodel
+	handleInputChange = (id?: string, value?: string) => {
+		if (id && value) {
+			this.setState({ [id]: value });
+		}
 		if (this.props.errorText || this.props.isSavedToYNDX) this.props.clearSettingsFlags()
 	};
 
-	handleSave = (e) => {
+	handleSave = (e: React.MouseEvent) => {
 		e.preventDefault()
 		this.props.clearSettingsFlags()
 		if (!this.checkValidity()) return
@@ -46,7 +61,7 @@ export class SettingsPage extends Component {
 		this.saveSettings()
 	}
 
-	handleCancel = (e) => {
+	handleCancel = (e: React.MouseEvent) => {
 		e.preventDefault()
 		history.goBack()
 	}
@@ -60,11 +75,11 @@ export class SettingsPage extends Component {
 			}
 		})
 
-		return this.settingsForm.current.checkValidity()
+		return this.settingsForm?.current?.checkValidity()
 	}
 
 	saveSettings() {
-		const settingsPayload = {
+		const settingsPayload: SettingsModel = {
 			repoName: this.state.repoName,
 			buildCommand: this.state.buildCommand,
 			mainBranch: this.state.mainBranch,
@@ -95,25 +110,23 @@ export class SettingsPage extends Component {
 								</div>
 								<div className="form__items">
 									{mapSettings(this.state).map(item => (
-										<div key={item.id} className="form__item form__item_indent-b_xl">
+										<div key={item?.id} className="form__item form__item_indent-b_xl">
 											<InputGroup
-												// TODO: валидация
-												// valid={!this.state.isValid}
-												id={item.id}
-												// TODO: супер хак для controlledInput
-												inputValue={this.state[item.id]}
+												id={item?.id}
+												// NOTE: супер хак для controlledInput
+												inputValue={this.state[item?.id as keyof Placeholder]} // TODO: плохо, подумай как лучше
 												handleChange={this.handleInputChange}
-												label={item.label}
-												placeholder={item.placeholder}
-												required={item.required}
-												pattern={item.pattern}
-												type={item.type}
-												vertical={item.vertical}
+												label={item?.label}
+												placeholder={item?.placeholder}
+												required={item?.required}
+												pattern={item?.pattern}
+												type={item?.type}
+												vertical={item?.vertical}
 												renderAppend={
 													<Button
 														handleClick={(e) => {
 															e.preventDefault()
-															this.handleInputChange(item.id, '')
+															this.handleInputChange(item?.id, '')
 														}}
 														className={{ size: "m", distribute: "center" }}
 														iconName={"inputclose"}
@@ -128,15 +141,15 @@ export class SettingsPage extends Component {
 									{/* TODO: проверять если настройки такие же то говорить и не сохранять */}
 									<Button
 										className={{ size: "m", view: "action" }}
-										text={!this.props.isDisabled ? "Save" : "Fetching & Cloning.."}
+										text={!this.props.isSavedToYNDX ? "Save" : "Fetching & Cloning.."}
 										handleClick={this.handleSave}
-										mydisabled={this.props.isDisabled}
+										mydisabled={this.props.isSavedToYNDX}
 									/>
 									{/* TODO: что делает кнопка Cancel */}
 									<Button
 										className={{ size: "m", view: "control" }}
 										text="Cancel"
-										mydisabled={this.props.isDisabled}
+										mydisabled={this.props.isSavedToYNDX}
 										handleClick={this.handleCancel}
 									/>
 								</div>
@@ -154,10 +167,9 @@ export class SettingsPage extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: StoreTypes): StateTypes => {
 	return {
 		conf: state.settings.conf,
-		isDisabled: state.settings.isSavingToYNDX,
 		isSavingToYNDXError: state.settings.isSavingToYNDXError,
 		isSavedToYNDX: state.settings.isSavedToYNDX,
 		errorText: state.settings.errorText

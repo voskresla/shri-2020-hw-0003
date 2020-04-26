@@ -12,6 +12,7 @@ export interface SettingsStoreTypes {
 	isSavingToError: boolean,
 	isError: boolean,
 	errorText: string,
+	isSavingToYNDXError: boolean
 }
 
 export enum BuildStatusEnum {

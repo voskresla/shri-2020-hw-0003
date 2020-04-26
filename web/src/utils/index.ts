@@ -11,21 +11,46 @@ export const initialSettings = {
 	period: "",
 };
 
-export const placeholders = {
+export const placeholders: Placeholder = {
 	repoName: "username/repository",
 	buildCommand: "npm run start",
 	mainBranch: "branch",
 	period: "0"
 };
 
+export interface Placeholder {
+	repoName: "username/repository",
+	buildCommand: "npm run start",
+	mainBranch: "branch",
+	period: "0"
+}
+
 export interface SettingsModel {
 	repoName: string
 	buildCommand: string
 	mainBranch: string
-	period: string
+	period: string | number
 }
 
-export const mapSettings = (settings: SettingsModel) => {
+export enum InputLabels {
+	"Github repository",
+	"Build Command",
+	"Main Branch",
+	"Synchronize every"
+}
+
+export interface MapSettings {
+	id: string,
+	label: keyof typeof InputLabels,
+	placeholder: string,
+	value: string | number,
+	required?: boolean,
+	pattern?: string,
+	vertical?: boolean,
+	type?: string
+}
+
+export const mapSettings = (settings: SettingsModel): Array<MapSettings | undefined> => {
 	if (!Object.keys(settings).length) settings = initialSettings
 
 	return Object.keys(settings)
@@ -36,8 +61,8 @@ export const mapSettings = (settings: SettingsModel) => {
 					return {
 						id: key,
 						label: "Github repository",
-						placeholder: placeholders[key],
-						value: settings[key],
+						placeholder: placeholders[key as keyof Placeholder],
+						value: settings[key as keyof SettingsModel],
 						required: true,
 						pattern: ".+/.+",
 						vertical: true
@@ -46,8 +71,8 @@ export const mapSettings = (settings: SettingsModel) => {
 					return {
 						id: key,
 						label: "Build Command",
-						placeholder: placeholders[key],
-						value: settings[key],
+						placeholder: placeholders[key as keyof Placeholder],
+						value: settings[key as keyof SettingsModel],
 						required: true,
 						vertical: true
 					};
@@ -55,16 +80,16 @@ export const mapSettings = (settings: SettingsModel) => {
 					return {
 						id: key,
 						label: "Main Branch",
-						placeholder: placeholders[key],
-						value: settings[key],
+						placeholder: placeholders[key as keyof Placeholder],
+						value: settings[key as keyof SettingsModel],
 						vertical: true
 					};
 				case "period":
 					return {
 						id: key,
 						label: "Synchronize every",
-						placeholder: placeholders[key],
-						value: settings[key],
+						placeholder: placeholders[key as keyof Placeholder],
+						value: settings[key as keyof SettingsModel],
 						type: 'number',
 						pattern: '\\d'
 					};
