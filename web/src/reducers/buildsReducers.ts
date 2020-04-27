@@ -7,42 +7,46 @@ import {
 	FETCH_LOG_BY_BUILD_ID_SUCCESS,
 	CLEAR_CURRENT_BUILD_FROM_REDUX,
 	RUN_REBUILD_BY_HASH_ERROR,
-	SHOW_MORE
+	SHOW_MORE,
+	FetchLogById,
+	RunRebuild,
+
 } from "../actions";
 
-import { Action } from 'redux'
+import { FetchBuilds, FetchBuildByNumber, clearCurrentBuild } from '../actions'
+import { StoreTypes } from "../store";
 
-const initialBuildListState = [];
+const initialBuildListState: [] = [];
 const initialCurrentBuild = {
-	build: {},
+	build: {
+		id: ''
+	},
 	buildLog: '',
 	errorText: '',
 	logErrorText: ''
 }
 
-// interface buildsListAction {
-// 	type: Actions.FETCH_BUILDS_SUCCESS | Actions.SHOW_MORE,
-// 	payload: any
-// }
-
-export const buildsList = (state = initialBuildListState, action) => {
+export const buildsList = (state = initialBuildListState, action: FetchBuilds) => {
 	switch (action.type) {
 		case FETCH_BUILDS_SUCCESS:
-			return [...action.payload]
+			if (action.payload) return [...action.payload]
 		case SHOW_MORE:
-			return [...state, ...action.payload]
+			if (action.payload) return [...state, ...action.payload]
 		default:
 			return state;
 	}
 };
 
-export const currentBuild = (state = initialCurrentBuild, action) => {
+export const currentBuild = (
+	state = initialCurrentBuild,
+	action: FetchBuilds | FetchBuildByNumber | FetchLogById | clearCurrentBuild | RunRebuild
+) => {
 	switch (action.type) {
-		case FETCH_BUILDS_SUCCESS:
-			return {
-				...state,
-				build: action.payload
-			}
+		// case FETCH_BUILDS_SUCCESS:
+		// 		return {
+		// 			...state,
+		// 			build: action.payload 
+		// 		}
 		case FETCH_BUILDS_ERROR:
 			return {
 				...state,
@@ -51,7 +55,7 @@ export const currentBuild = (state = initialCurrentBuild, action) => {
 		case FETCH_BUILD_BY_NUMBER_ERROR:
 			return {
 				...state,
-				errorText: action.payload
+				errorText: action.payload.message
 			}
 		case FETCH_BUILD_BY_NUMBER_SUCCESS:
 			return {
@@ -62,7 +66,7 @@ export const currentBuild = (state = initialCurrentBuild, action) => {
 		case FETCH_LOG_BY_BUILD_ID_ERROR:
 			return {
 				...state,
-				logErrorText: action.payload
+				logErrorText: action.payload.message
 			}
 		case FETCH_LOG_BY_BUILD_ID_SUCCESS:
 			return {
@@ -71,6 +75,7 @@ export const currentBuild = (state = initialCurrentBuild, action) => {
 			}
 		case CLEAR_CURRENT_BUILD_FROM_REDUX:
 			return {
+				...state,
 				...initialCurrentBuild
 			}
 		case RUN_REBUILD_BY_HASH_ERROR:

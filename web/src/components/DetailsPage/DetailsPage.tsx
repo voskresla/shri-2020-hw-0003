@@ -47,8 +47,7 @@ export class DetailsPage extends Component<DetailsPageProps> {
 
 	handleRebuildClick = () => {
 		console.log('fire handleRevuildClick')
-		this.props.runRebuild(this.props.currentBuild.build.commitHash)
-
+		this.props.runRebuild(this.props.currentBuild.build.commitHash) // TODO: плохо, следствие store + reducers -> реорганизовать
 	}
 
 	componentDidUpdate(prev: DetailsPageProps) {

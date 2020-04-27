@@ -7,21 +7,27 @@ import {
 	POST_SETTINGS_ERROR,
 } from "../actions";
 import { SettingsModel } from "../utils";
-import { SettingsStoreTypes } from "../store";
+import { SettingsStoreTypes, StoreTypes } from "../store";
 
 // TODO:  refactor initialSettingState
 const initialSettingsState = {
-	conf: {},
+	conf: {
+		repoName: '',
+		buildCommand: '',
+		mainBranch: '',
+		period: 0,
+	},
 	isLoaded: false,
 	isSavedYNDX: false,
 	isSavingToYNDX: false,
 	isSavedToYNDX: false,
 	isSavingToError: false,
+	isSavingToYNDXError: false,
 	isError: false,
 	errorText: '',
 }
 
-export default (state = initialSettingsState, action: { type: any; payload: any; }) => {
+export default (state = initialSettingsState, action: { type: any; payload: any; }): StoreTypes['settings'] => {
 	switch (action.type) {
 		case SAVE_SETTINGS_TO_REDUX:
 			return {
