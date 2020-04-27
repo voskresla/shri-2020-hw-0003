@@ -13,7 +13,7 @@ import InputGroup from '../common/InputGroup/InputGroup'
 import './SettingsPage.css'
 import { StoreTypes, SettingsStoreTypes } from '../../store'
 
-type StateTypes = Pick<SettingsStoreTypes, 'conf' | 'isSavingToYNDXError' | 'isSavedToYNDX' | 'errorText'>
+type StateTypes = Pick<SettingsStoreTypes, 'conf' | 'isSavingToYNDXError' | 'isSavedToYNDX' | 'isSavingToYNDX' | 'errorText'>
 
 interface DispatchProps {
 	clearSettingsFlags: () => void
@@ -141,15 +141,15 @@ export class SettingsPage extends Component<SettingsPageProps, SettingPageState>
 									{/* TODO: проверять если настройки такие же то говорить и не сохранять */}
 									<Button
 										className={{ size: "m", view: "action" }}
-										text={!this.props.isSavedToYNDX ? "Save" : "Fetching & Cloning.."}
+										text={!this.props.isSavingToYNDX ? "Save" : "Fetching & Cloning.."}
 										handleClick={this.handleSave}
-										mydisabled={this.props.isSavedToYNDX}
+										mydisabled={this.props.isSavingToYNDX}
 									/>
 									{/* TODO: что делает кнопка Cancel */}
 									<Button
 										className={{ size: "m", view: "control" }}
 										text="Cancel"
-										mydisabled={this.props.isSavedToYNDX}
+										mydisabled={this.props.isSavingToYNDX}
 										handleClick={this.handleCancel}
 									/>
 								</div>
@@ -172,6 +172,7 @@ const mapStateToProps = (state: StoreTypes) => {
 		conf: state.settings.conf,
 		isSavingToYNDXError: state.settings.isSavingToYNDXError,
 		isSavedToYNDX: state.settings.isSavedToYNDX,
+		isSavingToYNDX: state.settings.isSavingToYNDX,
 		errorText: state.settings.errorText
 	}
 }
