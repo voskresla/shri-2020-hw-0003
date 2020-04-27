@@ -46,8 +46,8 @@ export class SettingsPage extends Component<SettingsPageProps, SettingPageState>
 	}
 
 	// TODO: но вобще должно быть не string а четкие значения из plaseholders | settingmodel
-	handleInputChange = (id?: string, value?: string) => {
-		if (id && value) {
+	handleInputChange = (value: string, id?: string) => {
+		if (id && value !== undefined) {
 			this.setState({ [id]: value });
 		}
 		if (this.props.errorText || this.props.isSavedToYNDX) this.props.clearSettingsFlags()
@@ -126,7 +126,7 @@ export class SettingsPage extends Component<SettingsPageProps, SettingPageState>
 													<Button
 														handleClick={(e) => {
 															e.preventDefault()
-															this.handleInputChange(item?.id, '')
+															this.handleInputChange('', item?.id)
 														}}
 														className={{ size: "m", distribute: "center" }}
 														iconName={"inputclose"}

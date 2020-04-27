@@ -53,9 +53,10 @@ export class RunBuild extends Component<RunBuildProps, RunBuildState> {
         this.props.cancelHandle()
     };
 
-    handleInputChange = (value?: string) => {
+	handleInputChange = (value?: string) => {
+		console.log('fire', value)
         if (this.props.errorText) this.props.clearCurrentBuildFlags()
-		if (value) {
+		if (value !== undefined) {
 			this.setState({ inputValue: value });
 		}
     };

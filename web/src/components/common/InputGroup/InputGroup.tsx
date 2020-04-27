@@ -4,18 +4,19 @@ import { parseWithOptions } from "date-fns/fp";
 import { MapSettings } from "../../../utils";
 
 type InputGroupProps = MapSettings & {
-	handleChange: (id?: string, value?: string) => void  // TODO: плохо, взять из keyof Placeholders
+	handleChange: (value: string, id?: string) => void  // TODO: плохо, взять из keyof Placeholders
 	valid?: boolean,
 	inputValue?: string,
 	renderAppend?: React.ReactNode
 }
 
 export default class InputGroup extends Component<InputGroupProps> {
-	handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+	handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const id = this.props.id;
-		const value = e.currentTarget.value;
+		const value = (e.target as HTMLInputElement).value;
+		console.log('input target value', value)
 
-		this.props.handleChange(id, value);
+		this.props.handleChange(value, id);
 	};
 
 	render() {
