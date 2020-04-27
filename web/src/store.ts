@@ -1,6 +1,6 @@
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware, compose, Action } from "redux";
 import reducers from "./reducers";
-import thunk from "redux-thunk";
+import thunk, { ThunkMiddleware } from "redux-thunk";
 import { SettingsModel } from "./utils";
 
 export interface SettingsStoreTypes {
@@ -31,7 +31,7 @@ export interface BuildModel {
 	commitHash: string
 	branchName: string
 	authorName: string
-	status: BuildStatusEnum
+	status: keyof typeof BuildStatusEnum
 	start?: string
 	duration?: number
 }
@@ -56,4 +56,4 @@ declare global {
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-export const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
+export const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk as ThunkMiddleware<StoreTypes, Action>)));

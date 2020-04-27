@@ -14,19 +14,29 @@ import {
 } from "../actions";
 
 import { FetchBuilds, FetchBuildByNumber, clearCurrentBuild } from '../actions'
-import { StoreTypes } from "../store";
+import { StoreTypes, BuildModel, CurrentBuild, BuildStatusEnum } from "../store";
 
-const initialBuildListState: [] = [];
-const initialCurrentBuild = {
+
+const initialBuildListState: BuildModel[] = [];
+const initialCurrentBuild: { build: BuildModel, buildLog: string, errorText: string, logErrorText: string } = {
 	build: {
-		id: ''
+		id: '',
+		configurationId: '',
+		buildNumber: 0,
+		commitMessage: '',
+		commitHash: '',
+		branchName: '',
+		authorName: '',
+		status: 'Waiting',
+		start: '',
+		duration: 0,
 	},
 	buildLog: '',
 	errorText: '',
 	logErrorText: ''
 }
 
-export const buildsList = (state = initialBuildListState, action: FetchBuilds) => {
+export const buildsList = (state = initialBuildListState, action: FetchBuilds): StoreTypes['builds'] => {
 	switch (action.type) {
 		case FETCH_BUILDS_SUCCESS:
 			if (action.payload) return [...action.payload]
@@ -40,7 +50,7 @@ export const buildsList = (state = initialBuildListState, action: FetchBuilds) =
 export const currentBuild = (
 	state = initialCurrentBuild,
 	action: FetchBuilds | FetchBuildByNumber | FetchLogById | clearCurrentBuild | RunRebuild
-) => {
+): StoreTypes['currentBuild'] => {
 	switch (action.type) {
 		// case FETCH_BUILDS_SUCCESS:
 		// 		return {

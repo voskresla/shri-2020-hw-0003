@@ -57,14 +57,15 @@ export interface SaveSettingsToReduxAction {
 export interface FetchSettingError {
 	type: typeof FETCH_SETTINGS_ERROR,
 }
-export const init = (): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<FetchSettingError | SaveSettingsToReduxAction>) => {
-	try {
-		const response = await api.get<{}, AxiosResponse<SettingsModelResponse>>("/settings");
-		dispatch({ type: SAVE_SETTINGS_TO_REDUX, payload: response.data });
-	} catch (e) {
-		dispatch({ type: FETCH_SETTINGS_ERROR })
+export const init = (): ThunkAction<void, StoreTypes, unknown, Action<string>> =>
+	async (dispatch: Dispatch<FetchSettingError | SaveSettingsToReduxAction>) => {
+		try {
+			const response = await api.get<{}, AxiosResponse<SettingsModelResponse>>("/settings");
+			dispatch({ type: SAVE_SETTINGS_TO_REDUX, payload: response.data });
+		} catch (e) {
+			dispatch({ type: FETCH_SETTINGS_ERROR })
+		}
 	}
-}
 
 export const getSettingsFromYNDX = (): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<SaveSettingsToReduxAction | FetchSettingError>) => {
 	try {
@@ -79,22 +80,24 @@ export interface PostSettings {
 	type: typeof POST_SETTINGS_BEGIN | typeof POST_SETTINGS_SUCCESS | typeof POST_SETTINGS_ERROR
 	payload?: { message: string } | string
 }
-export const saveSettingsToYNDX = (settings: SettingsModel): ThunkAction<void, StoreTypes, unknown, Action<string>> => async (dispatch: Dispatch<PostSettings | SaveSettingsToReduxAction>) => {
-	dispatch({ type: POST_SETTINGS_BEGIN });
+export const saveSettingsToYNDX =
+	(settings: SettingsModel): ThunkAction<void, StoreTypes, unknown, Action<string>> =>
+		async (dispatch: Dispatch<PostSettings | SaveSettingsToReduxAction>) => {
 
-	try {
-		const response = await api.post<{}, AxiosResponse<{ message: string }>>("/settings", settings);
-		if (response.status === 200 && response.statusText !== 'OK') {
-			dispatch({ type: POST_SETTINGS_ERROR, payload: response.data.message });
-			return
-		}
+			dispatch({ type: POST_SETTINGS_BEGIN });
+			try {
+				const response = await api.post<{}, AxiosResponse<{ message: string }>>("/settings", settings);
+				if (response.status === 200 && response.statusText !== 'OK') {
+					dispatch({ type: POST_SETTINGS_ERROR, payload: response.data.message });
+					return
+				}
 
-		dispatch({ type: POST_SETTINGS_SUCCESS })
-		dispatch({ type: SAVE_SETTINGS_TO_REDUX, payload: settings });
-	} catch (e) {
-		dispatch({ type: POST_SETTINGS_ERROR, payload: 'Сервер недоступен.' });
-	}
-};
+				dispatch({ type: POST_SETTINGS_SUCCESS })
+				dispatch({ type: SAVE_SETTINGS_TO_REDUX, payload: settings });
+			} catch (e) {
+				dispatch({ type: POST_SETTINGS_ERROR, payload: 'Сервер недоступен.' });
+			}
+		};
 
 export const clearSettingsFlags = () => {
 	return {
