@@ -148,16 +148,26 @@ export const gitClone: GitCLoneFn = ({ repoName }) => {
 export type GetLastCommitFn = (settings: SettingsModel) => Promise<string>
 
 export const getLastCommit: GetLastCommitFn = (settings) => {
-	const repository = settings.repoName.split('/')[0]
+	const repository = settings.repoName.split('/')[1]
 	const repoPath = path.join(process.cwd(), 'repos', repository)
 
 	return new Promise((resolve, reject) => {
+		console.log(repoPath)
 		const revParse = spawn('git', ['rev-parse', 'HEAD'], { cwd: repoPath })
+		let bufferStr = ''
 		revParse.stdout.on('data', data => {
 			// TODO:  возможно надо new Buffer
-			const buffer = Buffer.from(data).toString('utf8').split('\n')
-			resolve(buffer[0])
+			// const buffer: string = new Buffer.from(data)
+			// const buffer: string = new Buffer.from(data)
+			console.log(bufferStr)
+			bufferStr += data.toString('utf8')
 		})
-		revParse.on('close', () => reject('rev-parse - fail'))
+		revParse.on('close', () => {
+			console.log('on close', bufferStr)
+			resolve(bufferStr.split('\n')[0])
+		})
+		revParse.on('error', () => {
+			reject('rev-parse - fail')
+		})
 	})
 }

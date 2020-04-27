@@ -84,7 +84,7 @@ router.post<{}, RouteSettingsPOSTExpressResponse, SettingsModel>('/', (req, res,
 		)
 		.then(() => res.send('Конфигурация сохранена'))
 		.catch(e => {
-
+			console.log(e)
 			if (e === 'clone-fail') {
 				console.log('Ошибка клонирования репозитория.')
 				res.statusMessage = 'Error'
