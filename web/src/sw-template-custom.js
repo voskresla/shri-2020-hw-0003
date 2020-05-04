@@ -3,7 +3,6 @@ const CACHE_NAME = 'custom-cache-v1';
 const CACHE_NAME_2 = 'custom-runtime-v1';
 const URLS_TO_PRECACHE = [
 	'/index.html',
-	'/',
 	'/logo192.png',
 	'/logo512.png',
 	'/favico.ico',
@@ -36,23 +35,26 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-	console.log(event.request.url)
+
 	if (
 		event.request.method !== 'GET' ||
-		event.request.url.indexOf('api') !== -1
+		// event.request.url.indexOf('api') !== -1 ||
+		!(event.request.url.indexOf('http') === 0)
 	) {
 		return;
 	}
 
 	event.respondWith(
-
 		caches.open(CACHE_NAME_2).then(function (cache) {
 			return cache.match(event.request).then(function (response) {
-				return response || fetch(event.request).then(function (response) {
-					cache.put(event.request, response.clone());
-					return response;
-				});
-			});
+				var fetchPromise = fetch(event.request).then(function (networkResponse) {
+					if (networkResponse.status === 200 && networkResponse.statusText !== 'ERROR') {
+						cache.put(event.request, networkResponse.clone());
+					}
+					return networkResponse;
+				})
+				return response || fetchPromise;
+			})
 		})
 	);
 });
