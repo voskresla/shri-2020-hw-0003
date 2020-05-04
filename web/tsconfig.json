@@ -23,6 +23,7 @@
     "src"
   ],
   "exclude": [
-    "__tests__"
+    "__tests__",
+    // "src/sw-template.js"
   ]
 }
