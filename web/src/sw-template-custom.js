@@ -38,7 +38,7 @@ self.addEventListener('fetch', (event) => {
 
 	if (
 		event.request.method !== 'GET' ||
-		// event.request.url.indexOf('api') !== -1 ||
+		event.request.url.indexOf('logs') === -1 ||
 		!(event.request.url.indexOf('http') === 0)
 	) {
 		return;
