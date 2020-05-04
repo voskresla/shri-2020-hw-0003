@@ -22,12 +22,13 @@ export interface SettingsModel {
 router.get('/', async (req, res, next) => {
 	console.log('GET /api/settings')
 
-	await new Promise(r =>
-		setTimeout(
-			r,
-			Math.floor(Math.random() * (1000 - 2000 + 1) + 2000),
-		),
-	)
+	// await new Promise(r =>
+	// 	setTimeout(
+	// 		r,
+	// 		Math.floor(Math.random() * (1000 - 2000 + 1) + 2000),
+	// 	),
+	// )
+
 	yndxApi.get('/conf').then(r => {
 		if (r.status === 200) {
 			res.status(200).json(r.data.data)
