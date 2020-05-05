@@ -1,3 +1,1 @@
-module.exports = {
-    get: (url) => url === 'conf' ? 200 : 500
-}
+export function get(url) { return url === 'conf' ? 200 : 500 }

@@ -9,12 +9,16 @@
     "test:integration": "./node_modules/.bin/hermione",
     "start-cra": "cd web && npm run start",
     "start-ci-server": "node index.js",
-    "start-selenium": "./node_modules/.bin/selenium-standalone install && ./node_modules/.bin/selenium-standalone start"
+    "start-selenium": "./node_modules/.bin/selenium-standalone install && ./node_modules/.bin/selenium-standalone start",
+    "server:watch": "TS_NODE_FILES=1 nodemon index.ts -r ts-node/register"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/preset-env": "^7.9.5",
+    "@types/axios": "^0.14.0",
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.6",
     "@typescript-eslint/eslint-plugin": "^2.3.3",
     "@typescript-eslint/parser": "^2.3.3",
     "axios": "^0.19.2",
@@ -61,6 +65,9 @@
     ]
   },
   "devDependencies": {
-    "selenium-standalone": "^6.17.0"
+    "nodemon": "^2.0.3",
+    "selenium-standalone": "^6.17.0",
+    "ts-node": "^8.9.1",
+    "typescript": "^3.8.3"
   }
 }
