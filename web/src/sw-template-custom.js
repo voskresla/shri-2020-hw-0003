@@ -36,8 +36,8 @@ self.addEventListener('fetch', (event) => {
 
 	if (
 		event.request.method !== 'GET' ||
-		event.request.url.indexOf('logs') === -1 ||
-		!(event.request.url.indexOf('http') === 0)
+		!(event.request.url.indexOf('http') === 0) ||
+		!customMatch(event.request.url)
 	) {
 		return;
 	}
@@ -56,5 +56,10 @@ self.addEventListener('fetch', (event) => {
 		})
 	);
 });
+
+function customMatch(url) {
+	if (url.indexOf('logs') > -1) return true
+	if (url.indexOf('static') > -1) return true
+}
 
 
