@@ -26,6 +26,8 @@ export const CLEAR_CURRENT_BUILD_FROM_REDUX = "CLEAR_CURRENT_BUILD_FROM_REDUX"
 export const RUN_REBUILD_BY_HASH = "RUN_REBUILD_BY_HASH"
 export const RUN_REBUILD_BY_HASH_ERROR = "RUN_REBUILD_BY_HASH_ERROR"
 
+export const CHANGE_LOCALE = 'CHANGE_LOCALE'
+
 export const actionsTypeCONST = {
 	CLEAR_SETTINGS_FLAGS,
 	FETCH_SETTINGS_ERROR,
@@ -45,6 +47,15 @@ export const actionsTypeCONST = {
 	CLEAR_CURRENT_BUILD_FROM_REDUX,
 	RUN_REBUILD_BY_HASH,
 	RUN_REBUILD_BY_HASH_ERROR,
+	CHANGE_LOCALE
+}
+
+// LOCALE
+
+export const changeLocaleAction = () => {
+	return {
+		type: CHANGE_LOCALE,
+	};
 }
 
 interface SettingsModelResponse {

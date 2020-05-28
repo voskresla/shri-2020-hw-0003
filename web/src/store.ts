@@ -43,10 +43,15 @@ export interface CurrentBuild {
 	logErrorText: string
 }
 
+export interface Locale {
+	locale: 'Ru' | 'En'
+}
+
 export interface StoreTypes {
 	settings: SettingsStoreTypes,
 	builds: BuildModel[],
 	currentBuild: CurrentBuild
+	locale: Locale
 }
 
 declare global {
