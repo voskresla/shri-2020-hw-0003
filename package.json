@@ -17,7 +17,7 @@
     "@babel/preset-env": "^7.9.5",
     "@typescript-eslint/eslint-plugin": "^2.3.3",
     "@typescript-eslint/parser": "^2.3.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-jest": "^25.3.0",
     "chai": "^4.2.0",
     "cors": "^2.8.5",
