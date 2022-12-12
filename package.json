@@ -28,7 +28,7 @@
     "eslint-plugin-compat": "^3.3.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.16.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "hermione": "^3.1.0",
     "https": "^1.0.0",
     "jest": "^25.3.0",
